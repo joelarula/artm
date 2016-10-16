@@ -1,5 +1,6 @@
 package website.components;
 
-public class Frame {
+public class ClientFrame {
 
+	
 }

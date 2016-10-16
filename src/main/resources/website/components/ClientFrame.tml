@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+	<head>
+		<title>${message:sitename}</title>
+	</head>
+	<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index">${message:title}</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                     <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">${message:paintings}<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="portfolio-1-col.html">Flowers</a>
+                            </li>
+                            <li>
+                                <a href="portfolio-2-col.html">Abstract></a>
+                            </li>
+                            <li>
+                                <a href="portfolio-2-col.html">....></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="services.html">${message:shop}</a>
+                    </li>
+                    <li>
+                        <a href="contact.html">${message:contact}</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+		<div class="container">
+			<t:body />
+		</div>
+	</body>
+</html>
