@@ -33,7 +33,7 @@ public class Board {
 	public Block getActiveBlock(){
 		switch (command){
 			case PAINTING : return this.painting;
-			case PAINTINGS : return this.painting;
+			case PAINTINGS : return this.paintings;
 			case SETTINGS : return this.settings;
 		}
 		return this.paintings;
