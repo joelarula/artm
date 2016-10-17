@@ -1,33 +1,30 @@
-package website.pages;
+package website.pages.admin;
 
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventContext;
+import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import website.model.admin.ClientCommand;
+import website.model.admin.AdminCommand;
 
-public class Index {
-	
-	private ClientCommand command;
-	
+public class Board {
+
+	private AdminCommand command;
+		
 	@Inject
 	private Block paintings;
 	
 	@Inject
-	private Block home;
+	private Block painting;
 	
 	@Inject
-	private Block shop;
-	
-	@Inject
-	private Block contact;
-	
+	private Block settings;
 	
 	void onActivate(EventContext context){
-		this.command = ClientCommand.HOME;
+		this.command = AdminCommand.PAINTING;
 		if(context.getCount() > 0){
 			String cmd = context.get(String.class, 0).toUpperCase();
-			this.command = ClientCommand.valueOf(cmd);
+			this.command = AdminCommand.valueOf(cmd);
 		}
 	}
 	 
@@ -35,16 +32,16 @@ public class Index {
 	
 	public Block getActiveBlock(){
 		switch (command){
-			case HOME : return this.home;
-			case PAINTINGS : return this.paintings;
-			case SHOP : return this.shop;
-			case CONTACT : return this.contact;
+			case PAINTING : return this.paintings;
+			case PAINTINGS : return this.painting;
+			case SETTINGS : return this.settings;
 		}
 		return this.paintings;
 	}
 
-	public ClientCommand getCommand() {
+	public AdminCommand getCommand() {
 		return this.command;
 	}
 	
+
 }

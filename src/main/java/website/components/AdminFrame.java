@@ -3,40 +3,36 @@ package website.components;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
 import website.model.admin.AdminCommand;
-import website.model.admin.ClientCommand;
-import website.pages.Index;
 import website.pages.admin.Board;
 
-public class ClientFrame {
+@Import(stylesheet="base/css/AdminFrame.css")
+public class AdminFrame {
 
 	@InjectPage
-	private Index index;
+	private Board board;
 	
 	@Property
-	private ClientCommand command;
-	
-	@Property
-	private ClientCommand homeCommand= ClientCommand.HOME;
+	private AdminCommand command;
 	
 	@Inject
 	private Messages messages;
 	
-	public List<ClientCommand> getMenu() {
-		return Arrays.asList(ClientCommand.PAINTINGS,ClientCommand.SHOP,ClientCommand.CONTACT);
+	public List<AdminCommand> getMenu() {
+		return Arrays.asList(AdminCommand.PAINTINGS,AdminCommand.SETTINGS);
 	}
 	
 	public String getActiveMenuItem() { 
-		return this.index.getCommand().equals(command) ? "active":"idle";
+		return this.board.getCommand().equals(command) ? "selected":"idle";
 	}
 	
 	public String getLabel(){
 		return messages.get(this.command.getLabel());
 	}
-	
 }

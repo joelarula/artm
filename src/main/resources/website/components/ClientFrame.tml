@@ -14,32 +14,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index">${message:title}</a>
+                <t:pagelink  class="navbar-brand" t:page="prop:homeCommand.page" t:context="homeCommand.context" >${message:title}</t:pagelink>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                     <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">${message:paintings}<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="portfolio-1-col.html">Flowers</a>
-                            </li>
-                            <li>
-                                <a href="portfolio-2-col.html">Abstract></a>
-                            </li>
-                            <li>
-                                <a href="portfolio-2-col.html">....></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="services.html">${message:shop}</a>
-                    </li>
-                    <li>
-                        <a href="contact.html">${message:contact}</a>
-                    </li>
-
+               	 	<t:loop t:source="menu" t:value="command">
+                		<li class="${activeMenuItem}">
+                    		<t:pagelink t:page="prop:command.page" t:context="command.context" >${label}</t:pagelink>
+                		</li>
+                	</t:loop>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

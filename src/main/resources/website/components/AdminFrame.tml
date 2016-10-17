@@ -1,0 +1,37 @@
+<html xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+	<head>
+		<title>Artmoments admin</title>
+	</head>
+	<body>
+	    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                       Artmoments Admin
+                    </a>
+                </li>
+                <t:loop t:source="menu" t:value="command">
+                	<li>
+                    	<t:pagelink t:page="prop:command.page" t:context="command.context" class="${activeMenuItem}">${label}</t:pagelink>
+                	</li>
+                </t:loop>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                <form class="navbar navbar-right">
+                	<a  href="#" class="btn btn-default navbar-btn">Logi välja</a>
+                </form>
+                    <t:body/>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+	</body>
+</html>

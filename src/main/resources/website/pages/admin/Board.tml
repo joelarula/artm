@@ -1,0 +1,10 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+	<t:adminFrame>
+		<t:delegate t:to="activeBlock"/>
+	</t:adminFrame>
+	
+	<t:block t:id="paintings">...1</t:block>
+	<t:block t:id="painting">...2</t:block>
+	<t:block t:id="settings">...3</t:block>
+	
+</t:container>
