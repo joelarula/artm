@@ -21,6 +21,12 @@ public class AdminFrame {
 	@Property
 	private AdminCommand command;
 	
+	@Property
+	private AdminCommand logoutCommand = AdminCommand.LOGOUT;
+	
+	@Property
+	private AdminCommand addPaintingCommand = AdminCommand.PAINTING;
+	
 	@Inject
 	private Messages messages;
 	

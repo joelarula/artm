@@ -23,11 +23,18 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                <form class="navbar navbar-right">
-                	<a  href="#" class="btn btn-default navbar-btn">Logi välja</a>
-                </form>
-                    <t:body/>
+               		 <ul class="nav navbar-nav navbar-right">
+               			<li>
+               				<t:pagelink t:page="prop:addPaintingCommand.page" t:context="prop:addPaintingCommand.context">${message:addPainting}</t:pagelink>
+               			</li>
+                		<li>
+                			<t:pagelink t:page="prop:logoutCommand.page" >${message:logout}</t:pagelink>
+                		 </li>
+                	</ul>              
                 </div>
+                 <div class="row">
+                 	 <t:body/>
+                 </div>
             </div>
         </div>
         <!-- /#page-content-wrapper -->

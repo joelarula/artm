@@ -2,9 +2,10 @@ package website.model.admin;
 
 public enum AdminCommand {
 
-	PAINTING("admin/board","painting","paintings"),
+	PAINTING("admin/board","painting","painting"),
 	PAINTINGS("admin/board","paintings","paintings"),
-	SETTINGS("admin/board","settings","settings");
+	SETTINGS("admin/board","settings","settings"), 
+	LOGOUT("admin/logout",null,"logout");
 	
 	public String getPage() {
 		return page;
