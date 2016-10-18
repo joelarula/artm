@@ -24,6 +24,16 @@
                     		<t:pagelink t:page="prop:command.page" t:context="command.context" >${label}</t:pagelink>
                 		</li>
                 	</t:loop>
+                	 <li role="presentation" class="dropdown">
+    					<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+     					${currentLocaleLabel} <span class="caret"></span>
+    					</a>
+    					<ul class="dropdown-menu">
+    						<t:loop t:source="locales" t:value="locale">
+     							 <li><t:eventlink t:event="literal:toggleLanguage" t:context="locale.language">${localeLabel}</t:eventlink></li>
+     						 </t:loop>
+   						 </ul>
+  					</li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

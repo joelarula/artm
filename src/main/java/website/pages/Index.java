@@ -1,10 +1,14 @@
 package website.pages;
 
+import java.util.Locale;
+
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventContext;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.PersistentLocale;
 
 import website.model.admin.ClientCommand;
+import website.model.admin.Language;
 
 public class Index {
 	
@@ -22,13 +26,21 @@ public class Index {
 	@Inject
 	private Block contact;
 	
+	@Inject
+	private PersistentLocale persistentLocale;
+	
 	
 	void onActivate(EventContext context){
+		
+		Locale locale = this.persistentLocale.get() != null ? this.persistentLocale.get() : Language.ET.getLocale();
+		
 		this.command = ClientCommand.HOME;
 		if(context.getCount() > 0){
 			String cmd = context.get(String.class, 0).toUpperCase();
 			this.command = ClientCommand.valueOf(cmd);
 		}
+		
+		persistentLocale.set(locale);
 	}
 	 
 	public String onPassivate() { return this.command.name().toLowerCase(); }
