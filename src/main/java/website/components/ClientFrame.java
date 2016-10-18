@@ -76,4 +76,12 @@ public class ClientFrame {
 		return messages.get(this.command.getLabel());
 	}
 	
+	public String getHomeCommandContext(){
+		return this.homeCommand.getContext(this.persistentLocale.get()).getRoute();
+	}
+	
+	public String getCommandContext(){
+		return this.command.getContext(this.persistentLocale.get()).getRoute();
+	}
+	
 }

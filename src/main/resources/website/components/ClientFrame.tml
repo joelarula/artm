@@ -14,14 +14,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <t:pagelink  class="navbar-brand" t:page="prop:homeCommand.page" t:context="homeCommand.context" >${message:title}</t:pagelink>
+                <t:pagelink  class="navbar-brand" t:page="prop:homeCommand.page" t:context="homeCommandContext" >${message:title}</t:pagelink>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                	 	<t:loop t:source="menu" t:value="command">
                 		<li class="${activeMenuItem}">
-                    		<t:pagelink t:page="prop:command.page" t:context="command.context" >${label}</t:pagelink>
+                    		<t:pagelink t:page="prop:command.page" t:context="commandContext" >${label}</t:pagelink>
                 		</li>
                 	</t:loop>
                 	 <li role="presentation" class="dropdown">

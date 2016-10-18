@@ -36,14 +36,13 @@ public class Index {
 		
 		this.command = ClientCommand.HOME;
 		if(context.getCount() > 0){
-			String cmd = context.get(String.class, 0).toUpperCase();
-			this.command = ClientCommand.valueOf(cmd);
+			this.command = ClientCommand.findCandidate(context.get(String.class, 0),locale);
 		}
 		
 		persistentLocale.set(locale);
 	}
 	 
-	public String onPassivate() { return this.command.name().toLowerCase(); }
+	public String onPassivate() { return this.command.getContext(this.persistentLocale.get()).getRoute(); }
 	
 	public Block getActiveBlock(){
 		switch (command){
