@@ -37,8 +37,7 @@ public class Index {
 		this.command = ClientCommand.HOME;
 		if(context.getCount() > 0){
 			this.command = ClientCommand.findCandidate(context.get(String.class, 0),locale);
-		}
-		
+		}		
 		persistentLocale.set(locale);
 	}
 	 
