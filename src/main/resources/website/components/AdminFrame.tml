@@ -25,7 +25,7 @@
                 <div class="row">
                		 <ul class="nav navbar-nav navbar-right">
                			<li>
-               				<t:pagelink t:page="prop:addPaintingCommand.page" t:context="prop:addPaintingCommand.context">${message:addPainting}</t:pagelink>
+               				<t:pagelink t:page="prop:addModelCommand.page" t:context="prop:addModelCommand.context">${message:addModel}</t:pagelink>
                			</li>
                 		<li>
                 			<t:pagelink t:page="prop:logoutCommand.page" >${message:logout}</t:pagelink>

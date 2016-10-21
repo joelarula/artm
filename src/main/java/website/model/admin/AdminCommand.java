@@ -2,8 +2,8 @@ package website.model.admin;
 
 public enum AdminCommand {
 
-	PAINTING("admin/board","painting","painting"),
-	PAINTINGS("admin/board","paintings","paintings"),
+	MODEL("admin/board","model","model"),
+	MODELS("admin/board","models","models"),
 	SETTINGS("admin/board","settings","settings"), 
 	LOGOUT("admin/logout",null,"logout");
 	

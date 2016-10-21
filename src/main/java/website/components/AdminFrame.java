@@ -30,13 +30,13 @@ public class AdminFrame {
 	private AdminCommand logoutCommand = AdminCommand.LOGOUT;
 	
 	@Property
-	private AdminCommand addPaintingCommand = AdminCommand.PAINTING;
+	private AdminCommand addModelCommand = AdminCommand.MODEL;
 	
 	@Inject
 	private Messages messages;
 	
 	public List<AdminCommand> getMenu() {
-		return Arrays.asList(AdminCommand.PAINTINGS,AdminCommand.SETTINGS);
+		return Arrays.asList(AdminCommand.MODELS,AdminCommand.SETTINGS);
 	}
 	
 	public String getActiveMenuItem() { 
