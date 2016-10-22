@@ -2,10 +2,15 @@ package website.model.database;
 
 import java.util.Date;
 
-public class Model {
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
 
-	private long code;
+@Entity
+public class Model {
 	
+	@Id
 	private String key;
 	
 	private String name;
@@ -16,8 +21,10 @@ public class Model {
 	
 	private String author;
 	
+	@Enumerated(EnumType.STRING)
 	private Category category;
 	
+	@Enumerated(EnumType.STRING)
 	private Stock stock;
 	
 	private boolean published;
@@ -26,13 +33,6 @@ public class Model {
 	
 	private Date modified;
 
-	public long getCode() {
-		return code;
-	}
-
-	public void setCode(long code) {
-		this.code = code;
-	}
 
 	public String getKey() {
 		return key;

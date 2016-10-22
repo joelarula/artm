@@ -29,8 +29,6 @@ public class AdminFrame {
 	@Property
 	private AdminCommand logoutCommand = AdminCommand.LOGOUT;
 	
-	@Property
-	private AdminCommand addModelCommand = AdminCommand.MODEL;
 	
 	@Inject
 	private Messages messages;

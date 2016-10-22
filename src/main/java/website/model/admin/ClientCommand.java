@@ -3,6 +3,7 @@ package website.model.admin;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -32,7 +33,14 @@ public enum ClientCommand {
 	
 	public static ClientCommand findCandidate(String cmd, Locale locale) {
 		//logger.trace("command {}, locale {}",cmd,locale.getLanguage());
-		return Arrays.asList(ClientCommand.values()).stream().filter(cc -> cc.getContext(locale).getRoute().equals(cmd)).findFirst().get();
+		ClientCommand ccmd;
+		try{
+			ccmd = Arrays.asList(ClientCommand.values()).stream().filter(cc -> cc.getContext(locale).getRoute().equals(cmd)).findFirst().get();
+		}catch(NoSuchElementException ex){
+			logger.error(ex.getMessage());
+			ccmd = ClientCommand.HOME;
+		}
+		return ccmd;
 	}
 	
 	public String getPage() {

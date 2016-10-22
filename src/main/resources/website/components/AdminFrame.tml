@@ -16,6 +16,9 @@
                     	<t:pagelink t:page="prop:command.page" t:context="command.context" class="${activeMenuItem}">${label}</t:pagelink>
                 	</li>
                 </t:loop>
+                <li>
+                	<t:pagelink t:page="index" t:context="literal:home">${message:home}</t:pagelink>
+                </li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -24,9 +27,6 @@
             <div class="container-fluid">
                 <div class="row">
                		 <ul class="nav navbar-nav navbar-right">
-               			<li>
-               				<t:pagelink t:page="prop:addModelCommand.page" t:context="prop:addModelCommand.context">${message:addModel}</t:pagelink>
-               			</li>
                 		<li>
                 			<t:pagelink t:page="prop:logoutCommand.page" >${message:logout}</t:pagelink>
                 		 </li>
