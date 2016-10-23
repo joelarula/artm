@@ -11,12 +11,14 @@ import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Startup;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
+import org.apache.tapestry5.services.assets.AssetRequestHandler;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import website.model.admin.ClientCommand;
 import website.services.impl.FileManagerImpl;
+import website.services.impl.ImageDispatcher;
 
 public class WebsiteModule {
 
@@ -91,6 +93,10 @@ public class WebsiteModule {
 			}
 	    	
 	    });
+	  }
+	  
+	  public void contributeAssetDispatcher(MappedConfiguration<String,AssetRequestHandler> conf){
+		  conf.addInstance(FileManager.catalog, ImageDispatcher.class);
 	  }
 
 }

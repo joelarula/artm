@@ -15,8 +15,10 @@ public interface FileManager {
 	
 	void saveFile(String name,FileSize fileSize, UploadedFile original) throws IOException;
 	
-	File getFile(String name,FileSize fileSize);
+	File getFile(String name,FileSize fileSize) throws IOException;
 
 	String getPath(String key, FileSize preview);
+
+	File getCatalogFile(String catalogPath);
 
 }

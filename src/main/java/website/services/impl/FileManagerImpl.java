@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -65,8 +66,28 @@ public class FileManagerImpl implements FileManager{
 	}
 
 	@Override
-	public File getFile(String name, FileSize fileSize) {
-		return new File(prepareCatalogPath(name,fileSize));
+	public File getFile(String name, FileSize fileSize) throws IOException {
+		if(fileSize.equals(FileSize.ORIGINAL)){
+			return new File(prepareCatalogPath(name,fileSize));
+		}else{
+			File file = new File(prepareCatalogPath(name,fileSize));
+			//if(!file.exists()){		
+				if(!file.getParentFile().exists()){
+					file.getParentFile().mkdirs();
+				}
+				file.createNewFile();
+				File original = this.getFile(name, FileSize.ORIGINAL);
+				BufferedImage source = ImageIO.read(new FileInputStream(original));
+				Graphics2D g = source.createGraphics();
+				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				ImageIO.write(source, "png", file);
+				return file;
+			//}	
+		}
+		//return null;
+		
 	}
 
 	@Override
@@ -74,6 +95,24 @@ public class FileManagerImpl implements FileManager{
 		return  FileManager.catalog 
 				+ "/" + fileSize.name().toLowerCase()
 				+ "/" + key+".png";
+	}
+
+	@Override
+	public File getCatalogFile(String catalogPath) {
+		String[] tokens = catalogPath.split("/");
+		
+		if(tokens.length == 2){
+			logger.info("tokens {} {}",tokens[0],tokens[1]);
+			try{
+				FileSize size = FileSize.valueOf(tokens[0].toUpperCase());
+				File file = this.getFile(tokens[1].substring(0,tokens[1].length()-4), size);
+				return  file;
+			}catch(Exception ex){
+				logger.error(ex.toString());
+			}
+			
+		}
+		return null;
 	}
 
 
