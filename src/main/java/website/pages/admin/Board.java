@@ -1,5 +1,7 @@
 package website.pages.admin;
 
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -34,10 +36,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import website.model.admin.AdminCommand;
+import website.model.admin.FileSize;
 import website.model.admin.SearchCommand;
 import website.model.database.Category;
 import website.model.database.Model;
 import website.model.database.Stock;
+import website.services.FileManager;
 import website.services.WebsiteModule;
 import website.services.impl.ModelGridDataSource;
 
@@ -92,6 +96,9 @@ public class Board {
 	
 	@Inject
 	private Session session;
+	
+	@Inject
+	private FileManager filemanager;
 	
 	@Inject 
 	private LinkSource linkSource;
@@ -214,6 +221,18 @@ public class Board {
 		}
 		return linkSource.createPageRenderLink("admin/board", true, ctx.toArray());
 	}
+	
+	@CommitAfter
+	@OnEvent(value=EventConstants.VALIDATE,component="modelForm")
+	public void  onValidateFromModelForm(){
+		if(this.original != null ){
+			logger.info("uploaded photo {}",original.getFileName());
+			if(!this.filemanager.supports(original.getFileName())){
+				logger.info("{} unsupported file type {}",original.getFileName());
+				this.modelForm.recordError(messages.format("unsupported file type",original.getFileName()));
+			}
+		}
+	}
 
 	@CommitAfter
 	@OnEvent(value=EventConstants.SUCCESS,component="modelForm")
@@ -221,6 +240,24 @@ public class Board {
 		if(this.model.getKey() == null){
 			this.model.setKey(generateModelKey());
 		}
+		
+		if(this.original != null){
+			logger.info("uploaded photo {}",original.getFileName());
+			if(this.filemanager.supports(original.getFileName())){
+				try {
+					this.filemanager.saveFile(model.getKey(),FileSize.ORIGINAL,original);
+					String path = filemanager.getFile(model.getKey(),FileSize.ORIGINAL).getAbsolutePath();
+					logger.info("{} original photo saved in {}",path);
+					this.model.setPhoto(this.filemanager.getFile(model.getKey(), FileSize.ORIGINAL).getPath());
+					this.model.setPhoto(path);
+				} catch (IOException e) {
+					logger.error("{} saving failed {}",original.getFileName(),e.getMessage());
+				}
+
+			}
+
+		}
+		
 		this.session.saveOrUpdate(this.model);
 		logger.info("model {} saved",model.getKey());	
 		alerts.success(messages.format("modelSavedSucessfully",model.getName()));
@@ -228,8 +265,11 @@ public class Board {
 	}
 	
 	private String generateModelKey() {
-		String key = "DI_";
+		this.session.createSQLQuery("CREATE SEQUENCE IF NOT EXISTS models START WITH 1 INCREMENT BY 1").executeUpdate();
+		BigInteger nextval = (BigInteger) this.session.createSQLQuery("select NEXTVAL('models')").uniqueResult();
+		String key = "DI";
 		key= key + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)).substring(2);
+		key=key+nextval.toString();
 		return key;
 	}
 
@@ -295,5 +335,21 @@ public class Board {
 	
 	public String[] getModelContext(){
 		return new String[]{AdminCommand.MODEL.name().toLowerCase(),model.getKey()};
+	}
+	
+	public String getPhotoLabel(){
+		if(this.model.getPhoto() != null){
+			return this.model.getPhoto();
+		}else{
+			return messages.get("addPhoto");
+		}
+	}
+	
+	public String getPreviewPath(){
+		return this.filemanager.getPath(model.getKey(), FileSize.PREVIEW);
+	}
+	
+	public String getThumbnailPath(){
+		return this.filemanager.getPath(model.getKey(), FileSize.THUMBNAIL);
 	}
 }

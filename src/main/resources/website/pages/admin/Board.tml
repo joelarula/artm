@@ -20,6 +20,7 @@
 			
 				<div class="container-fluid">
 					<t:form t:id="modelsForm" t:zone="modelsZone">
+				
 					<div class="row" style="margin-bottom:2em;">
 
 						<div class="col-sm-2">
@@ -56,6 +57,7 @@
 
 	<t:block t:id="modelBlock">
 		<t:form t:id="modelForm">
+		    <t:hidden t:value="model.key"/>
 			<t:alerts />
 			<t:errors />
 			<div class="row-fluid">
@@ -110,14 +112,38 @@
 				</div>
 				<div class="col-md-6">
 					<div class="panel panel-default">
-						<div class="panel-heading">${message:photo}</div>
+						<div class="panel-heading">${message:photo} ${photoLabel}</div>
 						<div class="panel-body  text-center">
+							<t:if t:test="!model.photo">
 							<span class="glyphicon glyphicon-picture" aria-hidden="true"
-								style=" font-size: 5em;"></span>
-							<t:upload t:id="photo" t:label="messages:addPhoto"
+								style=" font-size: 5em;"></span>	
+							</t:if>
+								<t:upload t:id="photo" t:label="messages:addPhoto"
 								style="margin-top:1em;" t:value="original" />
+							<t:if t:test="model.photo">	
+							    ${message:preview} <br/>					
+								<t:image t:path="previewPath"/>
+								${message:thumbnail} <br/>
+							   <t:image t:path="thumbnailPath"/>
+							</t:if>	
+								
 						</div>
 					</div>
+<!-- 					<t:if t:test="model.photo">
+					<div class="panel panel-default">
+						<div class="panel-heading">${message:preview}</div>
+						<div class="panel-body  text-center">
+							preview					
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">${message:thumbnail}</div>
+						<div class="panel-body  text-center">
+							preview					
+						</div>
+					</div>
+					</t:if> -->
+					
 				</div>
 				<div class="col-md-12 text-left">
 					<t:submit class="btn btn-default" t:value="${message:save}" />
