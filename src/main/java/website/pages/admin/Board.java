@@ -19,12 +19,17 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.grid.GridDataSource;
+import org.apache.tapestry5.hibernate.HibernateGridDataSource;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.internal.services.LinkSource;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.upload.services.UploadedFile;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +39,7 @@ import website.model.database.Category;
 import website.model.database.Model;
 import website.model.database.Stock;
 import website.services.WebsiteModule;
+import website.services.impl.ModelGridDataSource;
 
 public class Board {
 
@@ -64,6 +70,9 @@ public class Board {
 	private  Model model;
 	
 	@Property
+	private UploadedFile original;
+	
+	@Property
 	private  String searchName;
 	
 	@Property
@@ -73,7 +82,7 @@ public class Board {
 	private  Stock searchStock;
 	
 	@Property
-	private  Boolean searchPublisehd;
+	private  Boolean searchPublished;
 	
 	@Inject
 	private Messages messages;
@@ -88,7 +97,7 @@ public class Board {
 	private LinkSource linkSource;
 	
 	@Inject 
-	private BeanModelSource modelSource;
+	private BeanModelSource beanModelSource;
 	
 	public Object onActivate(EventContext context){
 		this.command = AdminCommand.MODELS;
@@ -145,6 +154,9 @@ public class Board {
 				case NAME : 
 					this.searchName = e.getValue();
 					break;	
+				case PUBLISHED : 
+					this.searchPublished = true;
+					break;	
 				
 				}
 			}catch(Exception ex){
@@ -179,7 +191,7 @@ public class Board {
 	
 	
 	@OnEvent(value=EventConstants.SUCCESS,component="modelsForm")
-	public Link  onSubmitFromModelsForm(){
+	public Link  onSubmitFromSeachForm(){
 		List<String> ctx = new ArrayList<String>();
 		ctx.add(AdminCommand.MODELS.name().toLowerCase());
 		if(this.searchCategory != null){
@@ -195,6 +207,10 @@ public class Board {
 		if(this.searchName != null){
 			ctx.add(SearchCommand.NAME.name().toLowerCase());
 			ctx.add(this.searchName);
+		}
+		if(this.searchPublished != null && this.searchPublished){
+			ctx.add(SearchCommand.PUBLISHED.name().toLowerCase());
+			ctx.add("true");
 		}
 		return linkSource.createPageRenderLink("admin/board", true, ctx.toArray());
 	}
@@ -236,16 +252,35 @@ public class Board {
 		}
 	}
 	
+	private ModelGridDataSource modelSource;
 
-	public List<Model> getModels(){
-		return session.createCriteria(Model.class).list();
+	public GridDataSource getModels(){
+		if(this.modelSource == null){
+			this.modelSource = new ModelGridDataSource(session, Model.class,this.getSearchCriterion());
+		}
+		return this.modelSource;
 	}
 	
+	private Criterion getSearchCriterion() {
+		List<Criterion> conditions = new ArrayList<Criterion>();
+		if(this.searchCategory != null){
+			conditions.add(Restrictions.eq("category", this.searchCategory));
+		}
+		if(this.searchStock != null){
+			conditions.add(Restrictions.eq("stock", this.searchStock));
+		}
+		if(this.searchName != null){
+			conditions.add(Restrictions.ilike("name", this.searchName));
+		}
+		Criterion c = Restrictions.conjunction(conditions.toArray(new Criterion[]{}));
+		return c;
+	}
+
 	private BeanModel gridModel;
 	
 	public BeanModel getGridModel(){
 		if(this.gridModel == null){
-			this.gridModel = modelSource.createDisplayModel(Model.class, messages);
+			this.gridModel = beanModelSource.createDisplayModel(Model.class, messages);
 			this.gridModel.getById("key").label(messages.get("key"));
 			this.gridModel.getById("name").label(messages.get("name"));
 			this.gridModel.getById("category").label(messages.get("category"));
@@ -256,5 +291,9 @@ public class Board {
 			this.gridModel.reorder("key","name","category","stock","published","photo");
 		}
 		return gridModel;
+	}
+	
+	public String[] getModelContext(){
+		return new String[]{AdminCommand.MODEL.name().toLowerCase(),model.getKey()};
 	}
 }

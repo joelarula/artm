@@ -17,8 +17,9 @@
 				</div>
 			</div>
 			<div class="panel-body"> 
-				<t:form t:id="modelsForm" t:zone="modelsZone">
-					<div class="container-fluid">
+			
+				<div class="container-fluid">
+					<t:form t:id="modelsForm" t:zone="modelsZone">
 					<div class="row" style="margin-bottom:2em;">
 
 						<div class="col-sm-2">
@@ -33,15 +34,22 @@
 						<div class="col-sm-3">
 							<t:textfield  class="form-control" t:id="searchName" t:value="searchName" placeholder="${message:searchNameHint}" />
 						</div>
-						<div class="col-sm-5">
+						<div class="col-sm-3">
+							<t:checkBox   t:id="searchPublished" t:value="searchPublished" />
+							<label for="searchPublished">${message:searchPublished}</label>
+						</div>
+						<div class="col-sm-2">
 							<t:submit class="btn btn-default" t:value="${message:search}" />
 						</div>
 					</div>
-					<t:Grid t:row="model" t:source="models" t:model="gridModel">
-					
+					</t:form>
+					<t:Grid t:row="model" t:source="models" t:model="gridModel" t:volatile="literal:true">
+						<p:keyCell>
+							<t:pagelink t:page="admin/board" t:context="modelContext" >${model.key}</t:pagelink>			
+						</p:keyCell>
 					</t:Grid>
 					</div>
-				</t:form>
+				
 			</div>
 		</div>
 	</t:block>
@@ -107,7 +115,7 @@
 							<span class="glyphicon glyphicon-picture" aria-hidden="true"
 								style=" font-size: 5em;"></span>
 							<t:upload t:id="photo" t:label="messages:addPhoto"
-								style="margin-top:1em;" t:value="model.photo" />
+								style="margin-top:1em;" t:value="original" />
 						</div>
 					</div>
 				</div>
