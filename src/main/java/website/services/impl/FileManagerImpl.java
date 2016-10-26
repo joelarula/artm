@@ -79,6 +79,8 @@ public class FileManagerImpl implements FileManager{
 				File original = this.getFile(name, FileSize.ORIGINAL);
 				BufferedImage source = ImageIO.read(new FileInputStream(original));
 				Graphics2D g = source.createGraphics();
+				
+				
 				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 				g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
