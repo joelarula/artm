@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import website.model.admin.AdminCommand;
-import website.model.admin.FileSize;
+import website.model.admin.ModelPhotoSize;
 import website.model.admin.SearchCommand;
 import website.model.database.Category;
 import website.model.database.Model;
@@ -245,10 +245,10 @@ public class Board {
 			logger.info("uploaded photo {}",original.getFileName());
 			if(this.filemanager.supports(original.getFileName())){
 				try {
-					this.filemanager.saveFile(model.getKey(),FileSize.ORIGINAL,original);
-					String path = filemanager.getFile(model.getKey(),FileSize.ORIGINAL).getAbsolutePath();
+					this.filemanager.saveFile(model.getKey(),ModelPhotoSize.ORIGINAL,original);
+					String path = filemanager.getFile(model.getKey(),ModelPhotoSize.ORIGINAL).getAbsolutePath();
 					logger.info("{} original photo saved in {}",path);
-					this.model.setPhoto(this.filemanager.getFile(model.getKey(), FileSize.ORIGINAL).getPath());
+					this.model.setPhoto(this.filemanager.getFile(model.getKey(), ModelPhotoSize.ORIGINAL).getPath());
 					this.model.setPhoto(path);
 				} catch (IOException e) {
 					logger.error("{} saving failed {}",original.getFileName(),e.getMessage());
@@ -345,11 +345,15 @@ public class Board {
 		}
 	}
 	
+	public String getFullscreenPath(){
+		return this.filemanager.getPath(model.getKey(), ModelPhotoSize.FULL_SCREEN);
+	}
+	
 	public String getPreviewPath(){
-		return this.filemanager.getPath(model.getKey(), FileSize.PREVIEW);
+		return this.filemanager.getPath(model.getKey(), ModelPhotoSize.PREVIEW);
 	}
 	
 	public String getThumbnailPath(){
-		return this.filemanager.getPath(model.getKey(), FileSize.THUMBNAIL);
+		return this.filemanager.getPath(model.getKey(), ModelPhotoSize.THUMBNAIL);
 	}
 }

@@ -122,7 +122,7 @@
 								style="margin-top:1em;" t:value="original" />
 							<t:if t:test="model.photo">	
 							    ${message:preview} <br/>					
-								<t:image t:path="previewPath"/>
+								<t:image t:path="previewPath"/><br/>
 								${message:thumbnail} <br/>
 							   <t:image t:path="thumbnailPath"/>
 							</t:if>	
