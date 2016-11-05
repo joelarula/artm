@@ -131,3 +131,11 @@
         margin-right: 0;
     }
 }
+
+
+.preview-img {
+    height: auto; 
+    width: auto; 
+    max-width: 500px; 
+    max-height: 400px;
+}

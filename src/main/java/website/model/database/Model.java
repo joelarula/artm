@@ -1,17 +1,22 @@
 package website.model.database;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
 
 @Entity
 public class Model {
 	
-
 	@Id
 	private String key;
 	
@@ -22,6 +27,10 @@ public class Model {
 	private String photo;
 	
 	private String author;
+	
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
+	@OneToMany(mappedBy="id.modelKey",fetch=FetchType.LAZY)
+	private Set<Translation> translations;
 	
 	@Enumerated(EnumType.STRING)
 	private Category category;

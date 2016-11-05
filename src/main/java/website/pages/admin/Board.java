@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -14,6 +15,7 @@ import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.EventContext;
 import org.apache.tapestry5.Link;
+import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.OnEvent;
@@ -36,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import website.model.admin.AdminCommand;
+import website.model.admin.Language;
 import website.model.admin.ModelPhotoSize;
 import website.model.admin.SearchCommand;
 import website.model.database.Category;
@@ -181,7 +184,19 @@ public class Board {
 		return model;
 	}
 
-	public String onPassivate() { return this.command.name().toLowerCase(); }
+	public String[] onPassivate() { 
+		
+		if(this.command.equals(AdminCommand.MODELS)){
+			return new String[]{this.command.name()};
+		}else if(this.command.equals(AdminCommand.MODEL) ){
+			if(this.model.getKey() != null){
+				return new String[]{this.command.name(),model.getKey()};
+			}
+			return new String[]{this.command.name()};
+		}else{
+			return new String[]{this.command.name()};
+		}
+	}
 	
 	public Block getActiveBlock(){
 		switch (command){
@@ -247,8 +262,8 @@ public class Board {
 				try {
 					this.filemanager.saveFile(model.getKey(),ModelPhotoSize.ORIGINAL,original);
 					String path = filemanager.getFile(model.getKey(),ModelPhotoSize.ORIGINAL).getAbsolutePath();
-					logger.info("{} original photo saved in {}",path);
-					this.model.setPhoto(this.filemanager.getFile(model.getKey(), ModelPhotoSize.ORIGINAL).getPath());
+					//path = path.substring(FileManager.)
+					logger.info("{} original photo saved in {}",model.getKey(),path);
 					this.model.setPhoto(path);
 				} catch (IOException e) {
 					logger.error("{} saving failed {}",original.getFileName(),e.getMessage());
@@ -355,5 +370,46 @@ public class Board {
 	
 	public String getThumbnailPath(){
 		return this.filemanager.getPath(model.getKey(), ModelPhotoSize.THUMBNAIL);
+	}
+	
+	public List<Language> getEditLocales(){
+		return Arrays.asList(Language.EN);
+	}
+	
+	@Property
+	private Language editLocale;
+	
+	public String getNameTranslationLabel(){
+		return messages.get(editLocale.getLocale().getLanguage()+".nameEditLabel");
+	}
+
+	public String getTranslation() {
+		return null;
+	}
+
+	public void setTranslation(String translation) {
+		logger.info("name translation {} {}",editLocale.getLocale().getLanguage(),translation);
+	}
+	
+	public ValueEncoder<Language> getLocaleEncoder(){
+		return new ValueEncoder<Language>(){
+
+			@Override
+			public String toClient(Language value) {
+				return value.getLocale().getLanguage();
+			}
+
+			@Override
+			public Language toValue(String clientValue) {
+				
+				if( clientValue.equalsIgnoreCase("en")){
+					return Language.EN;
+				}
+				
+				return null;
+			}
+			
+		};
+		
 	}
 }

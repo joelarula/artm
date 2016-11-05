@@ -4,8 +4,8 @@ public enum ModelPhotoSize {
 	
 	ORIGINAL(null,null),
 	FULL_SCREEN(1024d,768d),
-	PREVIEW(600d,500d),
-	THUMBNAIL(200d,300d);
+	PREVIEW(720d,600d),
+	THUMBNAIL(250d,300d);
 	
 	private final Double maxWidthPx;
 	private final Double maxHeightPx;

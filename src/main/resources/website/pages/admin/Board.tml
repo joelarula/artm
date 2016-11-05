@@ -61,7 +61,7 @@
 			<t:alerts />
 			<t:errors />
 			<div class="row-fluid">
-				<div class="col-md-6">
+				<div class="col-md-5">
 					<div class="panel panel-default">
 						<div class="panel-heading">${modelLabel}</div>
 						<div class="panel-body">
@@ -107,10 +107,15 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">${message:translations}</div>
 						<div class="panel-body">
+							<t:loop t:source="editLocales" t:value="editLocale" t:encoder="localeEncoder">
+								<t:label t:for="translation">${nameTranslationLabel}</t:label>
+								<t:textfield class="form-control" t:id="translation"
+									t:value="translation" placeholder="${message:localeHint}" />
+							</t:loop>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-7">
 					<div class="panel panel-default">
 						<div class="panel-heading">${message:photo} ${photoLabel}</div>
 						<div class="panel-body  text-center">
@@ -122,9 +127,9 @@
 								style="margin-top:1em;" t:value="original" />
 							<t:if t:test="model.photo">	
 							    ${message:preview} <br/>					
-								<t:image t:path="previewPath"/><br/>
+								<t:image t:path="previewPath" class="preview-img"/><br/>
 								${message:thumbnail} <br/>
-							   <t:image t:path="thumbnailPath"/>
+							   <t:image t:path="thumbnailPath" class="thumbnail-img"/>
 							</t:if>	
 								
 						</div>

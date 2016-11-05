@@ -74,45 +74,54 @@ public class FileManagerImpl implements FileManager{
 			return new File(prepareCatalogPath(name,fileSize));
 		}else{
 			logger.info("scaling {} to  {}",name,fileSize);
-			File file = new File(prepareCatalogPath(name,fileSize));
-			//if(!file.exists()){		
+			final File file = new File(prepareCatalogPath(name,fileSize));
+			if(!file.exists()){		
 				if(!file.getParentFile().exists()){
 					file.getParentFile().mkdirs();
 				}
 				file.createNewFile();
-				File original = this.getFile(name, ModelPhotoSize.ORIGINAL);
-				BufferedImage source = ImageIO.read(new FileInputStream(original));
+				final File original = this.getFile(name, ModelPhotoSize.ORIGINAL);
+				final BufferedImage source = ImageIO.read(new FileInputStream(original));
 				
-				Graphics2D g = source.createGraphics();
-				Rectangle r = g.getDeviceConfiguration().getBounds();
-				
+				final Graphics2D g = source.createGraphics();
+				final Rectangle r = g.getDeviceConfiguration().getBounds();
+				logger.info("original {} {} ",r.width, r.height);
 				Double scaleFactor = null;
-				boolean scalingPossible = true; 
+				Scalr.Mode mode= null;
+				Double width = fileSize.getMaxWidthPx();
+				Double height = fileSize.getMaxHeightPx();
 				if(r.width >= r.height ){
+					mode  = Scalr.Mode.FIT_TO_WIDTH;
 					scaleFactor = new Double(fileSize.getMaxWidthPx() / r.width * fileSize.getMaxWidthPx());
-					scalingPossible  = new Double(fileSize.getMaxWidthPx() * r.height / r.width) < r.width;
+					height  = new Double(fileSize.getMaxWidthPx() / r.width * r.height );
 				}else{
+					mode  = Scalr.Mode.FIT_TO_HEIGHT;
 					scaleFactor = new Double(fileSize.getMaxHeightPx() / r.height * fileSize.getMaxHeightPx());
-					scalingPossible  = new Double(fileSize.getMaxHeightPx()* r.width / r.height) < r.height;
+					width  = new Double(fileSize.getMaxHeightPx() / r.height * r.width );
 				}
+								
+				BufferedImage  target = Scalr.resize(
+                    source,  
+                    Scalr.Method.QUALITY, 
+                    mode,
+                    width.intValue(), 
+                    height.intValue(),
+                    Scalr.OP_ANTIALIAS);
 				
-				logger.info("scaling to square {}  {}",scaleFactor,scalingPossible);
+				final Graphics2D tg = target.createGraphics();
 				
-				BufferedImage target = source;
-				if (scalingPossible){ 
-                     target = Scalr.resize(source, scaleFactor.intValue());
-				}
+				tg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				tg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+				tg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				Rectangle tr = tg.getDeviceConfiguration().getBounds();
 				
-				
-				g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-				g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			
+				logger.info("scaling "+name+"to "+fileSize.name()+" {}  {} ",tr.width,tr.height);
+
 				ImageIO.write(target, "png", file);
-				return file;
-			//}	
+				
+			}
+			return file;
 		}
-		//return null;
 		
 	}
 
@@ -128,10 +137,11 @@ public class FileManagerImpl implements FileManager{
 		String[] tokens = catalogPath.split("/");
 		
 		if(tokens.length == 2){
-			logger.info("tokens {} {}",tokens[0],tokens[1]);
+		
 			try{
 				ModelPhotoSize size = ModelPhotoSize.valueOf(tokens[0].toUpperCase());
 				File file = this.getFile(tokens[1].substring(0,tokens[1].length()-4), size);
+				logger.info("returning  {}",file.getAbsolutePath());
 				return  file;
 			}catch(Exception ex){
 				logger.error(ex.toString());

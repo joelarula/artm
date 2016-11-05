@@ -5,18 +5,22 @@ import java.sql.SQLException;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.hibernate.HibernateConfigurer;
+import org.apache.tapestry5.hibernate.HibernateSessionManager;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
+import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Startup;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.assets.AssetRequestHandler;
 import org.h2.tools.Server;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import website.model.admin.ClientCommand;
+import website.model.database.Author;
 import website.services.impl.FileManagerImpl;
 import website.services.impl.ImageDispatcher;
 
@@ -40,21 +44,14 @@ public class WebsiteModule {
 		 binder.bind(FileManager.class,FileManagerImpl.class);
 	 }
 	 
-	 
 	  @Startup
-	  public void onStartup(RegistryShutdownHub shutdown) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+	  public void onStartup(RegistryShutdownHub shutdown,Server server, Session session,HibernateSessionManager manager) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+			
+		  server.start();
 		  
-			
-			final Server server = Server.createTcpServer("-baseDir",new File(dbHomeDir).getAbsolutePath()).start();
-
-			logger.debug("dbhome", dbHomeDir);
-			logger.debug("port {}", server.getPort());
-			logger.debug("url {}", server.getURL());
-		
-			//Class.forName("org.h2.Driver");
-			//Connection con = DriverManager.getConnection("jdbc:h2:~/xxx", "", "" );
-			
-			shutdown.addRegistryShutdownListener(new Runnable(){
+		  this.createAuthors(session,manager);
+		  
+		  shutdown.addRegistryShutdownListener(new Runnable(){
 
 				@Override
 				public void run() {
@@ -62,8 +59,35 @@ public class WebsiteModule {
 				}
 				
 			});
-
 	  }
+	 
+	 
+	  
+	  private void createAuthors(Session session, HibernateSessionManager manager) {
+		Author kadi = new Author();
+		kadi.setKey("DI");
+		kadi.setName("Kadi Kiho");
+		session.saveOrUpdate(kadi);
+		
+		Author sille = new Author();	
+		sille.setKey("SIL");
+		sille.setName("Sille Seer");		
+		session.saveOrUpdate(sille);
+		manager.commit();
+	}
+
+	@Startup
+	public Server buildServer(RegistryShutdownHub shutdown) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+		  	
+			final Server server = Server.createTcpServer("-baseDir",new File(dbHomeDir).getAbsolutePath()).start();
+			logger.debug("dbhome", dbHomeDir);
+			logger.debug("port {}", server.getPort());
+			logger.debug("url {}", server.getURL());
+			return server;
+	  }
+	  
+	  
+
 	  
 	  public static void contributeHibernateEntityPackageManager(Configuration<String> conf){
 		  conf.add("website.model.database");
@@ -81,15 +105,6 @@ public class WebsiteModule {
 				conf.setProperty("hibernate.connection.url","jdbc:h2:" + dbHomeDir + "/artmoments");
 				conf.setProperty("hibernate.connection.username","artmoments");
 				conf.setProperty("hibernate.connection.password","");
-//		          <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-//		          <property name="javax.persistence.jdbc.url"    value="jdbc:h2:mem:test" />
-//		          <property name="javax.persistence.jdbc.user" value="sa" />
-//		          <property name="javax.persistence.jdbc.password" value="" />
-//		            <property name="hibernate.connection.driver_class">org.h2.Driver</property>
-//		            <property name="hibernate.connection.url">jdbc:hsqldb:./target/work/t5_tutorial1;shutdown=true</property>
-//		            <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
-//		            <property name="hibernate.connection.username">sa</property>
-//		            <property name="hibernate.connection.password"></property>
 			}
 	    	
 	    });
