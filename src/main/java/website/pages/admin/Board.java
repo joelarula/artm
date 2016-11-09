@@ -29,6 +29,7 @@ import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.internal.services.LinkSource;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.hibernate.Session;
@@ -45,7 +46,6 @@ import website.model.database.Category;
 import website.model.database.Model;
 import website.model.database.Stock;
 import website.services.FileManager;
-import website.services.WebsiteModule;
 import website.services.impl.ModelGridDataSource;
 
 public class Board {
@@ -108,6 +108,9 @@ public class Board {
 	
 	@Inject 
 	private BeanModelSource beanModelSource;
+	
+	@Inject
+	private PropertyAccess ac;
 	
 	public Object onActivate(EventContext context){
 		this.command = AdminCommand.MODELS;
@@ -252,9 +255,11 @@ public class Board {
 	@CommitAfter
 	@OnEvent(value=EventConstants.SUCCESS,component="modelForm")
 	public Link  onSuccessFromModelForm(){
+		
 		if(this.model.getKey() == null){
 			this.model.setKey(generateModelKey());
 		}
+		
 		
 		if(this.original != null){
 			logger.info("uploaded photo {}",original.getFileName());
@@ -264,7 +269,7 @@ public class Board {
 					String path = filemanager.getFile(model.getKey(),ModelPhotoSize.ORIGINAL).getAbsolutePath();
 					//path = path.substring(FileManager.)
 					logger.info("{} original photo saved in {}",model.getKey(),path);
-					this.model.setPhoto(path);
+					this.model.setPhoto(model.getKey());
 				} catch (IOException e) {
 					logger.error("{} saving failed {}",original.getFileName(),e.getMessage());
 				}
@@ -272,7 +277,7 @@ public class Board {
 			}
 
 		}
-		
+
 		this.session.saveOrUpdate(this.model);
 		logger.info("model {} saved",model.getKey());	
 		alerts.success(messages.format("modelSavedSucessfully",model.getName()));
@@ -331,9 +336,9 @@ public class Board {
 		return c;
 	}
 
-	private BeanModel gridModel;
+	private BeanModel<Model> gridModel;
 	
-	public BeanModel getGridModel(){
+	public BeanModel<Model> getGridModel(){
 		if(this.gridModel == null){
 			this.gridModel = beanModelSource.createDisplayModel(Model.class, messages);
 			this.gridModel.getById("key").label(messages.get("key"));
@@ -341,7 +346,7 @@ public class Board {
 			this.gridModel.getById("category").label(messages.get("category"));
 			this.gridModel.getById("stock").label(messages.get("stock"));
 			this.gridModel.getById("published").label(messages.get("published"));
-			this.gridModel.getById("photo").label(messages.get("photo"));
+			//this.gridModel.getById("photo").label(messages.get("photo"));
 			this.gridModel.exclude("created","modified","author","description");
 			this.gridModel.reorder("key","name","category","stock","published","photo");
 		}
@@ -384,13 +389,15 @@ public class Board {
 	}
 
 	public String getTranslation() {
-		return null;
-	}
-
-	public void setTranslation(String translation) {
-		logger.info("name translation {} {}",editLocale.getLocale().getLanguage(),translation);
+		return this.model.getTranslation(editLocale.getLocale().getLanguage(),ac);
 	}
 	
+	public void setTranslation(String translation) {
+		logger.info("set name translation {} {}",editLocale.getLocale().getLanguage(),translation);
+		this.model.setTranslation(editLocale.getLocale().getLanguage(), translation, ac);
+	}
+	
+
 	public ValueEncoder<Language> getLocaleEncoder(){
 		return new ValueEncoder<Language>(){
 

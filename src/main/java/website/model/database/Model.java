@@ -1,6 +1,10 @@
 package website.model.database;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,8 +15,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
+import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.hibernate.annotations.Cascade;
+
+import website.model.admin.Language;
 
 @Entity
 public class Model {
@@ -28,9 +36,35 @@ public class Model {
 	
 	private String author;
 	
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
-	@OneToMany(mappedBy="id.modelKey",fetch=FetchType.LAZY)
-	private Set<Translation> translations;
+	private String alias;
+	
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
+	public String getTranslation_en() {
+		return translation_en;
+	}
+
+	public void setTranslation_en(String translation_en) {
+		this.translation_en = translation_en;
+	}
+
+	public String getAlias_en() {
+		return alias_en;
+	}
+
+	public void setAlias_en(String alias_en) {
+		this.alias_en = alias_en;
+	}
+
+	private String translation_en;
+	
+	private String alias_en;
 	
 	@Enumerated(EnumType.STRING)
 	private Category category;
@@ -124,7 +158,14 @@ public class Model {
 	public void setModified(Date modified) {
 		this.modified = modified;
 	}
-	
-	
+
+	public String getTranslation(String language, PropertyAccess ac) {	
+		return (String) ac.get(this, "translation_"+language);
+	}
+
+	public void setTranslation(String language, String translation, PropertyAccess ac) {
+		ac.set(this, "translation_"+language, translation);
+	}
+
 	
 }
