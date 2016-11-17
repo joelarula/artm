@@ -25,6 +25,15 @@ import website.model.admin.Language;
 @Entity
 public class Model {
 	
+	@Override
+	public String toString() {
+		return "Model [key=" + key + ", name=" + name + ", photo=" + photo
+				+ ", author=" + author + ", alias=" + alias
+				+ ", translation_en=" + translation_en + ", category="
+				+ category + ", stock=" + stock + ", published=" + published
+				+ ", created=" + created + ", modified=" + modified + "]";
+	}
+
 	@Id
 	private String key;
 	
