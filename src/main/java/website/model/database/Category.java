@@ -8,6 +8,8 @@ public enum Category {
 	FIGURATIVE,
 	CHILDRENS,
 	STILL_LIFE,
-	VARIA;
+	VARIA,
+	SWEDISH_MODELS,
+	DRAWINGS;
 	
 }

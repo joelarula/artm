@@ -34,6 +34,12 @@ public class Importer extends TestCase{
 			" inner join content_field_painting cfp on n.nid = cfp.nid "+ 
 			" inner join files f on f.fid = cfp.field_painting_fid "+
 			" where n.type in('painting')";
+	
+	private final String drawings  = 
+			" select n.nid, n.type, n.title, n.created, cfp.field_photo_fid, f.filename, f.filepath from   node n " +
+			" inner join content_field_photo cfp on n.nid = cfp.nid " +
+			" inner join files f on f.fid = cfp.field_photo_fid " +
+			" where n.type in('joonistus')";
 
 	private final String terms = "select td.name from term_node tn inner join term_data td on tn.tid = td.tid where tn.nid = ?";
 	
@@ -51,26 +57,48 @@ public class Importer extends TestCase{
 		
 		processNodesandCategories();
 		
-		
 		logger.info("done");
 	}
 
 
-	private void processNodesandCategories() throws SQLException {
+	synchronized private void processNodesandCategories() throws SQLException {
+
+		logger.info("running {}",paintings);
 		Connection connection = getConnection();
 		PreparedStatement st = connection.prepareStatement(paintings);
 		ResultSet res = st.executeQuery();
-		while(res.next()){
-         
-          Model m = new Model();  
-          m.setName(res.getString("title").trim());
-          m.setPhoto(res.getString("filename"));
-          List<String> t = this.getTerms(res.getInt("nid"));
-          logger.info("{} {}",m.getName(),t.toString());
-         
+		
+		logger.info("running {}",drawings);
+		Connection connection2 = getConnection();
+		PreparedStatement st2 = connection2.prepareStatement(drawings);
+		ResultSet res2 = st2.executeQuery();
+		
+		
+		while(res.next()){		
+			processResult(res);  
         }
+		
+		while(res2.next()){		
+			processResult(res2);  
+        }
+		
 		res.close();
 		st.close();
+		res2.close();
+		st2.close();
+		connection2.close();
+		connection.close();
+	}
+
+
+	private void processResult(ResultSet res) throws SQLException {
+        Model m = new Model();  
+        m.setName(res.getString("title").trim());
+        m.setPhoto(res.getString("filename"));      
+        List<String> t = this.getTerms(res.getInt("nid"));     
+        String photo = res.getString("filename");      
+        logger.info("{} {}",m.getName(),t.toString()+" "+ photo);
+		
 	}
 
 
@@ -85,12 +113,12 @@ public class Importer extends TestCase{
         }
 		res.close();
 		st.close();
-		
+		connection.close();
 		return t;
 	}
 
 
-	private Connection getConnection() throws  SQLException {
+	synchronized private Connection getConnection() throws  SQLException {
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
