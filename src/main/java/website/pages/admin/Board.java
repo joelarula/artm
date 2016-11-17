@@ -347,7 +347,7 @@ public class Board {
 			this.gridModel.getById("stock").label(messages.get("stock"));
 			this.gridModel.getById("published").label(messages.get("published"));
 			//this.gridModel.getById("photo").label(messages.get("photo"));
-			this.gridModel.exclude("created","modified","author","description");
+			this.gridModel.exclude("created","modified","author","description","alias","alias_en","translation_en");
 			this.gridModel.reorder("key","name","category","stock","published","photo");
 		}
 		return gridModel;
