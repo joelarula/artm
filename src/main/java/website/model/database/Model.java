@@ -38,6 +38,8 @@ public class Model {
 	
 	private String alias;
 	
+	private String translation_en;
+	
 	public String getAlias() {
 		return alias;
 	}
@@ -53,18 +55,6 @@ public class Model {
 	public void setTranslation_en(String translation_en) {
 		this.translation_en = translation_en;
 	}
-
-	public String getAlias_en() {
-		return alias_en;
-	}
-
-	public void setAlias_en(String alias_en) {
-		this.alias_en = alias_en;
-	}
-
-	private String translation_en;
-	
-	private String alias_en;
 	
 	@Enumerated(EnumType.STRING)
 	private Category category;

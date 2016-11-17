@@ -46,6 +46,7 @@ import website.model.database.Category;
 import website.model.database.Model;
 import website.model.database.Stock;
 import website.services.FileManager;
+import website.services.ModelDao;
 import website.services.impl.ModelGridDataSource;
 
 public class Board {
@@ -111,6 +112,9 @@ public class Board {
 	
 	@Inject
 	private PropertyAccess ac;
+	
+	@Inject
+	private ModelDao dao;
 	
 	public Object onActivate(EventContext context){
 		this.command = AdminCommand.MODELS;
@@ -269,7 +273,6 @@ public class Board {
 					String path = filemanager.getFile(model.getKey(),ModelPhotoSize.ORIGINAL).getAbsolutePath();
 					//path = path.substring(FileManager.)
 					logger.info("{} original photo saved in {}",model.getKey(),path);
-					this.model.setPhoto(model.getKey());
 				} catch (IOException e) {
 					logger.error("{} saving failed {}",original.getFileName(),e.getMessage());
 				}
@@ -278,8 +281,7 @@ public class Board {
 
 		}
 
-		this.session.saveOrUpdate(this.model);
-		logger.info("model {} saved",model.getKey());	
+		this.dao.saveModel(model);	
 		alerts.success(messages.format("modelSavedSucessfully",model.getName()));
 		return linkSource.createPageRenderLink("admin/board", true, new Object[]{"model",model.getKey()});
 	}

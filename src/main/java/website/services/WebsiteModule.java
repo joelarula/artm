@@ -23,6 +23,7 @@ import website.model.admin.ClientCommand;
 import website.model.database.Author;
 import website.services.impl.FileManagerImpl;
 import website.services.impl.ImageDispatcher;
+import website.services.impl.ModelDaoImpl;
 
 public class WebsiteModule {
 
@@ -42,6 +43,7 @@ public class WebsiteModule {
 	
 	 public static void bind(ServiceBinder binder){
 		 binder.bind(FileManager.class,FileManagerImpl.class);
+		 binder.bind(ModelDao.class,ModelDaoImpl.class);
 	 }
 	 
 	  @Startup
