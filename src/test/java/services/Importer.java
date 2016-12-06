@@ -23,8 +23,12 @@ import org.slf4j.LoggerFactory;
 
 
 
+
+
+
 import website.model.admin.Util;
 import website.model.database.Author;
+import website.model.database.Category;
 import website.model.database.Model;
 import website.services.WebsiteModule;
 
@@ -100,9 +104,41 @@ public class Importer extends TestCase{
         m.setName(res.getString("title").trim());
         m.setPhoto(res.getString("filename"));      
         Integer code = res.getInt("nid");
-        List<String> t = this.getTerms(code);  
+        List<String> t = this.getTerms(code); 
+       
+         Author a = this.getAuthor(m,t);
+         List<Category> c = this.getCategories(t);
+         String key = a.getKey()+"-"+ String.valueOf(code);
+        
+        String photo = res.getString("filename");      
+        logger.info("{} {}",topic +" "+key+" "+ a.getName()+" "+ m.getName(),c.toString()+" "+ photo);
+		
+	}
+
+
+	private List<Category> getCategories(List<String> t) {
+		List<Category> cat = new ArrayList<Category>();
+		boolean added = false;
+		for(String tt : t){
+			for(Category c : Category.values()){
+				if(tt.equals(c.getName())){
+					cat.add(c);
+					added = true;
+				}
+			}
+			if(!added){
+				cat.add(Category.UNCATEGORIZED);
+				logger.info("NOT ADDED {}",t);
+			}
+		}
+		
+		return cat;
+	}
+
+
+	private Author getAuthor(Model m, List<String> t) {
         Author a = null;
-        if(t.contains(Util.getAuthors().get("DI").getName())){
+		if(t.contains(Util.getAuthors().get("DI").getName())){
         	a = Util.getAuthors().get("DI");
         	t.remove(Util.getAuthors().get("DI").getName());
         }else if(t.contains(Util.getAuthors().get("SIL").getName())){
@@ -117,19 +153,11 @@ public class Importer extends TestCase{
         	 }else if(m.getName().startsWith("Sil")){
         		 a = Util.getAuthors().get("SIL");
         	 }else{
-            	 logger.info("TUNDMATU");
-            	 a = new Author();
-            	 a.setName("tundmatu");
-            	 a.setKey("xx"); 
-        	 }
-        	
+            	 a = Util.getAuthors().get("ANON");
+        	 }	
 
         }
-        String key = a.getKey()+"-"+ String.valueOf(code);
-        
-        String photo = res.getString("filename");      
-        logger.info("{} {}",topic +" "+key+" "+ a.getName()+" "+ m.getName(),t.toString()+" "+ photo);
-		
+		return a;
 	}
 
 
