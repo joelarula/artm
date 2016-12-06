@@ -7,22 +7,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-
 import org.apache.tapestry5.ioc.services.PropertyAccess;
-import org.hibernate.annotations.Cascade;
 
 import website.model.admin.Language;
 
-@Entity
+
 public class Model {
 	
 	@Override
@@ -34,7 +23,6 @@ public class Model {
 				+ ", created=" + created + ", modified=" + modified + "]";
 	}
 
-	@Id
 	private String key;
 	
 	private String name;
@@ -43,7 +31,7 @@ public class Model {
 	
 	private String photo;
 	
-	private String author;
+	private Author author;
 	
 	private String alias;
 	
@@ -65,10 +53,8 @@ public class Model {
 		this.translation_en = translation_en;
 	}
 	
-	@Enumerated(EnumType.STRING)
 	private Category category;
 	
-	@Enumerated(EnumType.STRING)
 	private Stock stock;
 	
 	private boolean published;
@@ -110,11 +96,11 @@ public class Model {
 		this.photo = photo;
 	}
 
-	public String getAuthor() {
+	public Author getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(String author) {
+	public void setAuthor(Author author) {
 		this.author = author;
 	}
 

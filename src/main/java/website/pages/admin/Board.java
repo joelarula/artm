@@ -10,11 +10,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.EventContext;
 import org.apache.tapestry5.Link;
+import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.Component;
@@ -24,17 +27,13 @@ import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.grid.GridDataSource;
-import org.apache.tapestry5.hibernate.HibernateGridDataSource;
-import org.apache.tapestry5.hibernate.annotations.CommitAfter;
+import org.apache.tapestry5.internal.grid.CollectionGridDataSource;
 import org.apache.tapestry5.internal.services.LinkSource;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.upload.services.UploadedFile;
-import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,12 +41,12 @@ import website.model.admin.AdminCommand;
 import website.model.admin.Language;
 import website.model.admin.ModelPhotoSize;
 import website.model.admin.SearchCommand;
+import website.model.database.Author;
 import website.model.database.Category;
 import website.model.database.Model;
 import website.model.database.Stock;
 import website.services.FileManager;
 import website.services.ModelDao;
-import website.services.impl.ModelGridDataSource;
 
 public class Board {
 
@@ -99,9 +98,6 @@ public class Board {
 	private AlertManager alerts;
 	
 	@Inject
-	private Session session;
-	
-	@Inject
 	private FileManager filemanager;
 	
 	@Inject 
@@ -130,7 +126,7 @@ public class Board {
 				collectSearchParameters(context);
 			}else if(this.command.equals(AdminCommand.MODEL) && context.getCount() > 1){
 				String modelKey = context.get(String.class, 1);
-				this.model = (Model) session.get(Model.class, modelKey);
+				this.model = (Model) dao.get(modelKey);
 				if(model == null){
 					return this.linkSource.createPageRenderLink("admin/board", true, new Object[]{"model"});
 				}
@@ -186,7 +182,8 @@ public class Board {
 	private Model getNewModel() {
 		Model model = new Model();
 		model.setStock(Stock.ON_DEMAND);
-		model.setCategory(Category.VARIA);
+		model.setCategory(Category.UNCATEGORIZED);
+		model.setAuthor(Author.ANON);
 		model.setPublished(true);
 		return model;
 	}
@@ -244,7 +241,7 @@ public class Board {
 		return linkSource.createPageRenderLink("admin/board", true, ctx.toArray());
 	}
 	
-	@CommitAfter
+	
 	@OnEvent(value=EventConstants.VALIDATE,component="modelForm")
 	public void  onValidateFromModelForm(){
 		if(this.original != null ){
@@ -256,7 +253,6 @@ public class Board {
 		}
 	}
 
-	@CommitAfter
 	@OnEvent(value=EventConstants.SUCCESS,component="modelForm")
 	public Link  onSuccessFromModelForm(){
 		
@@ -287,12 +283,7 @@ public class Board {
 	}
 	
 	private String generateModelKey() {
-		this.session.createSQLQuery("CREATE SEQUENCE IF NOT EXISTS models START WITH 1 INCREMENT BY 1").executeUpdate();
-		BigInteger nextval = (BigInteger) this.session.createSQLQuery("select NEXTVAL('models')").uniqueResult();
-		String key = "DI";
-		key= key + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)).substring(2);
-		key=key+nextval.toString();
-		return key;
+		return UUID.randomUUID().toString();
 	}
 
 	public List<Category> getCatgories(){
@@ -301,6 +292,13 @@ public class Board {
 			Category.FIGURATIVE,Category.STILL_LIFE,
 			Category.CHILDRENS,Category.VARIA);
 	}
+	
+	public List<Author> getAuthors(){
+		return Arrays.asList(
+			Author.DI, Author.SIL, Author.TUU, Author.ANON
+		);
+	}
+	
 	
 	public List<Stock> getStocks(){
 		return Arrays.asList(Stock.ON_DEMAND,Stock.IN_STOCK,Stock.E_KAUBAMAJA);
@@ -314,28 +312,18 @@ public class Board {
 		}
 	}
 	
-	private ModelGridDataSource modelSource;
+	private CollectionGridDataSource modelSource;
 
 	public GridDataSource getModels(){
 		if(this.modelSource == null){
-			this.modelSource = new ModelGridDataSource(session, Model.class,this.getSearchCriterion());
+			this.modelSource = new CollectionGridDataSource(this.getSearchCriterion());
 		}
 		return this.modelSource;
 	}
 	
-	private Criterion getSearchCriterion() {
-		List<Criterion> conditions = new ArrayList<Criterion>();
-		if(this.searchCategory != null){
-			conditions.add(Restrictions.eq("category", this.searchCategory));
-		}
-		if(this.searchStock != null){
-			conditions.add(Restrictions.eq("stock", this.searchStock));
-		}
-		if(this.searchName != null){
-			conditions.add(Restrictions.ilike("name", this.searchName));
-		}
-		Criterion c = Restrictions.conjunction(conditions.toArray(new Criterion[]{}));
-		return c;
+	private List<Model> getSearchCriterion() {
+		return dao.search(this.searchName,this.searchCategory,this.searchStock);
+
 	}
 
 	private BeanModel<Model> gridModel;

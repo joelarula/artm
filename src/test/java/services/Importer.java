@@ -10,23 +10,12 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.apache.tapestry5.hibernate.modules.HibernateCoreModule;
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
 import org.apache.tapestry5.modules.TapestryModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
-
-
-
-
-
-
-
-import website.model.admin.Util;
 import website.model.database.Author;
 import website.model.database.Category;
 import website.model.database.Model;
@@ -55,7 +44,7 @@ public class Importer extends TestCase{
 	public void testImportOld() throws SQLException{
 		logger.info("starting");
 		RegistryBuilder builder = new RegistryBuilder();		 
-		builder.add(WebsiteModule.class,TapestryModule.class,HibernateCoreModule.class);		 
+		builder.add(WebsiteModule.class,TapestryModule.class);		 
 		Registry registry = builder.build();	
 		
 		registry.performRegistryStartup();
@@ -104,14 +93,15 @@ public class Importer extends TestCase{
         m.setName(res.getString("title").trim());
         m.setPhoto(res.getString("filename"));      
         Integer code = res.getInt("nid");
-        List<String> t = this.getTerms(code); 
-       
-         Author a = this.getAuthor(m,t);
-         List<Category> c = this.getCategories(t);
-         String key = a.getKey()+"-"+ String.valueOf(code);
+        List<String> t = this.getTerms(code);  
+        Author a = this.getAuthor(m,t);
+        List<Category> c = this.getCategories(t);
+        String key = a.name().toUpperCase()+"-"+ String.valueOf(code);
+        m.setCategory(c.get(0));   
+        m.setAuthor(a);
+        m.setKey(key);
         
-        String photo = res.getString("filename");      
-        logger.info("{} {}",topic +" "+key+" "+ a.getName()+" "+ m.getName(),c.toString()+" "+ photo);
+        logger.info("{} {}",topic +" "+key+" "+ a.getName()+" "+ m.getName(),m.getCategory().toString()+" "+ m.getPhoto());
 		
 	}
 
@@ -138,22 +128,22 @@ public class Importer extends TestCase{
 
 	private Author getAuthor(Model m, List<String> t) {
         Author a = null;
-		if(t.contains(Util.getAuthors().get("DI").getName())){
-        	a = Util.getAuthors().get("DI");
-        	t.remove(Util.getAuthors().get("DI").getName());
-        }else if(t.contains(Util.getAuthors().get("SIL").getName())){
-        	a = Util.getAuthors().get("SIL");
-        	t.remove(Util.getAuthors().get("SIL").getName());
-        }else if(t.contains(Util.getAuthors().get("TUU").getName())){
-        	a = Util.getAuthors().get("TUU");
-        	t.remove(Util.getAuthors().get("TUU").getName());
+		if(t.contains(Author.DI.getName())){
+        	a = Author.DI;
+        	t.remove(Author.DI.getName());
+        }else if(t.contains(Author.SIL.getName())){
+        	a = Author.SIL;
+        	t.remove(Author.SIL.getName());
+        }else if(t.contains(Author.TUU.getName())){
+        	a = Author.TUU;
+        	t.remove(Author.TUU.getName());
         }else{
         	 if(m.getName().startsWith("di")){
-        		 a = Util.getAuthors().get("DI");
+        		 a = Author.DI;
         	 }else if(m.getName().startsWith("Sil")){
-        		 a = Util.getAuthors().get("SIL");
+        		 a = Author.SIL;
         	 }else{
-            	 a = Util.getAuthors().get("ANON");
+            	 a = Author.ANON;
         	 }	
 
         }

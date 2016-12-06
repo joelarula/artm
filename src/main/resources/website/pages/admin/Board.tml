@@ -75,9 +75,10 @@
 											t:validate="required" />
 									</div>
 									<div class="form-group">
-										<label for="description">${message:description}</label>
-										<t:textfield class="form-control" t:id="description"
-											t:value="model.description" placeholder="${message:descriptionHint}" />
+										<label for="author">${message:author}</label>
+										<t:select class="form-control" t:id="author"
+											t:values="authors" t:label="authorLabel" t:value="model.author"
+											placeholder="${message:authorHint}" />
 									</div>
 									<div class="form-group">
 										<label for="category">${message:category}</label>
@@ -87,7 +88,7 @@
 									</div>
 									<div class="form-group">
 										<label for="category">${message:stock}</label>
-										<t:select class="form-control" t:id="stock" t:values="stocks"
+										<t:select class="form-control" t:id="stock" t:values="stocks" t:model="authorModel"
 											t:label="stockLabel" t:value="model.stock" placeholder="${message:stockHint}" />
 									</div>
 									<div class="form-group">

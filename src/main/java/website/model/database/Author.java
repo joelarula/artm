@@ -1,30 +1,21 @@
 package website.model.database;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+public enum Author {
 
-@Entity
-public class Author {
+	DI("Kadi Kiho"),
+	SIL("Sille Seer"),
+	TUU("Tuuli Kotka"),
+	ANON("Autor puudub");
 
-	@Id
-	private String key;
-	
-	private String name;
-	
-	public String getKey() {
-		return key;
+	Author(String author){
+		this.name = author;
 	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
+	
+	private final String name;
+	
 	public String getName() {
 		return name;
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
+	
 
 }
