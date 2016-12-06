@@ -21,6 +21,10 @@ import org.slf4j.LoggerFactory;
 
 
 
+
+
+import website.model.admin.Util;
+import website.model.database.Author;
 import website.model.database.Model;
 import website.services.WebsiteModule;
 
@@ -75,11 +79,11 @@ public class Importer extends TestCase{
 		
 		
 		while(res.next()){		
-			processResult(res);  
+			processResult(res,"P");  
         }
 		
 		while(res2.next()){		
-			processResult(res2);  
+			processResult(res2,"D");  
         }
 		
 		res.close();
@@ -91,13 +95,40 @@ public class Importer extends TestCase{
 	}
 
 
-	private void processResult(ResultSet res) throws SQLException {
+	private void processResult(ResultSet res, String topic) throws SQLException {
         Model m = new Model();  
         m.setName(res.getString("title").trim());
         m.setPhoto(res.getString("filename"));      
-        List<String> t = this.getTerms(res.getInt("nid"));     
+        Integer code = res.getInt("nid");
+        List<String> t = this.getTerms(code);  
+        Author a = null;
+        if(t.contains(Util.getAuthors().get("DI").getName())){
+        	a = Util.getAuthors().get("DI");
+        	t.remove(Util.getAuthors().get("DI").getName());
+        }else if(t.contains(Util.getAuthors().get("SIL").getName())){
+        	a = Util.getAuthors().get("SIL");
+        	t.remove(Util.getAuthors().get("SIL").getName());
+        }else if(t.contains(Util.getAuthors().get("TUU").getName())){
+        	a = Util.getAuthors().get("TUU");
+        	t.remove(Util.getAuthors().get("TUU").getName());
+        }else{
+        	 if(m.getName().startsWith("di")){
+        		 a = Util.getAuthors().get("DI");
+        	 }else if(m.getName().startsWith("Sil")){
+        		 a = Util.getAuthors().get("SIL");
+        	 }else{
+            	 logger.info("TUNDMATU");
+            	 a = new Author();
+            	 a.setName("tundmatu");
+            	 a.setKey("xx"); 
+        	 }
+        	
+
+        }
+        String key = a.getKey()+"-"+ String.valueOf(code);
+        
         String photo = res.getString("filename");      
-        logger.info("{} {}",m.getName(),t.toString()+" "+ photo);
+        logger.info("{} {}",topic +" "+key+" "+ a.getName()+" "+ m.getName(),t.toString()+" "+ photo);
 		
 	}
 

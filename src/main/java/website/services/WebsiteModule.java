@@ -2,6 +2,11 @@ package website.services;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.hibernate.HibernateConfigurer;
@@ -20,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import website.model.admin.ClientCommand;
+import website.model.admin.Util;
 import website.model.database.Author;
 import website.services.impl.FileManagerImpl;
 import website.services.impl.ImageDispatcher;
@@ -51,7 +57,7 @@ public class WebsiteModule {
 			
 		  server.start();
 		  
-		  this.createAuthors(session,manager);
+		  this.createAuthors(session,manager,Util.getAuthors().values());
 		  
 		  shutdown.addRegistryShutdownListener(new Runnable(){
 
@@ -65,17 +71,15 @@ public class WebsiteModule {
 	 
 	 
 	  
-	  private void createAuthors(Session session, HibernateSessionManager manager) {
-		Author kadi = new Author();
-		kadi.setKey("DI");
-		kadi.setName("Kadi Kiho");
-		session.saveOrUpdate(kadi);
+
+
+	private void createAuthors(Session session, HibernateSessionManager manager,Collection<Author> authors) {
 		
-		Author sille = new Author();	
-		sille.setKey("SIL");
-		sille.setName("Sille Seer");		
-		session.saveOrUpdate(sille);
+		for(Author a : authors)  {
+			session.saveOrUpdate(a);
+		}
 		manager.commit();
+		
 	}
 
 	@Startup
