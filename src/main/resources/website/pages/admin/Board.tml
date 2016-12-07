@@ -88,7 +88,7 @@
 									</div>
 									<div class="form-group">
 										<label for="category">${message:stock}</label>
-										<t:select class="form-control" t:id="stock" t:values="stocks" t:model="authorModel"
+										<t:select class="form-control" t:id="stock" t:values="stocks" 
 											t:label="stockLabel" t:value="model.stock" placeholder="${message:stockHint}" />
 									</div>
 									<div class="form-group">

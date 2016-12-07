@@ -7,17 +7,26 @@ import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 import website.model.admin.ModelPhotoSize;
 import website.model.admin.SupportedImageExtensions;
+import website.model.database.Model;
 import website.pages.admin.Board;
 import website.services.FileManager;
 import website.services.WebsiteModule;
@@ -26,9 +35,11 @@ public class FileManagerImpl implements FileManager{
 
 	private static final Logger logger = LoggerFactory.getLogger(FileManagerImpl.class);
 
+	private final ObjectMapper mapper = new ObjectMapper();
+	private final ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 	
 	@Override
-	public boolean supports(String name) {
+	public boolean supportsPhotoExtension(String name) {
 		if(name.toLowerCase().endsWith(SupportedImageExtensions.PNG.name().toLowerCase())
 		|| name.toLowerCase().endsWith(SupportedImageExtensions.JPG.name().toLowerCase())){
 			logger.info("supported {}",name);
@@ -39,7 +50,7 @@ public class FileManagerImpl implements FileManager{
 	}
 	
 	@Override
-	public void saveFile(String name, ModelPhotoSize fileSize, UploadedFile file) throws IOException {
+	public void savePhoto(String name, ModelPhotoSize fileSize, UploadedFile file) throws IOException {
 		SupportedImageExtensions ext = SupportedImageExtensions.valueOf(file.getFileName().substring(file.getFileName().length()-3).toUpperCase());
 		
 		String path = prepareCatalogPath(name,fileSize);
@@ -69,7 +80,7 @@ public class FileManagerImpl implements FileManager{
 	}
 
 	@Override
-	public File getFile(String name, ModelPhotoSize fileSize) throws IOException {
+	public File getPhoto(String name, ModelPhotoSize fileSize) throws IOException {
 		if(fileSize.equals(ModelPhotoSize.ORIGINAL)){
 			return new File(prepareCatalogPath(name,fileSize));
 		}else{
@@ -80,7 +91,7 @@ public class FileManagerImpl implements FileManager{
 					file.getParentFile().mkdirs();
 				}
 				file.createNewFile();
-				final File original = this.getFile(name, ModelPhotoSize.ORIGINAL);
+				final File original = this.getPhoto(name, ModelPhotoSize.ORIGINAL);
 				final BufferedImage source = ImageIO.read(new FileInputStream(original));
 				
 				final Graphics2D g = source.createGraphics();
@@ -140,7 +151,7 @@ public class FileManagerImpl implements FileManager{
 		
 			try{
 				ModelPhotoSize size = ModelPhotoSize.valueOf(tokens[0].toUpperCase());
-				File file = this.getFile(tokens[1].substring(0,tokens[1].length()-4), size);
+				File file = this.getPhoto(tokens[1].substring(0,tokens[1].length()-4), size);
 				logger.info("returning  {}",file.getAbsolutePath());
 				return  file;
 			}catch(Exception ex){
@@ -165,6 +176,34 @@ public class FileManagerImpl implements FileManager{
         }
         return scaledImage;
     }
+
+	@Override
+	public void saveModel(Model model) throws IOException {
+		
+		final File file = new File(prepareModelPath(model.getKey()));
+		if(!file.exists()){		
+			if(!file.getParentFile().exists()){
+				file.getParentFile().mkdirs();
+			}
+			file.createNewFile();
+		}
+		FileOutputStream out = new FileOutputStream(file);
+		writer.writeValue(out, model);
+	
+	}
+
+	private String prepareModelPath(String modelKey) {
+		return WebsiteModule.dbHomeDir+File.separator+modelKey+".json";
+	}
+
+	@Override
+	public Model getModel(String modelKey) throws JsonParseException, JsonMappingException, IOException {
+		final File file = new File(prepareModelPath(modelKey));
+		FileInputStream in = new FileInputStream(file);
+		Model m = mapper.readValue(in, Model.class);
+		logger.warn("model {}  found in disk {}",m.getKey());
+		return m;
+	}
 
 
 }

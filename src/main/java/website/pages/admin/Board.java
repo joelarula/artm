@@ -1,5 +1,6 @@
 package website.pages.admin;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -33,9 +34,13 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import website.model.admin.AdminCommand;
 import website.model.admin.Language;
@@ -47,6 +52,7 @@ import website.model.database.Model;
 import website.model.database.Stock;
 import website.services.FileManager;
 import website.services.ModelDao;
+import website.services.WebsiteModule;
 
 public class Board {
 
@@ -98,6 +104,9 @@ public class Board {
 	private AlertManager alerts;
 	
 	@Inject
+	private Request request;
+	
+	@Inject
 	private FileManager filemanager;
 	
 	@Inject 
@@ -112,7 +121,7 @@ public class Board {
 	@Inject
 	private ModelDao dao;
 	
-	public Object onActivate(EventContext context){
+	public Object onActivate(EventContext context) throws JsonParseException, JsonMappingException, IOException{
 		this.command = AdminCommand.MODELS;
 		if(context.getCount() > 0){
 			String cmd = context.get(String.class, 0).toUpperCase();
@@ -127,7 +136,9 @@ public class Board {
 			}else if(this.command.equals(AdminCommand.MODEL) && context.getCount() > 1){
 				String modelKey = context.get(String.class, 1);
 				this.model = (Model) dao.get(modelKey);
-				if(model == null){
+				if(model == null && request.getMethod().toUpperCase().equals("POST")){
+					this.model =  getNewModel();
+				}else if(model == null){
 					return this.linkSource.createPageRenderLink("admin/board", true, new Object[]{"model"});
 				}
 			}else if(this.command.equals(AdminCommand.MODEL)){
@@ -180,7 +191,7 @@ public class Board {
 	}
 
 	private Model getNewModel() {
-		Model model = new Model();
+		Model model = new Model();		
 		model.setStock(Stock.ON_DEMAND);
 		model.setCategory(Category.UNCATEGORIZED);
 		model.setAuthor(Author.ANON);
@@ -191,14 +202,14 @@ public class Board {
 	public String[] onPassivate() { 
 		
 		if(this.command.equals(AdminCommand.MODELS)){
-			return new String[]{this.command.name()};
+			return new String[]{this.command.name().toLowerCase()};
 		}else if(this.command.equals(AdminCommand.MODEL) ){
 			if(this.model.getKey() != null){
 				return new String[]{this.command.name(),model.getKey()};
 			}
-			return new String[]{this.command.name()};
+			return new String[]{this.command.name().toLowerCase()};
 		}else{
-			return new String[]{this.command.name()};
+			return new String[]{this.command.name().toLowerCase()};
 		}
 	}
 	
@@ -246,7 +257,7 @@ public class Board {
 	public void  onValidateFromModelForm(){
 		if(this.original != null ){
 			logger.info("uploaded photo {}",original.getFileName());
-			if(!this.filemanager.supports(original.getFileName())){
+			if(!this.filemanager.supportsPhotoExtension(original.getFileName())){
 				logger.info("{} unsupported file type {}",original.getFileName());
 				this.modelForm.recordError(messages.format("unsupported file type",original.getFileName()));
 			}
@@ -254,21 +265,29 @@ public class Board {
 	}
 
 	@OnEvent(value=EventConstants.SUCCESS,component="modelForm")
-	public Link  onSuccessFromModelForm(){
+	public Link  onSuccessFromModelForm() throws IOException{
 		
-		if(this.model.getKey() == null){
-			this.model.setKey(generateModelKey());
+		if(this.model.getKey() == null || this.model.getKey().isEmpty()){
+			model.setKey(this.generateModelKey());
 		}
 		
 		
 		if(this.original != null){
 			logger.info("uploaded photo {}",original.getFileName());
-			if(this.filemanager.supports(original.getFileName())){
+			if(this.filemanager.supportsPhotoExtension(original.getFileName())){
 				try {
-					this.filemanager.saveFile(model.getKey(),ModelPhotoSize.ORIGINAL,original);
-					String path = filemanager.getFile(model.getKey(),ModelPhotoSize.ORIGINAL).getAbsolutePath();
-					//path = path.substring(FileManager.)
+					this.filemanager.savePhoto(model.getKey(),ModelPhotoSize.ORIGINAL,original);
+					String path = filemanager.getPhoto(model.getKey(),ModelPhotoSize.ORIGINAL).getAbsolutePath();
 					logger.info("{} original photo saved in {}",model.getKey(),path);
+					
+					String prefix = WebsiteModule.websiteFolder 
+							+ File.separator + FileManager.catalog 
+							+ File.separator + ModelPhotoSize.ORIGINAL.name().toLowerCase()
+							+ File.separator ;
+					
+					String photo =path.substring(prefix.length());
+					this.model.setPhoto(photo);
+					
 				} catch (IOException e) {
 					logger.error("{} saving failed {}",original.getFileName(),e.getMessage());
 				}
@@ -278,6 +297,7 @@ public class Board {
 		}
 
 		this.dao.saveModel(model);	
+		
 		alerts.success(messages.format("modelSavedSucessfully",model.getName()));
 		return linkSource.createPageRenderLink("admin/board", true, new Object[]{"model",model.getKey()});
 	}

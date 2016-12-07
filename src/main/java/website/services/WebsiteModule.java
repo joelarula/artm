@@ -32,7 +32,7 @@ public class WebsiteModule {
 
 	private static final String WEBSITE_HOME = "website";
 	public static final  String websiteFolder = System.getProperty("user.home")+File.separator+WEBSITE_HOME;
-	public static final  String dbHomeDir = websiteFolder +File.separator + "h2";
+	public static final  String dbHomeDir = websiteFolder +File.separator + "db";
 	
 	
 	public static void contributeApplicationDefaults(MappedConfiguration<String,String> configuration){
@@ -61,11 +61,6 @@ public class WebsiteModule {
 			});
 	  }
 	 
-
-	  
-	  public static void contributeHibernateEntityPackageManager(Configuration<String> conf){
-		  conf.add("website.model.database");
-	  }
 	 
 	  
 	  public void contributeAssetDispatcher(MappedConfiguration<String,AssetRequestHandler> conf){

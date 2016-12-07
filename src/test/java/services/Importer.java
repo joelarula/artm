@@ -1,12 +1,16 @@
 package services;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import junit.framework.TestCase;
 
@@ -19,6 +23,8 @@ import org.slf4j.LoggerFactory;
 import website.model.database.Author;
 import website.model.database.Category;
 import website.model.database.Model;
+import website.services.FileManager;
+import website.services.ModelDao;
 import website.services.WebsiteModule;
 
 
@@ -41,7 +47,7 @@ public class Importer extends TestCase{
 	private final String terms = "select td.name from term_node tn inner join term_data td on tn.tid = td.tid where tn.nid = ?";
 	
 	
-	public void testImportOld() throws SQLException{
+	public void testImportOld() throws SQLException, IOException{
 		logger.info("starting");
 		RegistryBuilder builder = new RegistryBuilder();		 
 		builder.add(WebsiteModule.class,TapestryModule.class);		 
@@ -52,13 +58,13 @@ public class Importer extends TestCase{
 		String nodeCount = getNodesCount();
 		logger.info("nodes {}",nodeCount);
 		
-		processNodesandCategories();
+		processNodesandCategories(registry);
 		
 		logger.info("done");
 	}
 
 
-	synchronized private void processNodesandCategories() throws SQLException {
+	synchronized private void processNodesandCategories(Registry registry) throws SQLException, IOException {
 
 		logger.info("running {}",paintings);
 		Connection connection = getConnection();
@@ -70,13 +76,17 @@ public class Importer extends TestCase{
 		PreparedStatement st2 = connection2.prepareStatement(drawings);
 		ResultSet res2 = st2.executeQuery();
 		
-		
+		ModelDao dao = registry.getService(ModelDao.class);
+		FileManager fm = registry.getService(FileManager.class);
+		int index = 1;
 		while(res.next()){		
-			processResult(res,"P");  
+			processResult(res,"P",dao,fm,index);  
+			index++;
         }
 		
 		while(res2.next()){		
-			processResult(res2,"D");  
+			processResult(res2,"D",dao,fm,index);
+			index++;
         }
 		
 		res.close();
@@ -88,25 +98,46 @@ public class Importer extends TestCase{
 	}
 
 
-	private void processResult(ResultSet res, String topic) throws SQLException {
+	private void processResult(ResultSet res, String topic, ModelDao dao, FileManager fm, int index) throws SQLException, IOException {
         Model m = new Model();  
+        m.setOldPos(index);
         m.setName(res.getString("title").trim());
         m.setPhoto(res.getString("filename"));      
         Integer code = res.getInt("nid");
+        m.setOldCode(code);
         List<String> t = this.getTerms(code);  
         Author a = this.getAuthor(m,t);
-        List<Category> c = this.getCategories(t);
-        String key = a.name().toUpperCase()+"-"+ String.valueOf(code);
-        m.setCategory(c.get(0));   
+        List<Category> c = this.getCategories(t,topic);
+        if(c.isEmpty()){     	
+        	m.setCategory(Category.UNCATEGORIZED);
+        }else{
+        	 m.setCategory(c.get(0));   
+        }
+       
         m.setAuthor(a);
-        m.setKey(key);
+        m.setKey(UUID.randomUUID().toString());
         
-        logger.info("{} {}",topic +" "+key+" "+ a.getName()+" "+ m.getName(),m.getCategory().toString()+" "+ m.getPhoto());
+        String mPath = null;
+        if(topic.equals("P")){
+        	mPath="C:\\dev\\artmoments\\pildid\\files\\maalid\\"+m.getPhoto();
+        }else{
+        	mPath="C:\\dev\\artmoments\\pildid\\files\\"+m.getPhoto();
+        }
+        File f = new File(mPath);
+        if(f.exists()){
+        	
+        }else{
+        	logger.info("NO FILE");
+        }
+        
+       // dao.saveModel(m);
+        
+        logger.info("{} {}",f.exists() +"  "+ a.getName()+" "+ m.getName(),m.getCategory().toString()+" "+ m.getPhoto());
 		
 	}
 
 
-	private List<Category> getCategories(List<String> t) {
+	private List<Category> getCategories(List<String> t, String topic) {
 		List<Category> cat = new ArrayList<Category>();
 		boolean added = false;
 		for(String tt : t){
@@ -116,10 +147,14 @@ public class Importer extends TestCase{
 					added = true;
 				}
 			}
+			
 			if(!added){
 				cat.add(Category.UNCATEGORIZED);
-				logger.info("NOT ADDED {}",t);
 			}
+		}
+		
+		if(topic.equals("D")){
+			cat.add(Category.DRAWINGS);
 		}
 		
 		return cat;

@@ -1,15 +1,8 @@
 package website.model.database;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 
-import website.model.admin.Language;
 
 
 public class Model {
@@ -17,8 +10,8 @@ public class Model {
 	@Override
 	public String toString() {
 		return "Model [key=" + key + ", name=" + name + ", photo=" + photo
-				+ ", author=" + author + ", alias=" + alias
-				+ ", translation_en=" + translation_en + ", category="
+				+ ", author=" + author + ", alias=" +
+				 ", translation_en=" + translation_en + ", category="
 				+ category + ", stock=" + stock + ", published=" + published
 				+ ", created=" + created + ", modified=" + modified + "]";
 	}
@@ -27,23 +20,18 @@ public class Model {
 	
 	private String name;
 	
+	private Integer oldCode;
+	
+	private Integer oldPos;
+	
 	private String description;
 	
 	private String photo;
 	
 	private Author author;
 	
-	private String alias;
-	
 	private String translation_en;
 	
-	public String getAlias() {
-		return alias;
-	}
-
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
 
 	public String getTranslation_en() {
 		return translation_en;
@@ -150,6 +138,22 @@ public class Model {
 
 	public void setTranslation(String language, String translation, PropertyAccess ac) {
 		ac.set(this, "translation_"+language, translation);
+	}
+
+	public Integer getOldCode() {
+		return oldCode;
+	}
+
+	public void setOldCode(Integer oldCode) {
+		this.oldCode = oldCode;
+	}
+
+	public Integer getOldPos() {
+		return oldPos;
+	}
+
+	public void setOldPos(Integer oldPos) {
+		this.oldPos = oldPos;
 	}
 
 	
