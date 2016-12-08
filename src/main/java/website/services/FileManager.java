@@ -2,6 +2,7 @@ package website.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.tapestry5.upload.services.UploadedFile;
 
@@ -17,7 +18,7 @@ public interface FileManager {
 	
 	boolean supportsPhotoExtension(String name);
 	
-	void savePhoto(String name,ModelPhotoSize fileSize, UploadedFile original) throws IOException;
+	void savePhoto(String name,ModelPhotoSize fileSize, InputStream stream, String fname) throws IOException;
 	
 	File getPhoto(String name,ModelPhotoSize fileSize) throws IOException;
 

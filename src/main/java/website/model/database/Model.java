@@ -20,10 +20,6 @@ public class Model {
 	
 	private String name;
 	
-	private Integer oldCode;
-	
-	private Integer oldPos;
-	
 	private String description;
 	
 	private String photo;
@@ -138,22 +134,6 @@ public class Model {
 
 	public void setTranslation(String language, String translation, PropertyAccess ac) {
 		ac.set(this, "translation_"+language, translation);
-	}
-
-	public Integer getOldCode() {
-		return oldCode;
-	}
-
-	public void setOldCode(Integer oldCode) {
-		this.oldCode = oldCode;
-	}
-
-	public Integer getOldPos() {
-		return oldPos;
-	}
-
-	public void setOldPos(Integer oldPos) {
-		this.oldPos = oldPos;
 	}
 
 	

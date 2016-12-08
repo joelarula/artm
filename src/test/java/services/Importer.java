@@ -1,6 +1,7 @@
 package services;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,6 +21,7 @@ import org.apache.tapestry5.modules.TapestryModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import website.model.admin.ModelPhotoSize;
 import website.model.database.Author;
 import website.model.database.Category;
 import website.model.database.Model;
@@ -98,13 +100,11 @@ public class Importer extends TestCase{
 	}
 
 
-	private void processResult(ResultSet res, String topic, ModelDao dao, FileManager fm, int index) throws SQLException, IOException {
+	private void processResult(ResultSet res, String topic, ModelDao dao, FileManager fm, int index) throws SQLException {
         Model m = new Model();  
-        m.setOldPos(index);
         m.setName(res.getString("title").trim());
         m.setPhoto(res.getString("filename"));      
         Integer code = res.getInt("nid");
-        m.setOldCode(code);
         List<String> t = this.getTerms(code);  
         Author a = this.getAuthor(m,t);
         List<Category> c = this.getCategories(t,topic);
@@ -123,16 +123,26 @@ public class Importer extends TestCase{
         }else{
         	mPath="C:\\dev\\artmoments\\pildid\\files\\"+m.getPhoto();
         }
+        
+        try {
+			dao.saveModel(m);
+		} catch (IOException e) {
+			logger.error("failed MODEL {}",m.getName());
+		}
         File f = new File(mPath);
         if(f.exists()){
-        	
+        	  try {
+				fm.savePhoto(m.getKey(),ModelPhotoSize.ORIGINAL,new FileInputStream(f),mPath);
+			} catch (IOException e) {
+				logger.error("failed PHOTO {}",m.getName());
+			} catch (Exception e) {
+				logger.error("failed PHOTO {}",m.getName());
+			}
         }else{
         	logger.info("NO FILE");
         }
         
-       // dao.saveModel(m);
-        
-        logger.info("{} {}",f.exists() +"  "+ a.getName()+" "+ m.getName(),m.getCategory().toString()+" "+ m.getPhoto());
+        logger.info("{} {}",index +"  "+ a.getName()+" "+ m.getName(),m.getCategory().toString()+" "+ m.getPhoto());
 		
 	}
 

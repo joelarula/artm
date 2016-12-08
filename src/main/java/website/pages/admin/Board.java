@@ -276,7 +276,7 @@ public class Board {
 			logger.info("uploaded photo {}",original.getFileName());
 			if(this.filemanager.supportsPhotoExtension(original.getFileName())){
 				try {
-					this.filemanager.savePhoto(model.getKey(),ModelPhotoSize.ORIGINAL,original);
+					this.filemanager.savePhoto(model.getKey(),ModelPhotoSize.ORIGINAL,original.getStream(),original.getFileName());
 					String path = filemanager.getPhoto(model.getKey(),ModelPhotoSize.ORIGINAL).getAbsolutePath();
 					logger.info("{} original photo saved in {}",model.getKey(),path);
 					

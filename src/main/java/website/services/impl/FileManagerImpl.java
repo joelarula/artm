@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
@@ -50,11 +51,11 @@ public class FileManagerImpl implements FileManager{
 	}
 	
 	@Override
-	public void savePhoto(String name, ModelPhotoSize fileSize, UploadedFile file) throws IOException {
-		SupportedImageExtensions ext = SupportedImageExtensions.valueOf(file.getFileName().substring(file.getFileName().length()-3).toUpperCase());
+	public void savePhoto(String name, ModelPhotoSize fileSize, InputStream stream,String fname) throws IOException  {
+		SupportedImageExtensions ext = SupportedImageExtensions.valueOf(fname.substring(fname.length()-3).toUpperCase());
 		
 		String path = prepareCatalogPath(name,fileSize);
-		BufferedImage source = ImageIO.read(file.getStream());
+		BufferedImage source = ImageIO.read(stream);
 		Graphics2D g = source.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -204,6 +205,8 @@ public class FileManagerImpl implements FileManager{
 		logger.warn("model {}  found in disk {}",m.getKey());
 		return m;
 	}
+
+
 
 
 }
