@@ -4,6 +4,7 @@ public enum SearchCommand {
 
 	CATEGORY,
 	STOCK,
+	AUTHOR,
 	NAME,
-	PUBLISHED;
+	UNPUBLISHED;
 }

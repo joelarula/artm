@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +16,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import website.model.database.Author;
 import website.model.database.Category;
 import website.model.database.Model;
 import website.model.database.Stock;
@@ -62,18 +66,31 @@ public class ModelDaoImpl implements ModelDao{
 	}
 
 	@Override
-	public List<Model> search(String searchName, Category searchCategory,Stock searchStock) {
+	public List<Model> search(String searchName, Category searchCategory,Stock searchStock, Boolean unPublished,Author author) {
+		
+		Stream<Model>  s = new ArrayList<Model>(models.values()).stream();
 		if(searchCategory != null){
-			
-		}
-		if(searchStock != null){
-			
-		}
-		if(searchName != null){
+			s = s.filter(m -> m.getCategory().equals(searchCategory));
+		}if(searchStock != null){
+			s = s.filter(m -> m.getStock().equals(searchStock));
+		}if(author != null){
+			s = s.filter(m -> m.getAuthor().equals(author));
+		}if(unPublished != null){
+			s = s.filter(m-> !m.isPublished());
+		}if(searchName != null){
 			
 		}
 		
-		return new ArrayList(this.models.values());
+		return s.collect(Collectors.toList());
+	}
+
+	@Override
+	public void loadDatabase(){
+		logger.info("loading database");
+		long start = System.currentTimeMillis();
+		this.models = this.fileManager.loadModels();
+		logger.info("loading database {} models elapsed {}",this.models.size(),System.currentTimeMillis()-start);
+		
 	}
 
 }

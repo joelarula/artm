@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -196,6 +198,11 @@ public class FileManagerImpl implements FileManager{
 	private String prepareModelPath(String modelKey) {
 		return WebsiteModule.dbHomeDir+File.separator+modelKey+".json";
 	}
+	
+	private String prepareModelKey(String path) {
+		String prefix = path.substring((WebsiteModule.dbHomeDir+File.separator).length());
+		return prefix.substring(0,prefix.length()-5);
+	}
 
 	@Override
 	public Model getModel(String modelKey) throws JsonParseException, JsonMappingException, IOException {
@@ -204,6 +211,26 @@ public class FileManagerImpl implements FileManager{
 		Model m = mapper.readValue(in, Model.class);
 		logger.warn("model {}  found in disk {}",m.getKey());
 		return m;
+	}
+
+	@Override
+	public Map<String, Model> loadModels() {
+		Map<String,Model> models = new HashMap<String,Model>();
+		File file = new File(WebsiteModule.dbHomeDir);
+		for(File f : file.listFiles()){
+		  try {
+			Model m = this.getModel(prepareModelKey(f.getAbsolutePath()));
+			models.put(m.getKey(), m);
+		  } catch (JsonParseException e) {
+			  logger.info(e.getMessage());
+		  } catch (JsonMappingException e) {
+			  logger.info(e.getMessage());
+		  } catch (IOException e) {
+			  logger.info(e.getMessage());
+		  }
+		}
+		
+		return models;
 	}
 
 

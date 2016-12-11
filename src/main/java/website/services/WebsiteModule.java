@@ -1,6 +1,7 @@
 package website.services;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,6 +20,9 @@ import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.services.assets.AssetRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import website.model.admin.ClientCommand;
 import website.model.database.Author;
@@ -48,9 +52,9 @@ public class WebsiteModule {
 	 }
 	 
 	  @Startup
-	  public void onStartup(RegistryShutdownHub shutdown) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException{
+	  public void onStartup(RegistryShutdownHub shutdown,ModelDao dao){
 			
-		  
+		  dao.loadDatabase();
 		  shutdown.addRegistryShutdownListener(new Runnable(){
 
 				@Override

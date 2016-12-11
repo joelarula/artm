@@ -3,6 +3,7 @@ package website.services;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import org.apache.tapestry5.upload.services.UploadedFile;
 
@@ -29,5 +30,7 @@ public interface FileManager {
 	void saveModel(Model model) throws IOException;
 
 	Model getModel(String modelKey) throws JsonParseException, JsonMappingException, IOException;
+
+	Map<String, Model> loadModels();
 
 }

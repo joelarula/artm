@@ -92,10 +92,13 @@ public class Board {
 	private  Category searchCategory;
 	
 	@Property
+	private  Author author;
+	
+	@Property
 	private  Stock searchStock;
 	
 	@Property
-	private  Boolean searchPublished;
+	private  Boolean searchUnPublished;
 	
 	@Inject
 	private Messages messages;
@@ -150,7 +153,38 @@ public class Board {
 	}
 	 
 	private void collectSearchParameters(EventContext context) {
-		Map<String,String> params = new HashMap<String,String>();
+		Map<String,String> params = this.getSearchParams(context); 
+		
+		for(Entry<String,String> e  : params.entrySet()){ 
+			try{
+				SearchCommand c = SearchCommand.valueOf(e.getKey().toUpperCase());
+				switch(c){
+				case CATEGORY : 
+					this.searchCategory = Category.valueOf(e.getValue().toUpperCase());
+					break;
+				case AUTHOR : 
+					this.author = Author.valueOf(e.getValue().toUpperCase());
+					break;
+				case STOCK : 
+					this.searchStock = Stock.valueOf(e.getValue().toUpperCase());
+					break;					
+				case NAME : 
+					this.searchName = e.getValue();
+					break;	
+				case UNPUBLISHED : 
+					this.searchUnPublished = true;
+					break;	
+				
+				}
+			}catch(Exception ex){
+				logger.debug("unknown  parameter {}",e.getKey());
+			}
+
+		}
+	}
+
+	private Map<String, String> getSearchParams(EventContext context) {
+		Map<String,String> params= new HashMap<String,String>();
 		String topic = null;
 		for( int i = 1;i <= context.getCount()-1;i++ ){	
 				
@@ -163,31 +197,8 @@ public class Board {
 			}
 				 
 		}
-		logger.info(params.toString());
-		
-		for(Entry<String,String> e  : params.entrySet()){ 
-			try{
-				SearchCommand c = SearchCommand.valueOf(e.getKey().toUpperCase());
-				switch(c){
-				case CATEGORY : 
-					this.searchCategory = Category.valueOf(e.getValue().toUpperCase());
-					break;
-				case STOCK : 
-					this.searchStock = Stock.valueOf(e.getValue().toUpperCase());
-					break;
-				case NAME : 
-					this.searchName = e.getValue();
-					break;	
-				case PUBLISHED : 
-					this.searchPublished = true;
-					break;	
-				
-				}
-			}catch(Exception ex){
-				logger.debug("unknown  parameter {}",e.getKey());
-			}
-
-		}
+		logger.info("searching {}",params.toString());
+		return params;
 	}
 
 	private Model getNewModel() {
@@ -202,7 +213,8 @@ public class Board {
 	public String[] onPassivate() { 
 		
 		if(this.command.equals(AdminCommand.MODELS)){
-			return new String[]{this.command.name().toLowerCase()};
+			List<String> list = this.getSearchContext();
+			return list.toArray(new String[list.size()]);
 		}else if(this.command.equals(AdminCommand.MODEL) ){
 			if(this.model.getKey() != null){
 				return new String[]{this.command.name(),model.getKey()};
@@ -213,6 +225,7 @@ public class Board {
 		}
 	}
 	
+
 	public Block getActiveBlock(){
 		switch (command){
 			case MODEL : return this.modelBlock;
@@ -229,7 +242,15 @@ public class Board {
 	
 	@OnEvent(value=EventConstants.SUCCESS,component="modelsForm")
 	public Link  onSubmitFromSeachForm(){
+		List<String> ctx = this.getSearchContext();
+		return linkSource.createPageRenderLink("admin/board", true, ctx.toArray());
+	}
+	
+	
+	private List<String> getSearchContext() {
+		
 		List<String> ctx = new ArrayList<String>();
+		
 		ctx.add(AdminCommand.MODELS.name().toLowerCase());
 		if(this.searchCategory != null){
 			ctx.add(SearchCommand.CATEGORY.name().toLowerCase());
@@ -241,18 +262,23 @@ public class Board {
 			ctx.add(this.searchStock.name().toLowerCase());
 		}
 		
+		if(this.author != null){
+			ctx.add(SearchCommand.AUTHOR.name().toLowerCase());
+			ctx.add(this.author.name().toLowerCase());
+		}
+		
 		if(this.searchName != null){
 			ctx.add(SearchCommand.NAME.name().toLowerCase());
 			ctx.add(this.searchName);
 		}
-		if(this.searchPublished != null && this.searchPublished){
-			ctx.add(SearchCommand.PUBLISHED.name().toLowerCase());
+		if(this.searchUnPublished != null && this.searchUnPublished){
+			ctx.add(SearchCommand.UNPUBLISHED.name().toLowerCase());
 			ctx.add("true");
 		}
-		return linkSource.createPageRenderLink("admin/board", true, ctx.toArray());
+		
+		return ctx;
 	}
-	
-	
+
 	@OnEvent(value=EventConstants.VALIDATE,component="modelForm")
 	public void  onValidateFromModelForm(){
 		if(this.original != null ){
@@ -342,7 +368,7 @@ public class Board {
 	}
 	
 	private List<Model> getSearchCriterion() {
-		return dao.search(this.searchName,this.searchCategory,this.searchStock);
+		return dao.search(this.searchName,this.searchCategory,this.searchStock, this.searchUnPublished,this.author);
 
 	}
 
@@ -351,14 +377,14 @@ public class Board {
 	public BeanModel<Model> getGridModel(){
 		if(this.gridModel == null){
 			this.gridModel = beanModelSource.createDisplayModel(Model.class, messages);
-			this.gridModel.getById("key").label(messages.get("key"));
 			this.gridModel.getById("name").label(messages.get("name"));
 			this.gridModel.getById("category").label(messages.get("category"));
+			this.gridModel.getById("author").label(messages.get("author"));
 			this.gridModel.getById("stock").label(messages.get("stock"));
 			this.gridModel.getById("published").label(messages.get("published"));
 			//this.gridModel.getById("photo").label(messages.get("photo"));
-			this.gridModel.exclude("created","modified","author","description","alias","alias_en","translation_en");
-			this.gridModel.reorder("key","name","category","stock","published","photo");
+			this.gridModel.exclude("key","created","modified","description","alias","translation_en");
+			this.gridModel.reorder("name","category","author","stock","published","photo");
 		}
 		return gridModel;
 	}
