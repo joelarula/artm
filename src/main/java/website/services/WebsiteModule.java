@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import website.model.admin.ClientCommand;
 import website.model.database.Author;
+import website.model.database.Model;
 import website.services.impl.FileManagerImpl;
 import website.services.impl.ImageDispatcher;
 import website.services.impl.ModelDaoImpl;
@@ -52,9 +53,14 @@ public class WebsiteModule {
 	 }
 	 
 	  @Startup
-	  public void onStartup(RegistryShutdownHub shutdown,ModelDao dao){
+	  public void onStartup(RegistryShutdownHub shutdown,ModelDao dao) throws IOException{
 			
 		  dao.loadDatabase();
+		 // for(Model m : dao.getAllModels()){
+		//	  m.setPublished(true);
+		//	  dao.saveModel(m);
+		//  }
+		  
 		  shutdown.addRegistryShutdownListener(new Runnable(){
 
 				@Override

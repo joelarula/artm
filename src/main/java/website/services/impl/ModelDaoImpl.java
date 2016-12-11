@@ -2,6 +2,7 @@ package website.services.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +92,11 @@ public class ModelDaoImpl implements ModelDao{
 		this.models = this.fileManager.loadModels();
 		logger.info("loading database {} models elapsed {}",this.models.size(),System.currentTimeMillis()-start);
 		
+	}
+
+	@Override
+	public Collection<Model> getAllModels() {
+		return this.models.values();
 	}
 
 }

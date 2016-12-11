@@ -1,6 +1,7 @@
 package website.services;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import website.model.database.Author;
@@ -17,5 +18,7 @@ public interface ModelDao {
 	public Model get(String modelKey);
 
 	public void loadDatabase();
+
+	public Collection<Model> getAllModels();
 	
 }

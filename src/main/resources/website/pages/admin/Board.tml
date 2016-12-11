@@ -49,6 +49,12 @@
 					</div>
 					</t:form>
 					<t:Grid t:row="model" t:source="models" t:model="gridModel" t:volatile="literal:true">
+						<p:nameCell>
+							<t:pagelink t:page="admin/board" t:context="modelContext" >${model.name}</t:pagelink>			
+						</p:nameCell>
+						<p:photoCell>
+							<t:image t:path="iconPath" class="preview-icon"/><br/>
+						</p:photoCell>
 					</t:Grid>
 					</div>
 				

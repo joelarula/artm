@@ -351,11 +351,9 @@ public class Board {
 	}
 	
 	public String getModelLabel(){
-		if(this.model.getKey() == null){
-			return messages.get("addModel");
-		}else{
-			return model.getKey();
-		}
+
+		return model.getName() != null ? model.getName() : "";
+	
 	}
 	
 	private CollectionGridDataSource modelSource;
@@ -411,6 +409,10 @@ public class Board {
 	
 	public String getThumbnailPath(){
 		return this.filemanager.getPath(model.getKey(), ModelPhotoSize.THUMBNAIL);
+	}
+	
+	public String getIconPath(){
+		return this.filemanager.getPath(model.getKey(), ModelPhotoSize.ICON);
 	}
 	
 	public List<Language> getEditLocales(){
