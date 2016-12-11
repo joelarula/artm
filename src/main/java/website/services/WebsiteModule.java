@@ -55,7 +55,7 @@ public class WebsiteModule {
 	  @Startup
 	  public void onStartup(RegistryShutdownHub shutdown,ModelDao dao) throws IOException{
 			
-		  dao.loadDatabase();
+		//  dao.loadDatabase();
 		 // for(Model m : dao.getAllModels()){
 		//	  m.setPublished(true);
 		//	  dao.saveModel(m);

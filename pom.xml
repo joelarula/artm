@@ -78,6 +78,12 @@
 			<artifactId>jetty-webapp</artifactId>
 		 <version>9.4.0.RC3</version>
 		</dependency>
+		
+		<dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-security</artifactId>
+            <version>9.4.0.RC3</version>
+        </dependency>
 
 
 <!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
