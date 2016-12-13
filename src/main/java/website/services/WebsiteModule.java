@@ -39,7 +39,7 @@ public class WebsiteModule {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebsiteModule.class);
 
-	private static final String WEBSITE_HOME = "website";
+	private static final String WEBSITE_HOME = "sepised";
 	public static final  String websiteFolder = System.getProperty("user.home")+File.separator+WEBSITE_HOME;
 	public static final  String dbHomeDir = websiteFolder +File.separator + "db";
 	
@@ -47,7 +47,7 @@ public class WebsiteModule {
 	public static void contributeApplicationDefaults(MappedConfiguration<String,String> configuration){
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
 		configuration.add(SymbolConstants.SUPPORTED_LOCALES,"et,en");
-		configuration.add(SymbolConstants.HMAC_PASSPHRASE,"f4jf4jf34fjx435f");
+		configuration.add(SymbolConstants.HMAC_PASSPHRASE,"dfsdfadfdsasdvds");
 		
 	}
 	
