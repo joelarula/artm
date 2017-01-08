@@ -7,14 +7,6 @@ import org.apache.tapestry5.ioc.services.PropertyAccess;
 
 public class Model {
 	
-	@Override
-	public String toString() {
-		return "Model [key=" + key + ", name=" + name + ", photo=" + photo
-				+ ", author=" + author + ", alias=" +
-				 ", translation_en=" + translation_en + ", category="
-				+ category + ", stock=" + stock + ", published=" + published
-				+ ", created=" + created + ", modified=" + modified + "]";
-	}
 
 	private String key;
 	
@@ -24,9 +16,17 @@ public class Model {
 	
 	private String photo;
 	
-	private Author author;
+	private String detail_0;
+	
+	private String detail_1;
+	
+	private String detail_2;
+
+	private Category category;
 	
 	private String translation_en;
+	
+	private String translation_ru;
 	
 
 	public String getTranslation_en() {
@@ -36,10 +36,6 @@ public class Model {
 	public void setTranslation_en(String translation_en) {
 		this.translation_en = translation_en;
 	}
-	
-	private Category category;
-	
-	private Stock stock;
 	
 	private boolean published;
 	
@@ -80,28 +76,12 @@ public class Model {
 		this.photo = photo;
 	}
 
-	public Author getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(Author author) {
-		this.author = author;
-	}
-
 	public Category getCategory() {
 		return category;
 	}
 
 	public void setCategory(Category category) {
 		this.category = category;
-	}
-
-	public Stock getStock() {
-		return stock;
-	}
-
-	public void setStock(Stock stock) {
-		this.stock = stock;
 	}
 
 	public boolean isPublished() {
@@ -136,5 +116,36 @@ public class Model {
 		ac.set(this, "translation_"+language, translation);
 	}
 
-	
+	public String getTranslation_ru() {
+		return translation_ru;
+	}
+
+	public void setTranslation_ru(String translation_ru) {
+		this.translation_ru = translation_ru;
+	}
+
+	public String getDetail_0() {
+		return detail_0;
+	}
+
+	public void setDetail_0(String detail_0) {
+		this.detail_0 = detail_0;
+	}
+
+	public String getDetail_1() {
+		return detail_1;
+	}
+
+	public void setDetail_1(String detail_1) {
+		this.detail_1 = detail_1;
+	}
+
+	public String getDetail_2() {
+		return detail_2;
+	}
+
+	public void setDetail_2(String detail_2) {
+		this.detail_2 = detail_2;
+	}
+
 }

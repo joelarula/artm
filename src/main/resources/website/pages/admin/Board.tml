@@ -28,14 +28,6 @@
 								t:values="categories" t:label="categoryLabel" t:value="searchCategory"
 									t:blankLabel="${message:searchCategoryHint}"/>
 						</div>
-						<div class="col-sm-2">
-							<t:select class="form-control" t:id="searchAuthor" t:values="authors"
-								t:label="authorLabel" t:value="author" t:blankLabel="${message:searchAuthorHint}" />
-						</div>
-						<div class="col-sm-2">
-							<t:select class="form-control" t:id="searchStock" t:values="stocks"
-								t:label="stockLabel" t:value="searchStock" t:blankLabel="${message:searchStockHint}" />
-						</div>
 						<div class="col-sm-3">
 							<t:textfield  class="form-control" t:id="searchName" t:value="searchName" placeholder="${message:searchNameHint}" />
 						</div>
@@ -82,21 +74,10 @@
 											t:validate="required" />
 									</div>
 									<div class="form-group">
-										<label for="author">${message:author}</label>
-										<t:select class="form-control" t:id="author"
-											t:values="authors" t:label="authorLabel" t:value="model.author"
-											placeholder="${message:authorHint}" />
-									</div>
-									<div class="form-group">
 										<label for="category">${message:category}</label>
-										<t:select class="form-control" t:id="category"
-											t:values="categories" t:label="categoryLabel" t:value="model.category"
+										<t:textfield class="form-control" t:id="category"
+											t:values="categories" t:label="categoryLabel" t:value="model.category.name"
 											placeholder="${message:categoryHint}" />
-									</div>
-									<div class="form-group">
-										<label for="category">${message:stock}</label>
-										<t:select class="form-control" t:id="stock" t:values="stocks" 
-											t:label="stockLabel" t:value="model.stock" placeholder="${message:stockHint}" />
 									</div>
 									<div class="form-group">
 										<div class="checkbox">
@@ -119,11 +100,15 @@
 								<t:label t:for="translation">${nameTranslationLabel}</t:label>
 								<t:textfield class="form-control" t:id="translation"
 									t:value="translation" placeholder="${message:localeHint}" />
+								<t:label t:for="translation">${categoryTranslationLabel}</t:label>
+								<t:textfield class="form-control" t:id="ctranslation"
+									t:value="categoryTranslation" placeholder="${message:categoryLocaleHint}" />
 							</t:loop>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-7">
+					
 					<div class="panel panel-default">
 						<div class="panel-heading">${message:photo} ${photoLabel}</div>
 						<div class="panel-body  text-center">
@@ -142,21 +127,27 @@
 								
 						</div>
 					</div>
-<!-- 					<t:if t:test="model.photo">
-					<div class="panel panel-default">
-						<div class="panel-heading">${message:preview}</div>
-						<div class="panel-body  text-center">
-							preview					
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading">${message:thumbnail}</div>
-						<div class="panel-body  text-center">
-							preview					
-						</div>
-					</div>
-					</t:if> -->
 					
+					<t:loop t:source="editDetails" t:value="editDetail" t:encoder="detailEncoder">
+					<div class="panel panel-default">
+						<div class="panel-heading">${message:detail} ${detailLabel}</div>
+						<div class="panel-body  text-center">
+							<t:if t:test="!detailExists">
+							<span class="glyphicon glyphicon-picture" aria-hidden="true"
+								style=" font-size: 5em;"></span>	
+							</t:if>
+								<t:upload t:id="detail" t:label="messages:addDetail"
+								style="margin-top:1em;" t:value="original" />
+							<t:if t:test="model.detailExists">	
+							    ${message:preview_detail} <br/>					
+								<t:image t:path="detailPreviewPath" class="preview-img"/><br/>
+								${message:thumbnail_detail} <br/>
+							   <t:image t:path="detailThumbnailPath" class="thumbnail-img"/>
+							</t:if>	
+								
+						</div>
+					</div>
+					</t:loop>
 				</div>
 				<div class="col-md-12 text-left">
 					<t:submit class="btn btn-default" t:value="${message:save}" />

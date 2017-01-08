@@ -2,23 +2,18 @@ package website.pages.admin;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventConstants;
 import org.apache.tapestry5.EventContext;
 import org.apache.tapestry5.Link;
-import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.Component;
@@ -26,7 +21,6 @@ import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.corelib.components.Form;
-import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.internal.grid.CollectionGridDataSource;
 import org.apache.tapestry5.internal.services.LinkSource;
@@ -39,20 +33,19 @@ import org.apache.tapestry5.upload.services.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import website.model.admin.AdminCommand;
+import website.model.admin.Details;
 import website.model.admin.Language;
 import website.model.admin.ModelPhotoSize;
 import website.model.admin.SearchCommand;
-import website.model.database.Author;
 import website.model.database.Category;
 import website.model.database.Model;
-import website.model.database.Stock;
 import website.services.FileManager;
 import website.services.ModelDao;
 import website.services.WebsiteModule;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class Board {
 
@@ -89,13 +82,7 @@ public class Board {
 	private  String searchName;
 	
 	@Property
-	private  Category searchCategory;
-	
-	@Property
-	private  Author author;
-	
-	@Property
-	private  Stock searchStock;
+	private  String searchCategory;
 	
 	@Property
 	private  Boolean searchUnPublished;
@@ -123,6 +110,9 @@ public class Board {
 	
 	@Inject
 	private ModelDao dao;
+	
+	@Property
+	private Details editDetail;
 	
 	public Object onActivate(EventContext context) throws JsonParseException, JsonMappingException, IOException{
 		this.command = AdminCommand.MODELS;
@@ -160,14 +150,8 @@ public class Board {
 				SearchCommand c = SearchCommand.valueOf(e.getKey().toUpperCase());
 				switch(c){
 				case CATEGORY : 
-					this.searchCategory = Category.valueOf(e.getValue().toUpperCase());
-					break;
-				case AUTHOR : 
-					this.author = Author.valueOf(e.getValue().toUpperCase());
-					break;
-				case STOCK : 
-					this.searchStock = Stock.valueOf(e.getValue().toUpperCase());
-					break;					
+					this.searchCategory = e.getValue();
+					break;				
 				case NAME : 
 					this.searchName = e.getValue();
 					break;	
@@ -203,9 +187,7 @@ public class Board {
 
 	private Model getNewModel() {
 		Model model = new Model();		
-		model.setStock(Stock.ON_DEMAND);
-		model.setCategory(Category.UNCATEGORIZED);
-		model.setAuthor(Author.ANON);
+		model.setCategory(new Category());
 		model.setPublished(true);
 		return model;
 	}
@@ -254,17 +236,7 @@ public class Board {
 		ctx.add(AdminCommand.MODELS.name().toLowerCase());
 		if(this.searchCategory != null){
 			ctx.add(SearchCommand.CATEGORY.name().toLowerCase());
-			ctx.add(this.searchCategory.name().toLowerCase());
-		}
-		
-		if(this.searchStock != null){
-			ctx.add(SearchCommand.STOCK.name().toLowerCase());
-			ctx.add(this.searchStock.name().toLowerCase());
-		}
-		
-		if(this.author != null){
-			ctx.add(SearchCommand.AUTHOR.name().toLowerCase());
-			ctx.add(this.author.name().toLowerCase());
+			ctx.add(this.searchCategory);
 		}
 		
 		if(this.searchName != null){
@@ -332,23 +304,7 @@ public class Board {
 		return UUID.randomUUID().toString();
 	}
 
-	public List<Category> getCatgories(){
-		return Arrays.asList(
-			Category.ABSTRACT,Category.FLOWERS,Category.NATURE,
-			Category.FIGURATIVE,Category.STILL_LIFE,
-			Category.CHILDRENS,Category.VARIA);
-	}
 	
-	public List<Author> getAuthors(){
-		return Arrays.asList(
-			Author.DI, Author.SIL, Author.TUU, Author.ANON
-		);
-	}
-	
-	
-	public List<Stock> getStocks(){
-		return Arrays.asList(Stock.ON_DEMAND,Stock.IN_STOCK,Stock.E_KAUBAMAJA);
-	}
 	
 	public String getModelLabel(){
 
@@ -366,7 +322,7 @@ public class Board {
 	}
 	
 	private List<Model> getSearchCriterion() {
-		return dao.search(this.searchName,this.searchCategory,this.searchStock, this.searchUnPublished,this.author);
+		return dao.search(this.searchName,this.searchCategory, this.searchUnPublished);
 
 	}
 
@@ -419,6 +375,10 @@ public class Board {
 		return Arrays.asList(Language.EN);
 	}
 	
+	public List<Details> getEditDetail(){
+		return Arrays.asList(Details.DETAIL0,Details.DETAIL1,Details.DETAIL2);
+	}
+	
 	@Property
 	private Language editLocale;
 	
@@ -435,6 +395,27 @@ public class Board {
 		this.model.setTranslation(editLocale.getLocale().getLanguage(), translation, ac);
 	}
 	
+	public String getCategoryTranslationLabel(){
+		return messages.get(editLocale.getLocale().getLanguage()+".categoryEditLabel");
+	}
+	
+	public String getCatgoryTranslation() {
+		switch (editLocale){
+			case ET: return model.getCategory().getName();
+			case EN: return model.getCategory().getName_en();
+			case RU: return model.getCategory().getName_ru();
+		}
+		return null;
+	}
+	
+	public void setCategoryTranslation(String translation) {
+		logger.info("set category translation {} {}",editLocale.getLocale().getLanguage(),translation);
+		switch (editLocale){
+			case ET: this.model.getCategory().setName(translation);break;
+			case EN: this.model.getCategory().setName_en(translation);break;
+			case RU: this.model.getCategory().setName_ru(translation);break;
+		}
+	}
 
 	public ValueEncoder<Language> getLocaleEncoder(){
 		return new ValueEncoder<Language>(){
@@ -449,6 +430,37 @@ public class Board {
 				
 				if( clientValue.equalsIgnoreCase("en")){
 					return Language.EN;
+				}
+				
+				return null;
+			}
+			
+		};
+		
+	}
+	
+	
+	public ValueEncoder<Details> getDetailEncoder(){
+		return new ValueEncoder<Details>(){
+
+			@Override
+			public String toClient(Details value) {
+				return value.name().toLowerCase();
+			}
+
+			@Override
+			public Details toValue(String clientValue) {
+				
+				if( clientValue.equalsIgnoreCase(Details.DETAIL0.name())){
+					return Details.DETAIL0;
+				}
+				
+				if( clientValue.equalsIgnoreCase(Details.DETAIL1.name())){
+					return Details.DETAIL1;
+				}
+				
+				if( clientValue.equalsIgnoreCase(Details.DETAIL2.name())){
+					return Details.DETAIL2;
 				}
 				
 				return null;

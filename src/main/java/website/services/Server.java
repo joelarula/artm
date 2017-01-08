@@ -31,6 +31,7 @@ public class Server {
         errorHandler.setServer(server);
         errorHandler.setShowStacks(false);
         server.addBean(errorHandler);
+ 
                
         server.setStopAtShutdown(true);
         server.setStopTimeout(30*1000l);
@@ -40,6 +41,7 @@ public class Server {
         handler.setClassLoader(Thread.currentThread().getContextClassLoader());
         handler.setContextPath("/");
         handler.setInitParameter("tapestry.app-package", "website");
+       
         
         FilterHolder filterHolder = new FilterHolder();
         filterHolder.setHeldClass(TapestryFilter.class);

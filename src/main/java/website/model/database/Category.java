@@ -1,26 +1,31 @@
 package website.model.database;
 
-public enum Category {
-
-	ABSTRACT("Abstraktsed maalid"),
-	FLOWERS("Lillemaalid"),
-	NATURE("Loodusmaalid"),
-	FIGURATIVE("Figuratiivesed maalid"),
-	CHILDRENS("Lastetoa maalid"),
-	STILL_LIFE("Vaikelu maalid"),
-	VARIA("Varia maalid"),
-	SWEDISH_MODELS("Swedish models"),
-	DRAWINGS("Drawings"),
-	UNCATEGORIZED("Liigitamata");
+public class Category {
 	
-	private final String name;
+	private String name;
 	
-	Category(String name){
-		this.name = name;
-	}
-
+	private String name_en;
+	
+	private String name_ru;
+	
 	public String getName() {
 		return name;
 	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getName_en() {
+		return name_en;
+	}
+	public void setName_en(String name_en) {
+		this.name_en = name_en;
+	}
+	public String getName_ru() {
+		return name_ru;
+	}
+	public void setName_ru(String name_ru) {
+		this.name_ru = name_ru;
+	}
+
 	
 }
