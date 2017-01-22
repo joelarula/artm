@@ -36,14 +36,11 @@ public class ClientFrame {
 	private ClientCommand command;
 	
 	@Property
-	private ClientCommand homeCommand= ClientCommand.HOME;
+	private ClientCommand homeCommand = ClientCommand.HOME;
 	
 	@Inject
 	private Messages messages;
 	
-	public List<ClientCommand> getMenu() {
-		return Arrays.asList(ClientCommand.PAINTINGS,ClientCommand.SHOP,ClientCommand.CONTACT);
-	}
 	
 	public String getCurrentLocaleLabel(){
 		return this.messages.get(this.persistentLocale.get().getLanguage());

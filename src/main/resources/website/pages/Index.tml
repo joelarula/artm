@@ -4,7 +4,5 @@
 	</t:clientFrame>
 	
 	<t:block t:id="home">home</t:block>
-	<t:block t:id="paintings">paintings</t:block>
-	<t:block t:id="shop">shop</t:block>	
-	<t:block t:id="contact">contact</t:block>
+	<t:block t:id="models">models</t:block>
 </t:container>

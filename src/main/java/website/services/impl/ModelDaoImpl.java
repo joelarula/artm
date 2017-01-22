@@ -75,11 +75,11 @@ public class ModelDaoImpl implements ModelDao{
 		
 		Stream<Model>  s = new ArrayList<Model>(models.values()).stream();
 		if(searchCategory != null){
-			s = s.filter(m -> m.getCategory().equals(searchCategory));
+			s = s.filter(m -> m.getCategory().getName().equals(searchCategory));
 		}if(unPublished != null){
 			s = s.filter(m-> !m.isPublished());
 		}if(searchName != null){
-			
+			s = s.filter(m -> m.getName().toLowerCase().contains(searchName.toLowerCase()));
 		}
 		
 		return s.collect(Collectors.toList());

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventConstants;
@@ -370,11 +371,10 @@ public class Board {
 			this.gridModel = beanModelSource.createDisplayModel(Model.class, messages);
 			this.gridModel.getById("name").label(messages.get("name"));
 			this.gridModel.getById("category").label(messages.get("category"));
-			this.gridModel.getById("author").label(messages.get("author"));
-			this.gridModel.getById("stock").label(messages.get("stock"));
 			this.gridModel.getById("published").label(messages.get("published"));
-			this.gridModel.exclude("key","created","modified","description","alias","translation_en");
-			this.gridModel.reorder("name","category","author","stock","published","photo");
+			this.gridModel.getById("photo").label(messages.get("photo"));
+			this.gridModel.exclude("key","created","modified","description","translation_en","translation_ru","detail_0","detail_1","detail_2");
+			this.gridModel.reorder("name","category","published","photo");
 		}
 		return gridModel;
 	}
@@ -470,8 +470,14 @@ public class Board {
 	}
 	
 	@OnEvent(value=EventConstants.PROVIDE_COMPLETIONS,component="searchCategory")
-	public String[] getCategoryModel(){
-		return new String[]{};
+	public String[] getCategoryModel(String search){
+		List<String> results = this.dao.getCategories(Language.ET).stream()
+			.filter(c -> c.toLowerCase().contains(search.toLowerCase()))
+			.collect(Collectors.toList());
+		
+		String[] res = new String[results.size()];
+		res = results.toArray(res);
+		return res;
 	}
 	
 	public String getCategoryTranslation() {

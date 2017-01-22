@@ -26,7 +26,7 @@
 						<div class="col-sm-3">
 							<t:textfield  class="form-control" t:id="searchName" t:value="searchName" placeholder="${message:searchNameHint}" />
 						</div>
-						<div class="col-sm-2">
+						<div class="col-sm-3">
 							<t:textField class="form-control" 
 								t:id="searchCategory"
 								t:value="searchCategory"
@@ -34,7 +34,7 @@
 								placeholder="${message:searchCategoryHint}"/>
 						</div>
 
-						<div class="col-sm-1">
+						<div class="col-sm-2">
 							<t:checkBox   t:id="searchUnPublished" t:value="searchUnPublished" />
 							<label for="searchUnPublished">${message:searchUnPublished}</label>
 						</div>
@@ -47,6 +47,14 @@
 						<p:nameCell>
 							<t:pagelink t:page="admin/board" t:context="modelContext" >${model.name}</t:pagelink>			
 						</p:nameCell>
+						<p:categoryCell>
+							${model.category?.name}		
+						</p:categoryCell>
+						<p:publishedCell>
+							<t:if t:test="model.published">
+								jah
+							</t:if>	
+						</p:publishedCell>
 						<p:photoCell>
 							<t:image t:path="iconPath" class="preview-icon"/><br/>
 						</p:photoCell>

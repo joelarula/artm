@@ -1,3 +1,70 @@
+/* IE6/7/8 - Must be first */  
+@font-face {  
+	font-family: goudy ;  
+	src: url(goudy.eot);  
+}  
+	 
+/* FFx3.5/Safari/Op10 - Next */  
+@font-face {  
+	font-family: goudy ;  
+	src: url(goudy.ttf ) format("truetype");  
+}  
+
+
+.container {
+    width: 1024px;
+}
+
 .dropdown {
     display: inherit !important;
+}
+
+.navbar{
+	border: none;
+}
+
+.navbar-inverse{
+	border-color: transparent; 
+	background-color: transparent;
+}
+
+.navbar-header {
+  
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+}
+
+.page-title, .page-title:hover{
+	text-decoration:none;  
+	
+	font-family: goudy , georgia, verdana, helvetica, sans-serif;
+    font-size: 50px;
+    color: #FDDE7C;
+}
+
+html, body {
+    height: 100%; width: 100%;
+    padding: 0; margin: 0;
+}
+
+
+body{
+	background-image: url("tuli.png");
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	background-color: #000;
+	color: #fff;
+	height: 100%;
+	margin-bottom: -5px;
+}
+
+.sfooter {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    text-align: center;
+    font-size: 18px;
+    background-color: transparent;
 }

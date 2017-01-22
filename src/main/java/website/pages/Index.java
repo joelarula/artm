@@ -15,16 +15,11 @@ public class Index {
 	private ClientCommand command;
 	
 	@Inject
-	private Block paintings;
+	private Block models;
 	
 	@Inject
 	private Block home;
 	
-	@Inject
-	private Block shop;
-	
-	@Inject
-	private Block contact;
 	
 	@Inject
 	private PersistentLocale persistentLocale;
@@ -46,11 +41,9 @@ public class Index {
 	public Block getActiveBlock(){
 		switch (command){
 			case HOME : return this.home;
-			case PAINTINGS : return this.paintings;
-			case SHOP : return this.shop;
-			case CONTACT : return this.contact;
+			case MODELS : return this.models;
 		}
-		return this.paintings;
+		return this.models;
 	}
 
 	public ClientCommand getCommand() {

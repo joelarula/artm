@@ -14,6 +14,7 @@ import org.apache.tapestry5.upload.modules.UploadModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import website.model.database.Category;
 import website.services.impl.FileManagerImpl;
 import website.services.impl.ImageDispatcher;
 import website.services.impl.ModelDaoImpl;
@@ -30,7 +31,7 @@ public class WebsiteModule {
 	
 	public static void contributeApplicationDefaults(MappedConfiguration<String,String> configuration){
 		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
-		configuration.add(SymbolConstants.SUPPORTED_LOCALES,"et,en");
+		configuration.add(SymbolConstants.SUPPORTED_LOCALES,"et,en,ru");
 		configuration.add(SymbolConstants.HMAC_PASSPHRASE,"dfsdfadfdsasdvds");
 		
 	}
@@ -40,6 +41,9 @@ public class WebsiteModule {
 		 binder.bind(ModelDao.class,ModelDaoImpl.class);
 	 }
 	 
+	 public static void  contributeDefaultDataTypeAnalyzer(MappedConfiguration<Class, String> c) {
+		 c.add(Category.class, "category");
+	 } 
 	    
 	  @Startup
 	  public void onStartup(RegistryShutdownHub shutdown,ModelDao dao) throws IOException{

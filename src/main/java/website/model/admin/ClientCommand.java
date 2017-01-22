@@ -11,10 +11,18 @@ import org.slf4j.LoggerFactory;
 
 public enum ClientCommand {
 	
-	HOME("index",Arrays.asList(new Route(Language.ET.getLocale(),"artmoments"),new Route(Language.EN.getLocale(),"artmoments")),"home"),
-	PAINTINGS("index",Arrays.asList(new Route(Language.ET.getLocale(),"maalid"),new Route(Language.EN.getLocale(),"paintings")),"paintings"),
-	SHOP("index",Arrays.asList(new Route(Language.ET.getLocale(),"pood"),new Route(Language.EN.getLocale(),"shop")),"shop"),
-	CONTACT("index",Arrays.asList(new Route(Language.ET.getLocale(),"kontakt"),new Route(Language.EN.getLocale(),"contact")),"contact");
+	HOME("index",
+		Arrays.asList(
+			new Route(Language.ET.getLocale(),"kodu"),
+			new Route(Language.EN.getLocale(),"home"),
+			new Route(Language.RU.getLocale(),"home")),
+		"home"),
+	MODELS("index",
+		Arrays.asList(
+			new Route(Language.ET.getLocale(),"sepised"),
+			new Route(Language.EN.getLocale(),"forgings"),
+			new Route(Language.RU.getLocale(),"forgings")),
+		"sepised");
 
 	private static final Logger logger = LoggerFactory.getLogger(ClientCommand.class);
 	
