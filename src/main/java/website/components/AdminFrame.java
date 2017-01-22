@@ -34,7 +34,7 @@ public class AdminFrame {
 	private Messages messages;
 	
 	public List<AdminCommand> getMenu() {
-		return Arrays.asList(AdminCommand.MODELS,AdminCommand.SETTINGS);
+		return Arrays.asList(AdminCommand.MODELS);
 	}
 	
 	public String getActiveMenuItem() { 

@@ -40,15 +40,12 @@ public class WebsiteModule {
 		 binder.bind(ModelDao.class,ModelDaoImpl.class);
 	 }
 	 
+	    
 	  @Startup
 	  public void onStartup(RegistryShutdownHub shutdown,ModelDao dao) throws IOException{
 			
 		  dao.loadDatabase();
-		 // for(Model m : dao.getAllModels()){
-		//	  m.setPublished(true);
-		//	  dao.saveModel(m);
-		//  }
-		  
+  
 		  shutdown.addRegistryShutdownListener(new Runnable(){
 
 				@Override

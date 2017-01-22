@@ -12,6 +12,7 @@ import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.SecurityHandler;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.handler.ErrorHandler;
+import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.security.Constraint;
@@ -41,16 +42,20 @@ public class Server {
         handler.setClassLoader(Thread.currentThread().getContextClassLoader());
         handler.setContextPath("/");
         handler.setInitParameter("tapestry.app-package", "website");
-       
-        
+      
+        HandlerCollection collection = new HandlerCollection();
+        collection.addHandler(handler);
+
+             
         FilterHolder filterHolder = new FilterHolder();
         filterHolder.setHeldClass(TapestryFilter.class);
         filterHolder.setName("website");
+       
         
         handler.addFilter(filterHolder, "/*", EnumSet.of(DispatcherType.REQUEST));
         								
-		server.setHandler(handler);
-						 
+		server.setHandler(handler);	
+		 
         server.start();        
         server.join();
 	}

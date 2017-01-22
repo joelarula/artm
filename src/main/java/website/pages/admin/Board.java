@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,7 +189,7 @@ public class Board {
 	private Model getNewModel() {
 		Model model = new Model();		
 		model.setCategory(new Category());
-		model.setPublished(true);
+		model.setPublished(true);	
 		return model;
 	}
 
@@ -267,10 +268,12 @@ public class Board {
 		
 		if(this.model.getKey() == null || this.model.getKey().isEmpty()){
 			model.setKey(this.generateModelKey());
+			model.setCreated(new Date());
 		}
-		
+		model.setModified(new Date());
 		
 		if(this.original != null){
+					
 			logger.info("uploaded photo {}",original.getFileName());
 			if(this.filemanager.supportsPhotoExtension(original.getFileName())){
 				try {
@@ -292,6 +295,40 @@ public class Board {
 
 			}
 
+		}
+		
+		for(Details d : this.getEditDetails()){
+			if(this.details.get(d) != null){
+				UploadedFile f = this.details.get(d); 
+				logger.info("uploaded detail {}",f.getFileName());
+				if(this.filemanager.supportsPhotoExtension(f.getFileName())){
+					try {
+						this.filemanager.savePhoto(model.getKey()+":"+d.name(),ModelPhotoSize.ORIGINAL,f.getStream(),f.getFileName());
+						String path = filemanager.getPhoto(model.getKey()+":"+d.name(),ModelPhotoSize.ORIGINAL).getAbsolutePath();
+						logger.info("{} original photo saved in {}",model.getKey()+":"+d.name(),path);
+						
+						String prefix = WebsiteModule.websiteFolder 
+								+ File.separator + FileManager.catalog 
+								+ File.separator + ModelPhotoSize.ORIGINAL.name().toLowerCase()
+								+ File.separator ;
+						
+						String dname =path.substring(prefix.length());
+						if(d.equals(Details.DETAIL0)){
+							this.model.setDetail_0(dname);
+						}else if(d.equals(Details.DETAIL1)){
+							this.model.setDetail_1(dname);
+						}else if(d.equals(Details.DETAIL2)){
+							this.model.setDetail_2(dname);
+						}
+						
+						
+					} catch (IOException e) {
+						logger.error("{} saving failed {}",original.getFileName(),e.getMessage());
+					}
+
+				}
+
+			}
 		}
 
 		this.dao.saveModel(model);	
@@ -336,7 +373,6 @@ public class Board {
 			this.gridModel.getById("author").label(messages.get("author"));
 			this.gridModel.getById("stock").label(messages.get("stock"));
 			this.gridModel.getById("published").label(messages.get("published"));
-			//this.gridModel.getById("photo").label(messages.get("photo"));
 			this.gridModel.exclude("key","created","modified","description","alias","translation_en");
 			this.gridModel.reorder("name","category","author","stock","published","photo");
 		}
@@ -367,16 +403,50 @@ public class Board {
 		return this.filemanager.getPath(model.getKey(), ModelPhotoSize.THUMBNAIL);
 	}
 	
+	public String getDetailPreviewPath(){
+		return this.filemanager.getPath(model.getKey()+":"+editDetail.name(), ModelPhotoSize.PREVIEW);
+	}
+	
+	public String getDetailThumbnailPath(){
+		return this.filemanager.getPath(model.getKey()+":"+editDetail.name(), ModelPhotoSize.THUMBNAIL);
+	}
+	
 	public String getIconPath(){
 		return this.filemanager.getPath(model.getKey(), ModelPhotoSize.ICON);
 	}
 	
 	public List<Language> getEditLocales(){
-		return Arrays.asList(Language.EN);
+		return Arrays.asList(Language.EN,Language.RU);
 	}
 	
-	public List<Details> getEditDetail(){
+	public List<Details> getEditDetails(){
 		return Arrays.asList(Details.DETAIL0,Details.DETAIL1,Details.DETAIL2);
+	}
+	
+	public String getDetailLabel(){
+		return messages.get(editDetail.name()+".detailEditLabel");
+	}
+
+	public UploadedFile getDetailFile(){
+		return null;
+	}
+	
+	private Map<Details,UploadedFile> details = new  HashMap<Details,UploadedFile>();
+	
+	public void setDetailFile(UploadedFile f){
+		details.put(editDetail, f);
+	}
+
+	
+	public boolean getDetailExists(){
+		if(editDetail.equals(Details.DETAIL0)){
+			return this.model.getDetail_0() != null;
+		}else if(editDetail.equals(Details.DETAIL1)){
+			return this.model.getDetail_1() != null;
+		}else if(editDetail.equals(Details.DETAIL2)){
+			return this.model.getDetail_2() != null;
+		}
+		return false;
 	}
 	
 	@Property
@@ -399,7 +469,12 @@ public class Board {
 		return messages.get(editLocale.getLocale().getLanguage()+".categoryEditLabel");
 	}
 	
-	public String getCatgoryTranslation() {
+	@OnEvent(value=EventConstants.PROVIDE_COMPLETIONS,component="searchCategory")
+	public String[] getCategoryModel(){
+		return new String[]{};
+	}
+	
+	public String getCategoryTranslation() {
 		switch (editLocale){
 			case ET: return model.getCategory().getName();
 			case EN: return model.getCategory().getName_en();
@@ -430,6 +505,10 @@ public class Board {
 				
 				if( clientValue.equalsIgnoreCase("en")){
 					return Language.EN;
+				}
+				
+				if( clientValue.equalsIgnoreCase("ru")){
+					return Language.RU;
 				}
 				
 				return null;

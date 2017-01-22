@@ -23,14 +23,17 @@
 				
 					<div class="row" style="margin-bottom:2em;">
 
-						<div class="col-sm-2">
-							<t:select class="form-control" t:id="searchCategory"
-								t:values="categories" t:label="categoryLabel" t:value="searchCategory"
-									t:blankLabel="${message:searchCategoryHint}"/>
-						</div>
 						<div class="col-sm-3">
 							<t:textfield  class="form-control" t:id="searchName" t:value="searchName" placeholder="${message:searchNameHint}" />
 						</div>
+						<div class="col-sm-2">
+							<t:textField class="form-control" 
+								t:id="searchCategory"
+								t:value="searchCategory"
+								t:mixins="AutoComplete"
+								placeholder="${message:searchCategoryHint}"/>
+						</div>
+
 						<div class="col-sm-1">
 							<t:checkBox   t:id="searchUnPublished" t:value="searchUnPublished" />
 							<label for="searchUnPublished">${message:searchUnPublished}</label>
@@ -57,7 +60,7 @@
 	<t:block t:id="modelBlock">
 		<t:form t:id="modelForm">
 		    <t:hidden t:value="model.key"/>
-			<t:alerts />
+			<t:alerts t:showDismissAll="literal:false"/>
 			<t:errors />
 			<div class="row-fluid">
 				<div class="col-md-5">
@@ -137,8 +140,8 @@
 								style=" font-size: 5em;"></span>	
 							</t:if>
 								<t:upload t:id="detail" t:label="messages:addDetail"
-								style="margin-top:1em;" t:value="original" />
-							<t:if t:test="model.detailExists">	
+								style="margin-top:1em;" t:value="detailFile" />
+							<t:if t:test="detailExists">	
 							    ${message:preview_detail} <br/>					
 								<t:image t:path="detailPreviewPath" class="preview-img"/><br/>
 								${message:thumbnail_detail} <br/>
