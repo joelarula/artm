@@ -1,6 +1,8 @@
 package website.pages;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -30,7 +32,10 @@ public class Index {
 	private ClientCommand command;
 	
 	@Inject
-	private Block models;
+	private Block modelsBlock;
+	
+	@Inject
+	private Block modelBlock;
 	
 	@Inject
 	private Block home;
@@ -58,6 +63,11 @@ public class Index {
 		if(context.getCount() > 0){
 			this.command = ClientCommand.findCandidate(context.get(String.class, 0),locale);
 		}		
+		
+		if(this.command.equals(ClientCommand.MODELS)){
+			this.category = context.get(String.class, 1);
+		}
+		
 		persistentLocale.set(locale);
 	}
 	 
@@ -66,9 +76,10 @@ public class Index {
 	public Block getActiveBlock(){
 		switch (command){
 			case HOME : return this.home;
-			case MODELS : return this.models;
+			case MODELS : return this.modelsBlock;
+			case MODEL : return this.modelBlock;
 		}
-		return this.models;
+		return this.home;
 	}
 
 	public ClientCommand getCommand() {
@@ -86,22 +97,59 @@ public class Index {
 		return this.modelSource.getCategories(Language.get(this.persistentLocale.get())).size();
 	}
 	
-	public List<String> getCategories(){
-		return this.modelSource.getCategories(Language.get(this.persistentLocale.get()));
+	private  Map<String,Model> categories;
+	
+	public Collection<String> getCategoriesValues(){
+		return this.getCategories().keySet();
+	}
+	
+	public Map<String,Model> getCategories(){
+		if(this.categories == null){
+			this.categories = new LinkedHashMap<String,Model>();
+			for(String c : this.modelSource.getCategories(Language.get(this.persistentLocale.get()))){
+				Model m = this.modelSource.getCategoryLead(c,Language.get(this.persistentLocale.get()));
+				if(m != null){
+					this.categories.put(c, m);
+				}
+			}			
+		}
+		return this.categories;
+	}
+	
+	public String getCategoryCellClass(){
+		return "col-md-4";
 	}
 	
 	public String getCatalogCellClass(){
+		int r = this.getCategoriesSize() % 3;
 		int c = getCategoriesSize() - this.index; 
-		if(c == 3 || c==2){
-			return "col-md-6";
-		}else if (c==1){
-			return "col-md-12 ";
+		if(r == 0){
+			if(c == 3 || c==2){
+				return "col-md-6";
+			}else if (c==1){
+				return "col-md-12 ";
+			}
+		}else if(c==2){
+			if(c == 2 || c==2){
+				return "col-md-6";
+			}
 		}
+		else if(r==1){
+			if (c==1){
+				return "col-md-12 ";
+			}
+		}
+		
+
 		return "col-md-4";
 	}
 	
 	public String getCategoryPath(){
 		return this.filemanager.getPath(this.getCurrentCategory().getKey(), ModelPhotoSize.THUMBNAIL2);
+	}
+	
+	public String getModelPath(){
+		return this.filemanager.getPath(this.model.getKey(), ModelPhotoSize.THUMBNAIL2);
 	}
 	
 	public String getCategoryCmd(){
@@ -111,17 +159,43 @@ public class Index {
 		}).toURI();
 	}
 	
-	public boolean getCategoryPreviewExists(){
-		return this.getCurrentCategory() != null;
+	public String getModelCmd(){
+		String name = null;
+		switch(Language.get(this.persistentLocale.get())){
+			case ET: return name = this.model.getName();
+			case EN: return name = this.model.getTranslation_en();
+			case RU: return name = this.model.getTranslation_ru();
+		}
+		
+		return linkSource.createPageRenderLink(ClientCommand.MODEL.getPage(),false, new Object[]{
+			ClientCommand.MODEL.getContext(this.persistentLocale.get()).getRoute(),	
+			name	
+		}).toURI();
 	}
-
-	private Map<String,Model> currentCategory = new HashMap<String,Model>();
+	
+	public String getModelName(){
+		switch(Language.get(this.persistentLocale.get())){
+			case ET: return this.model.getName();
+			case EN: return this.model.getTranslation_en();
+			case RU: return this.model.getTranslation_ru();
+		}
+		return null;
+	}
 	
 	private Model getCurrentCategory() {
-		if(this.currentCategory.get(category) == null){
-			currentCategory.put(category,this.modelSource.getCategoryLead(this.category,Language.get(this.persistentLocale.get())));
+		return this.categories.get(category);
+	}
+	
+	@Property
+	private Model model;
+	
+	private List<Model> models;
+	
+	public List<Model> getCategoryModels(){
+		if(this.models == null){
+			this.models = this.modelSource.getAllForCategory(category,Language.get(this.persistentLocale.get()));
 		}
-		return this.currentCategory.get(category);
+		return models;
 	}
 	
 }

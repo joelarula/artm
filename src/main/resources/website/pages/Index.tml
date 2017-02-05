@@ -6,23 +6,30 @@
 	<t:block t:id="home">
 		<div class="container-fluid">
 			<div id="catalog" class="row">
-				<t:loop t:source="categories" t:value="category" t:index="index">
+				<t:loop t:source="categoriesValues" t:value="category" t:index="index">
 					<div class ="${catalogCellClass} text-center">
-						<a class="categoryLabel" href="${categoryCmd}">${category}</a><br/>
-						<t:if t:test="categoryPreviewExists">		
+						<a class="categoryLabel" href="${categoryCmd}">${category}</a><br/>	
 							<a class="imageLink" href="${categoryCmd}">
-								<t:image t:path="categoryPath" class="catalog-icon"/>
+								<t:image t:path="categoryPath" class="catalog-icon thumb"/>
 							</a>
-							<p:else>
-								<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
-							</p:else>
-						</t:if>
 					</div>
 				</t:loop>
 			</div>
 		</div>
 	</t:block>
-	<t:block t:id="models">
-	
+	<t:block t:id="modelsBlock">
+			<div id="category" class="row">
+				<t:loop t:source="categoryModels" t:value="model" t:index="index">
+					<div class ="${categoryCellClass} text-center">
+						<a class="modelLabel" href="${modelCmd}">${modelName}</a><br/>	
+							<a class="imageLink" href="${modelCmd}">
+								<t:image t:path="modelPath" class="catalog-icon thumb"/>
+							</a>
+					</div>
+				</t:loop>
+			</div>
+	</t:block>
+	<t:block t:id="modelBlock">
+	...
 	</t:block>
 </t:container>

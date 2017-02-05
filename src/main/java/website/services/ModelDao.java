@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.tapestry5.Block;
+
 import website.model.admin.Language;
 import website.model.database.Model;
 
@@ -22,5 +24,7 @@ public interface ModelDao {
 	public List<String> getCategories(Language l);
 
 	public Model getCategoryLead(String category, Language l);
+
+	public List<Model> getAllForCategory(String category, Language language);
 	
 }

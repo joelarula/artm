@@ -55,7 +55,7 @@ html{
 
 
 body{
-    background-image: url("tuli.png");
+   	background-image: url("tuli.png");
 	background-position: center bottom;
 	background-repeat: no-repeat;
 	background-color: #000;
@@ -67,6 +67,7 @@ body{
 }
 
 .pcontainer{
+
 	margin-bottom: 2px;
 }
 
@@ -81,7 +82,7 @@ body{
 }
 
 
-#catalog{	
+#catalog, #category{	
 	margin-top: 50px;
 	min-height: 500px;
 }
@@ -101,4 +102,8 @@ body{
 .imageLink{
 	display: inline-block;
 	margin-bottom: 30px;
+}
+
+.thumb{
+ border: solid 2px #FDC17C;	
 }

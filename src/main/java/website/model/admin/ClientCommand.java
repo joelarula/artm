@@ -22,7 +22,13 @@ public enum ClientCommand {
 			new Route(Language.ET.getLocale(),"sepised"),
 			new Route(Language.EN.getLocale(),"forgings"),
 			new Route(Language.RU.getLocale(),"forgings")),
-		"sepised");
+		"sepised"),
+	MODEL("index",
+		Arrays.asList(
+			new Route(Language.ET.getLocale(),"sepis"),
+			new Route(Language.EN.getLocale(),"forging"),
+			new Route(Language.RU.getLocale(),"forging")),
+		"sepis");
 
 	private static final Logger logger = LoggerFactory.getLogger(ClientCommand.class);
 	

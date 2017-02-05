@@ -31,9 +31,9 @@ public class UrlEncoderUtf8 implements URLEncoder
     private final BitSet safe = new BitSet(128);
 
     {
-        markSafe("abcdefghijklmnopqrstuvwxyzõüäö ");
+        markSafe("abcdefghijklmnopqrstuvwxyzõüäö");
         markSafe("ABCDEFGHIJKLMNOPQRSTUVWXYZÜÕÄÖ");
-        markSafe("01234567890-_.:");
+        markSafe("01234567890-_.: ");
     }
 
     private void markSafe(String s)
