@@ -91,6 +91,13 @@
 											placeholder="${message:categoryHint}" />
 									</div>
 									<div class="form-group">
+										<label for="position">${message:position}</label>
+										<t:select class="form-control" t:id="position"
+											t:model="positions" t:label="positionLabel" 
+											t:value="model.position"
+											placeholder="${message:positionHint}" />
+									</div>
+									<div class="form-group">
 										<div class="checkbox">
 											<label>
 												<t:checkbox t:value="model.published" />
@@ -116,6 +123,9 @@
 									t:value="categoryTranslation" placeholder="${message:categoryLocaleHint}" />
 							</t:loop>
 						</div>
+					</div>
+					<div class="text-left">
+						<t:submit class="btn btn-default" t:value="${message:save}" />
 					</div>
 				</div>
 				<div class="col-md-7">
@@ -160,9 +170,7 @@
 					</div>
 					</t:loop>
 				</div>
-				<div class="col-md-12 text-left">
-					<t:submit class="btn btn-default" t:value="${message:save}" />
-				</div>
+
 			</div>
 		</t:form>
 	</t:block>

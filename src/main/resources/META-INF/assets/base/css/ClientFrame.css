@@ -30,7 +30,6 @@
 
 .navbar-header {
   
-    padding: 15px;
     text-align: center;
     width: 100%;
 }
@@ -43,28 +42,63 @@
     color: #FDDE7C;
 }
 
-html, body {
+ html, body {
+    margin:0;
+    padding:0;
+}
+
+html{
     height: 100%; width: 100%;
     padding: 0; margin: 0;
+
 }
 
 
 body{
-	background-image: url("tuli.png");
+    background-image: url("tuli.png");
 	background-position: center bottom;
 	background-repeat: no-repeat;
 	background-color: #000;
 	color: #fff;
-	height: 100%;
-	margin-bottom: -5px;
+    position:relative;
+    min-height: 100%;
+    padding-bottom: 50px;
+	
+}
+
+.pcontainer{
+	margin-bottom: 2px;
 }
 
 .sfooter {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60px;
+    height: 26px;
     text-align: center;
     font-size: 18px;
     background-color: transparent;
+}
+
+
+#catalog{	
+	margin-top: 50px;
+	min-height: 500px;
+}
+
+.categoryLabel{
+	text-decoration:none;  
+	font-family: goudy , georgia, verdana, helvetica, sans-serif;
+    font-size: 26px;
+    color: #FDDE7C;
+}
+
+.categoryLabel:hover{
+	text-decoration:none;  
+    color: #FDC17C;
+}
+
+.imageLink{
+	display: inline-block;
+	margin-bottom: 30px;
 }

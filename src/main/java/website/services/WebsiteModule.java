@@ -2,22 +2,31 @@ package website.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.Decorate;
 import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.annotations.Startup;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
+import org.apache.tapestry5.ioc.services.ServiceOverride;
+import org.apache.tapestry5.ioc.services.ThreadLocale;
+import org.apache.tapestry5.services.PersistentLocale;
+import org.apache.tapestry5.services.URLEncoder;
 import org.apache.tapestry5.services.assets.AssetRequestHandler;
 import org.apache.tapestry5.upload.modules.UploadModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import website.model.database.Category;
+import website.model.database.Model;
 import website.services.impl.FileManagerImpl;
 import website.services.impl.ImageDispatcher;
 import website.services.impl.ModelDaoImpl;
+import website.services.impl.UrlEncoderUtf8;
 
 @ImportModule(UploadModule.class)
 public class WebsiteModule {
@@ -49,7 +58,7 @@ public class WebsiteModule {
 	  public void onStartup(RegistryShutdownHub shutdown,ModelDao dao) throws IOException{
 			
 		  dao.loadDatabase();
-  
+
 		  shutdown.addRegistryShutdownListener(new Runnable(){
 
 				@Override
@@ -65,5 +74,38 @@ public class WebsiteModule {
 	  public void contributeAssetDispatcher(MappedConfiguration<String,AssetRequestHandler> conf){
 		  conf.addInstance(FileManager.catalog, ImageDispatcher.class);
 	  }
+	  
+	  
 
+      @Decorate(serviceInterface = ThreadLocale.class)     
+      public ThreadLocale decorateThreadLocale(final ThreadLocale threadLocale,  final PersistentLocale persistentLocale) 
+      { 
+          return new ThreadLocale() 
+          { 
+              @Override 
+              public void setLocale(Locale locale) 
+              { 
+                  threadLocale.setLocale(locale); 
+              } 
+
+              @Override 
+              public Locale getLocale() 
+              { 
+                  if (!persistentLocale.isSet()) 
+                  { 
+                      setLocale(Locale.forLanguageTag("et")); 
+                  } 
+                  return threadLocale.getLocale(); 
+              } 
+
+          }; 
+      } 
+
+      
+      
+      
+      @Contribute(ServiceOverride.class)
+      public static void setupOverrides(MappedConfiguration<Class,Object> configuration){
+        configuration.add(URLEncoder.class, new UrlEncoderUtf8());
+      }
 }

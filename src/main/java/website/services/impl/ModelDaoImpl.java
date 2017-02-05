@@ -6,7 +6,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,6 +47,14 @@ public class ModelDaoImpl implements ModelDao{
 		this.fileManager.saveModel(model);
 		logger.info("model {} saved",model.getKey());
 		this.models.put(model.getKey(), model);
+		for(Language l :Language.values()){
+			switch(l){
+			case ET: this.categories_et.add(model.getCategory().getName());
+			case EN: this.categories_en.add(model.getCategory().getName_en());
+			case RU: this.categories_ru.add(model.getCategory().getName_ru());
+			}
+		}
+		
 		return model;
 	}
 
@@ -125,6 +135,21 @@ public class ModelDaoImpl implements ModelDao{
 			case RU: return new ArrayList<String>(this.categories_ru);
 		}
 		return null;
+	}
+
+	@Override
+	public Model getCategoryLead(String category,Language l) {
+		Optional<Model> model =  this.models.values().stream()
+			.filter(m -> m.getCategoryTranslation(l) != null)
+			.filter(m -> m.getCategoryTranslation(l).equals(category))
+			.sorted((m1,m2)-> (m1.getPosition().compareTo(m2.getPosition())))
+			.findFirst();
+		
+		if(model.isPresent()){
+			return model.get();
+		}else{
+			return null;
+		}
 	}
 
 }

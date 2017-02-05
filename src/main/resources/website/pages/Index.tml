@@ -1,8 +1,28 @@
-<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd">
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
 	<t:clientFrame>
 		<t:delegate t:to="activeBlock"/>
 	</t:clientFrame>
 	
-	<t:block t:id="home">home</t:block>
-	<t:block t:id="models">models</t:block>
+	<t:block t:id="home">
+		<div class="container-fluid">
+			<div id="catalog" class="row">
+				<t:loop t:source="categories" t:value="category" t:index="index">
+					<div class ="${catalogCellClass} text-center">
+						<a class="categoryLabel" href="${categoryCmd}">${category}</a><br/>
+						<t:if t:test="categoryPreviewExists">		
+							<a class="imageLink" href="${categoryCmd}">
+								<t:image t:path="categoryPath" class="catalog-icon"/>
+							</a>
+							<p:else>
+								<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+							</p:else>
+						</t:if>
+					</div>
+				</t:loop>
+			</div>
+		</div>
+	</t:block>
+	<t:block t:id="models">
+	
+	</t:block>
 </t:container>

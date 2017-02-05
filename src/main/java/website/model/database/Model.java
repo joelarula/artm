@@ -3,6 +3,8 @@ package website.model.database;
 import java.util.Date;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 
+import website.model.admin.Language;
+
 
 
 public class Model {
@@ -28,7 +30,8 @@ public class Model {
 	
 	private String translation_ru;
 	
-
+	private Integer position = 5;
+	
 	public String getTranslation_en() {
 		return translation_en;
 	}
@@ -147,5 +150,23 @@ public class Model {
 	public void setDetail_2(String detail_2) {
 		this.detail_2 = detail_2;
 	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	public String getCategoryTranslation(Language l) {
+		switch (l){
+			case ET : return this.getCategory().getName();
+			case EN : return this.getCategory().getName_en();
+			case RU : return this.getCategory().getName_ru();
+		}
+		return null;
+	}
+
 
 }

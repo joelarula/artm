@@ -40,7 +40,6 @@ public enum ClientCommand {
 	}
 	
 	public static ClientCommand findCandidate(String cmd, Locale locale) {
-		//logger.trace("command {}, locale {}",cmd,locale.getLanguage());
 		ClientCommand ccmd;
 		try{
 			ccmd = Arrays.asList(ClientCommand.values()).stream().filter(cc -> cc.getContext(locale).getRoute().equals(cmd)).findFirst().get();
@@ -56,7 +55,6 @@ public enum ClientCommand {
 	}
 	
 	public Route getContext(Locale locale) {
-		//logger.trace("contextlang {}",locale.getLanguage());
 		return this.routes.stream().filter(l -> locale.getLanguage().equals(l.getLocale().getLanguage())).findFirst().get();
 	}
 	

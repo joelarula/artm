@@ -449,6 +449,10 @@ public class Board {
 		return false;
 	}
 	
+	public List<Integer> getPositions(){
+		return Arrays.asList(5,4,3,2,1);
+	}
+	
 	@Property
 	private Language editLocale;
 	

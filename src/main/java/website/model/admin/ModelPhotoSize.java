@@ -6,7 +6,9 @@ public enum ModelPhotoSize {
 	FULL_SCREEN(1024d,768d),
 	PREVIEW(720d,600d),
 	THUMBNAIL(250d,300d),
+	THUMBNAIL2(200d,250d),
 	ICON(125d,150d);
+	
 	
 	private final Double maxWidthPx;
 	private final Double maxHeightPx;

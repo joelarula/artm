@@ -22,4 +22,13 @@ public enum Language {
 	public static boolean matchesAny(Locale locale) {
 		return Arrays.asList(Language.values()).stream().filter(l-> l.getLocale().getLanguage().equals(locale.getLanguage())).count() == 1;
 	}
+
+	public static Language get(Locale locale) {
+		for(Language l : Language.values()){
+			if(l.locale.equals(locale)){
+				return l;
+			}
+		}
+		return null;
+	}
 }
