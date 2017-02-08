@@ -63,10 +63,12 @@ public class Index {
 		if(context.getCount() > 0){
 			this.command = ClientCommand.findCandidate(context.get(String.class, 0),locale);
 		}		
-		
-		if(this.command.equals(ClientCommand.MODELS)){
-			this.category = context.get(String.class, 1);
+		if(context.getCount() ==2){
+			if(this.command.equals(ClientCommand.MODELS)){
+				this.category = context.get(String.class, 1);
+			}
 		}
+
 		
 		persistentLocale.set(locale);
 	}

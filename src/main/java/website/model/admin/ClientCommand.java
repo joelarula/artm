@@ -61,7 +61,8 @@ public enum ClientCommand {
 	}
 	
 	public Route getContext(Locale locale) {
-		return this.routes.stream().filter(l -> locale.getLanguage().equals(l.getLocale().getLanguage())).findFirst().get();
+		return this.routes.stream()
+			.filter(l -> locale.getLanguage().equals(l.getLocale().getLanguage())).findFirst().get();
 	}
 	
 	public String getLabel() {

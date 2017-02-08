@@ -19,7 +19,7 @@ import website.model.admin.Language;
 import website.pages.Index;
 import website.pages.admin.Board;
 
-@Import(module = "bootstrap/dropdown",stylesheet="base/css/ClientFrame.css")
+@Import(module = {"bootstrap/dropdown","screen"},stylesheet="base/css/ClientFrame.css")
 public class ClientFrame {
 
 	

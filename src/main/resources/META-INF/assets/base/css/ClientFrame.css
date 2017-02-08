@@ -48,27 +48,23 @@
 }
 
 html{
-    height: 100%; width: 100%;
     padding: 0; margin: 0;
-
 }
 
 
 body{
-   	background-image: url("tuli.png");
-	background-position: center bottom;
-	background-repeat: no-repeat;
 	background-color: #000;
 	color: #fff;
-    position:relative;
-    min-height: 100%;
-    padding-bottom: 50px;
-	
+	position:relative;
+
 }
 
 .pcontainer{
-
+	background-image: url("tuli.png");
+	background-position: center bottom;
+	background-repeat: no-repeat;
 	margin-bottom: 2px;
+	min-height: 750px;
 }
 
 .sfooter {
@@ -105,5 +101,27 @@ body{
 }
 
 .thumb{
- border: solid 2px #FDC17C;	
+
 }
+
+#category{
+	margin-top: 130px;
+}
+
+.categoryfooter{
+	margin-bottom: 60px;
+	clear: both;
+	text-align: center;
+}
+
+ .modelthumb{
+ 	min-height: 250px;
+ }
+ 
+ .modelLabel, .modelLabel:hover{
+    text-decoration:none;  
+	font-family: helvetica, sans-serif;
+    font-size: 18px;
+    color: #FDDE7C;
+    display:inline-block;
+ }

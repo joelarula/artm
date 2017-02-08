@@ -1,22 +1,25 @@
 package website.services.impl;
 
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.tapestry5.upload.services.UploadedFile;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +31,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import website.model.admin.ModelPhotoSize;
+import website.model.admin.Size;
 import website.model.admin.SupportedImageExtensions;
 import website.model.database.Model;
-import website.pages.admin.Board;
 import website.services.FileManager;
 import website.services.WebsiteModule;
 
@@ -82,6 +85,16 @@ public class FileManagerImpl implements FileManager{
 		+ File.separator + name+".png";
 	}
 
+	@Override
+	public Size getGraphics(String name) throws FileNotFoundException, IOException {
+		final File f = new File(prepareCatalogPath(name,ModelPhotoSize.ORIGINAL));
+		if(f.exists()){		
+			return this.getImageDimension(f);
+		}
+		return null;
+	
+	}
+	
 	@Override
 	public File getPhoto(String name, ModelPhotoSize fileSize) throws IOException {
 		if(fileSize.equals(ModelPhotoSize.ORIGINAL)){
@@ -233,6 +246,37 @@ public class FileManagerImpl implements FileManager{
 		return models;
 	}
 
+
+
+	/**
+	 * Gets image dimensions for given file 
+	 * @param imgFile image file
+	 * @return dimensions of image
+	 * @throws IOException if the file is not a known image
+	 */
+	public static Size getImageDimension(File imgFile) throws IOException {
+	  int pos = imgFile.getName().lastIndexOf(".");
+	  if (pos == -1)
+	    throw new IOException("No extension for file: " + imgFile.getAbsolutePath());
+	  String suffix = imgFile.getName().substring(pos + 1);
+	  Iterator<ImageReader> iter = ImageIO.getImageReadersBySuffix(suffix);
+	  while(iter.hasNext()) {
+	    ImageReader reader = iter.next();
+	    try {
+	      ImageInputStream stream = new FileImageInputStream(imgFile);
+	      reader.setInput(stream);
+	      int width = reader.getWidth(reader.getMinIndex());
+	      int height = reader.getHeight(reader.getMinIndex());
+	      return new Size(width, height);
+	    } catch (IOException e) {
+	      logger.warn("Error reading: " + imgFile.getAbsolutePath(), e);
+	    } finally {
+	      reader.dispose();
+	    }
+	  }
+
+	  throw new IOException("Not a known image file: " + imgFile.getAbsolutePath());
+	}
 
 
 

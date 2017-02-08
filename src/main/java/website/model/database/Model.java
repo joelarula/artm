@@ -4,6 +4,7 @@ import java.util.Date;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 
 import website.model.admin.Language;
+import website.model.admin.Size;
 
 
 
@@ -31,6 +32,8 @@ public class Model {
 	private String translation_ru;
 	
 	private Integer position = 5;
+	
+	private Size size;
 	
 	public String getTranslation_en() {
 		return translation_en;
@@ -166,6 +169,14 @@ public class Model {
 			case RU : return this.getCategory().getName_ru();
 		}
 		return null;
+	}
+
+	public Size getSize() {
+		return size;
+	}
+
+	public void setSize(Size size) {
+		this.size = size;
 	}
 
 

@@ -20,13 +20,16 @@
 	<t:block t:id="modelsBlock">
 			<div id="category" class="row">
 				<t:loop t:source="categoryModels" t:value="model" t:index="index">
-					<div class ="${categoryCellClass} text-center">
-						<a class="modelLabel" href="${modelCmd}">${modelName}</a><br/>	
-							<a class="imageLink" href="${modelCmd}">
+					<div class ="${categoryCellClass} text-center modelthumb">
+						<a class="modelLabel" href="${modelCmd}">${modelName}</a><br/>
+						<a class="imageLink" href="${modelCmd}">
 								<t:image t:path="modelPath" class="catalog-icon thumb"/>
 							</a>
 					</div>
 				</t:loop>
+				<div class="categoryfooter">
+					...
+				</div>
 			</div>
 	</t:block>
 	<t:block t:id="modelBlock">
