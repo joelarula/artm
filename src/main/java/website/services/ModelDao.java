@@ -26,5 +26,7 @@ public interface ModelDao {
 	public Model getCategoryLead(String category, Language l);
 
 	public List<Model> getAllForCategory(String category, Language language);
+
+	public Model getByName(String string, Language language);
 	
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventContext;
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.internal.services.LinkSource;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -66,6 +67,8 @@ public class Index {
 		if(context.getCount() ==2){
 			if(this.command.equals(ClientCommand.MODELS)){
 				this.category = context.get(String.class, 1);
+			}else if(this.command.equals(ClientCommand.MODEL)){
+				this.model = this.modelSource.getByName(context.get(String.class, 1),Language.get(this.persistentLocale.get()));
 			}
 		}
 
@@ -164,15 +167,16 @@ public class Index {
 	public String getModelCmd(){
 		String name = null;
 		switch(Language.get(this.persistentLocale.get())){
-			case ET: return name = this.model.getName();
-			case EN: return name = this.model.getTranslation_en();
-			case RU: return name = this.model.getTranslation_ru();
+			case ET: name = this.model.getName(); break;
+			case EN: name = this.model.getTranslation_en(); break;
+			case RU: name = this.model.getTranslation_ru(); break;
 		}
 		
-		return linkSource.createPageRenderLink(ClientCommand.MODEL.getPage(),false, new Object[]{
+		Link l =  linkSource.createPageRenderLink(ClientCommand.MODEL.getPage(),true, new Object[]{
 			ClientCommand.MODEL.getContext(this.persistentLocale.get()).getRoute(),	
 			name	
-		}).toURI();
+		});
+		return l.toURI();
 	}
 	
 	public String getModelName(){

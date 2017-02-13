@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -28,12 +29,12 @@ public class ModelDaoImpl implements ModelDao{
 
 	private Map<String,Model> models = new HashMap<String,Model>();
 	
-	private Set<String> categories_et = new HashSet<String>();
+	private List<String> categories_et = new ArrayList<String>();
 	
-	private Set<String> categories_en = new HashSet<String>();
+	private List<String> categories_en = new ArrayList<String>();
 	
-	private Set<String> categories_ru = new HashSet<String>();
-	
+	private List<String> categories_ru = new ArrayList<String>();
+		
 	private static final Logger logger = LoggerFactory.getLogger(ModelDao.class);
 	
 	private final FileManager fileManager;
@@ -159,6 +160,21 @@ public class ModelDaoImpl implements ModelDao{
 		.filter(m -> m.getCategoryTranslation(l).equals(category))
 		.sorted((m1,m2)-> (m1.getSize().getProportion().compareTo(m2.getSize().getProportion())))
 		.collect(Collectors.toList());
+	}
+
+	@Override
+	public Model getByName(String name, Language language) {
+		Optional<Model> model = this.models.values().stream().filter(m-> {
+			
+			switch(language){
+				case ET: if(m.getName()!= null && m.getName().equals(name))return true;
+				case EN: if(m.getTranslation_en() != null && m.getTranslation_en().equals(name))return true;
+				case RU: if(m.getTranslation_ru() != null && m.getTranslation_ru().equals(name))return true;
+					
+			}
+			return false;
+		}).findFirst();
+		return model.get();
 	}
 
 }

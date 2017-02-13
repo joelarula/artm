@@ -27,7 +27,7 @@ public class ImageDispatcher implements AssetRequestHandler{
 	@Override
 	public boolean handleAssetRequest(Request request, Response response,String extraPath) throws IOException {
 		
-		logger.info("dispatching {}",extraPath);
+		logger.debug("dispatching {}",extraPath);
 		File file = fileManager.getCatalogFile(extraPath);
 		if(file != null){
 			FileInputStream is = new FileInputStream(file);

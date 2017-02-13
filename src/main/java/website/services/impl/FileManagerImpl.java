@@ -168,7 +168,7 @@ public class FileManagerImpl implements FileManager{
 			try{
 				ModelPhotoSize size = ModelPhotoSize.valueOf(tokens[0].toUpperCase());
 				File file = this.getPhoto(tokens[1].substring(0,tokens[1].length()-4), size);
-				logger.info("returning  {}",file.getAbsolutePath());
+				logger.debug("returning  {}",file.getAbsolutePath());
 				return  file;
 			}catch(Exception ex){
 				logger.error(ex.toString());
