@@ -4,7 +4,7 @@ public enum ModelPhotoSize {
 	
 	ORIGINAL(null,null),
 	FULL_SCREEN(1024d,768d),
-	PREVIEW(720d,600d),
+	PREVIEW(620d,500d),
 	THUMBNAIL(250d,300d),
 	THUMBNAIL2(200d,250d),
 	ICON(125d,150d);

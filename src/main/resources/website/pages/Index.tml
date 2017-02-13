@@ -28,13 +28,13 @@
 					</div>
 				</t:loop>
 				<div class="categoryfooter">
-					...
+					&#42;
 				</div>
 			</div>
 	</t:block>
 	<t:block t:id="modelBlock">
   		<div class="col-md-12 model">
-  			<t:image t:path="modelPath" class="catalog-icon preview"/>
+  			<t:image t:path="modelPreviewPath" class="catalog-icon preview"/>
   		</div>
 	</t:block>
 </t:container>

@@ -173,7 +173,8 @@ public class ModelDaoImpl implements ModelDao{
 					
 			}
 			return false;
-		}).findFirst();
+		})
+		.findFirst();
 		return model.get();
 	}
 

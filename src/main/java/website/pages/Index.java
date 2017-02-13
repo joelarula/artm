@@ -157,6 +157,10 @@ public class Index {
 		return this.filemanager.getPath(this.model.getKey(), ModelPhotoSize.THUMBNAIL2);
 	}
 	
+	public String getModelPreviewPath(){
+		return this.filemanager.getPath(this.model.getKey(), ModelPhotoSize.PREVIEW);
+	}
+	
 	public String getCategoryCmd(){
 		return linkSource.createPageRenderLink(ClientCommand.MODELS.getPage(),false, new Object[]{
 			ClientCommand.MODELS.getContext(this.persistentLocale.get()).getRoute(),	
