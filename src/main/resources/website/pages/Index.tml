@@ -7,7 +7,7 @@
 		<div class="container-fluid">
 			<div id="catalog" class="row">
 				<t:loop t:source="categoriesValues" t:value="category" t:index="index">
-					<div class ="${catalogCellClass} text-center">
+					<div class ="${catalogCellClass} text-center catalogPreview">
 						<a class="categoryLabel" href="${categoryCmd}">${category}</a><br/>	
 							<a class="imageLink" href="${categoryCmd}">
 								<t:image t:path="categoryPath" class="catalog-icon thumb"/>
@@ -18,23 +18,42 @@
 		</div>
 	</t:block>
 	<t:block t:id="modelsBlock">
+
+			<div id="catalog_menu" class="row text-center">
+				<t:loop t:source="categoriesValues" t:value="menuCategory" t:index="index">
+					* <a class="categoryMenuLabel ${activeMenuClass}" href="${categoryMenuCmd}">${menuCategory}</a>
+				</t:loop>
+			</div>
 			<div id="category" class="row">
 				<t:loop t:source="categoryModels" t:value="model" t:index="index">
 					<div class ="${categoryCellClass} text-center modelthumb">
-						<a class="modelLabel" href="${modelCmd}">${modelName}</a><br/>
+						
 						<a class="imageLink" href="${modelCmd}">
 								<t:image t:path="modelPath" class="catalog-icon thumb"/>
-							</a>
+						</a><br/>
+						<a class="modelLabel" href="${modelCmd}">${modelName}</a>
 					</div>
 				</t:loop>
 				<div class="categoryfooter">
 					&#42;
 				</div>
 			</div>
+
 	</t:block>
 	<t:block t:id="modelBlock">
   		<div class="col-md-12 model">
+  			<h3 class="modelLabel">${modelName}</h3><br/>
   			<t:image t:path="modelPreviewPath" class="catalog-icon preview"/>
+  			<div class="details text-center">
+  			<t:loop t:source="details" t:value="detail">
+  				<t:image t:path="detailPreviewPath" class="detailPreview"/>
+     		</t:loop>
+     		<div id="catalog_menu" class="row text-center">
+				<t:loop t:source="categoriesValues" t:value="menuCategory" t:index="index">
+					* <a class="categoryMenuLabel ${activeMenuClass}" href="${categoryMenuCmd}">${menuCategory}</a>
+				</t:loop>
+			</div>
+     		</div>
   		</div>
 	</t:block>
 </t:container>

@@ -1,11 +1,13 @@
 package website.pages;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventContext;
@@ -68,7 +70,7 @@ public class Index {
 			if(this.command.equals(ClientCommand.MODELS)){
 				this.category = context.get(String.class, 1);
 			}else if(this.command.equals(ClientCommand.MODEL)){
-				this.model = this.modelSource.getByName(context.get(String.class, 1),Language.get(this.persistentLocale.get()));
+				this.model = this.modelSource.getById(context.get(String.class, 1),Language.get(this.persistentLocale.get()));
 			}
 		}
 
@@ -76,14 +78,33 @@ public class Index {
 		persistentLocale.set(locale);
 	}
 	 
-	public String onPassivate() { return this.command.getContext(this.persistentLocale.get()).getRoute(); }
+	public String[] onPassivate() { 
+		//return this.command.getContext(this.persistentLocale.get()).getRoute(); 
+		switch (command){
+			case HOME : return new String[]{ClientCommand.HOME.getContext(this.persistentLocale.get()).getRoute()};
+			case MODELS: return new String[]{ClientCommand.MODELS.getContext(this.persistentLocale.get()).getRoute()};
+			case MODEL :{ 
+				if(this.model != null){
+					return new String[]{
+						ClientCommand.MODEL.getContext(this.persistentLocale.get()).getRoute(),
+						this.model.getKey()};					
+				}else{
+					return new String[]{ClientCommand.HOME.getContext(this.persistentLocale.get()).getRoute()};	
+				}
+			}
+	
+		}
+		return new String[]{ClientCommand.HOME.getContext(this.persistentLocale.get()).getRoute()};	
+	}
+	
 	
 	public Block getActiveBlock(){
 		switch (command){
 			case HOME : return this.home;
 			case MODELS : return this.modelsBlock;
-			case MODEL : return this.modelBlock;
-		}
+			case MODEL :  return this.modelBlock;
+		};
+		
 		return this.home;
 	}
 
@@ -93,6 +114,9 @@ public class Index {
 
 	@Property
 	private String category;
+	
+	@Property
+	private String menuCategory;
 	
 	@Property
 	private Integer index;
@@ -168,6 +192,13 @@ public class Index {
 		}).toURI();
 	}
 	
+	public String getCategoryMenuCmd(){
+		return linkSource.createPageRenderLink(ClientCommand.MODELS.getPage(),false, new Object[]{
+			ClientCommand.MODELS.getContext(this.persistentLocale.get()).getRoute(),	
+			this.menuCategory	
+		}).toURI();
+	}
+	
 	public String getModelCmd(){
 		String name = null;
 		switch(Language.get(this.persistentLocale.get())){
@@ -206,6 +237,26 @@ public class Index {
 			this.models = this.modelSource.getAllForCategory(category,Language.get(this.persistentLocale.get()));
 		}
 		return models;
+	}
+	
+	public String getActiveMenuClass(){
+		return this.menuCategory.equals(this.category) ? "active" : "passive";
+	}
+	
+	@Property
+	private String detail;
+	
+	public List<String> getDetails(){
+		
+		return Arrays.asList(
+			this.model.getDetail_0(),
+			this.model.getDetail_1(),
+			this.model.getDetail_2()).stream().filter( m -> m != null)
+			.collect(Collectors.toList());
+	}
+	
+	public String getDetailPreviewPath(){
+		return this.filemanager.getPath(detail.substring(0, detail.length()-4), ModelPhotoSize.ICON);
 	}
 	
 }

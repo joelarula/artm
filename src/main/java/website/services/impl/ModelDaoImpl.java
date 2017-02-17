@@ -163,8 +163,10 @@ public class ModelDaoImpl implements ModelDao{
 	}
 
 	@Override
-	public Model getByName(String name, Language language) {
-		Optional<Model> model = this.models.values().stream().filter(m-> {
+	public Model getById(String name, Language language) {
+		Optional<Model> model = this.models.values().stream().filter(m-> m.getKey().equals(name)).findFirst();
+		
+		return  model.isPresent() ? model.get() :  this.models.values().stream().filter(m-> {
 			
 			switch(language){
 				case ET: if(m.getName()!= null && m.getName().equals(name))return true;
@@ -174,8 +176,7 @@ public class ModelDaoImpl implements ModelDao{
 			}
 			return false;
 		})
-		.findFirst();
-		return model.get();
+		.findFirst().get();	
 	}
 
 }

@@ -10,6 +10,14 @@
 	src: url(goudy.ttf ) format("truetype");  
 }  
 
+/* FFx3.5/Safari/Op10 - Next */  
+@font-face {  
+	font-family: goldenswing ;  
+	src: url(GoldenSwing.ttf) format("truetype");  
+}  
+
+
+Metamorphous-Regular.ttf
 
 .container {
     width: 1024px;
@@ -64,7 +72,7 @@ body{
 	background-position: center bottom;
 	background-repeat: no-repeat;
 	margin-bottom: 2px;
-	min-height: 750px;
+	min-height: 730px;
 }
 
 .sfooter {
@@ -74,13 +82,23 @@ body{
     height: 26px;
     text-align: center;
     font-size: 18px;
+    color: #FDDE7C;
     background-color: transparent;
 }
 
 
-#catalog, #category{	
-	margin-top: 50px;
+#catalog{	
+	margin-top: 80px;
 	min-height: 500px;
+}
+
+#category{	
+	margin-top: 120px;
+	min-height: 500px;
+}
+
+.catalogPreview .imageLink{
+	margin-bottom: 35px;
 }
 
 .categoryLabel{
@@ -95,13 +113,29 @@ body{
     color: #FDC17C;
 }
 
+.categoryMenuLabel{
+	text-decoration:none;  
+	font-family: goldenswing , georgia, verdana, helvetica, sans-serif;
+    font-size: 18px;
+    color: #FDDE7C;
+}
+
+.categoryMenuLabel:hover{
+	text-decoration:none;  
+    color: #FDC17C;
+}
+
+.categoryMenuLabel.active{
+	 font-size: 24px;
+}
+
 .imageLink{
 	display: inline-block;
-	margin-bottom: 30px;
+	margin-bottom: 5px;
 }
 
 .model{
-	margin-top: 50px;
+	margin-top: 80px;
 	text-align: center;
 	margin-bottom: 60px;
 }
@@ -111,7 +145,11 @@ body{
 }
 
 #category{
-	margin-top: 130px;
+	margin-top: 60px;
+}
+
+#catalog_menu{
+	margin-top: 80px;
 }
 
 .categoryfooter{
@@ -125,9 +163,19 @@ body{
  }
  
  .modelLabel, .modelLabel:hover{
+    font-family: goldenswing , georgia, verdana, helvetica, sans-serif;
     text-decoration:none;  
-	font-family: helvetica, sans-serif;
-    font-size: 18px;
+    font-size: 24px;
     color: #FDDE7C;
     display:inline-block;
+ }
+
+ .details{
+ 	margin-top: 30px;
+ }
+ 
+ .detailPreview{
+  display: inline-block;
+  margin: 20px;
+
  }
