@@ -19,6 +19,8 @@ import org.eclipse.jetty.util.security.Constraint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import website.services.impl.Utf8Filter;
+
 public class Server {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Server.class);
@@ -51,7 +53,6 @@ public class Server {
         filterHolder.setHeldClass(TapestryFilter.class);
         filterHolder.setName("website");
        
-        
         handler.addFilter(filterHolder, "/*", EnumSet.of(DispatcherType.REQUEST));
         								
 		server.setHandler(handler);	

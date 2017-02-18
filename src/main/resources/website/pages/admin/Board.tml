@@ -95,6 +95,7 @@
 											t:values="categories" t:label="categoryLabel" t:value="model.category.name"
 											placeholder="${message:categoryHint}" />
 									</div>
+
 									<div class="form-group">
 										<div class="checkbox">
 											<label>

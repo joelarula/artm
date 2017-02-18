@@ -29,13 +29,12 @@ public class UrlEncoderUtf8 implements URLEncoder
      * characters are encoded as a kind of unicode escape.
      */
     private final BitSet safe = new BitSet(128);
-
     {
-        markSafe("abcdefghijklmnopqrstuvwxyzõüäö");
-        markSafe("ABCDEFGHIJKLMNOPQRSTUVWXYZÜÕÄÖ");
         markSafe("01234567890-_.: ");
         markSafe("абвгдежзийклмнопрстуфхцчшщъыьэюя");
         markSafe("АБВГДЕЁЖЗИЙКЛМОНПСТУФХЦЧШЩЪЫЬЭЮЯ");
+        markSafe("abcdefghijklmnopqrstuvwxyzõüäö");
+        markSafe("ABCDEFGHIJKLMNOPQRSTUVWXYZÜÕÄÖ");
     }
 
     private void markSafe(String s)

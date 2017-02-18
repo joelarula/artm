@@ -2,11 +2,15 @@ package website.pages.admin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -19,6 +23,7 @@ import org.apache.tapestry5.Link;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.Environmental;
 import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -30,7 +35,11 @@ import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.services.PersistentLocale;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
+import org.apache.tapestry5.services.ajax.JavaScriptCallback;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +79,8 @@ public class Board {
 	@Component
 	private Form modelForm;
 	
-	@Component
+
+	@Component(parameters = {"enctype='application/x-www-form-urlencoded; charset=UTF-8'", "accept-charset='utf-8'"})
 	private Form modelsForm;
 	
 	
@@ -116,7 +126,13 @@ public class Board {
 	@Property
 	private Details editDetail;
 	
+	@Inject
+	private AjaxResponseRenderer ajax;
+
+	
 	public Object onActivate(EventContext context) throws JsonParseException, JsonMappingException, IOException{
+		
+	
 		this.command = AdminCommand.MODELS;
 		if(context.getCount() > 0){
 			String cmd = context.get(String.class, 0).toUpperCase();
@@ -152,7 +168,7 @@ public class Board {
 				SearchCommand c = SearchCommand.valueOf(e.getKey().toUpperCase());
 				switch(c){
 				case CATEGORY : 
-					this.searchCategory = e.getValue();
+					this.searchCategory = URLDecoder.decode(e.getValue(),"UTF-8");
 					break;				
 				case NAME : 
 					this.searchName = e.getValue();
@@ -194,7 +210,7 @@ public class Board {
 		return model;
 	}
 
-	public String[] onPassivate() { 
+	public String[] onPassivate() throws UnsupportedEncodingException { 
 		
 		if(this.command != null && this.command.equals(AdminCommand.MODELS)){
 			List<String> list = this.getSearchContext();
@@ -226,20 +242,21 @@ public class Board {
 	
 	
 	@OnEvent(value=EventConstants.SUCCESS,component="modelsForm")
-	public Link  onSubmitFromSeachForm(){
+	public Link   onSubmitFromSeachForm() throws UnsupportedEncodingException{
 		List<String> ctx = this.getSearchContext();
-		return linkSource.createPageRenderLink("admin/board", true, ctx.toArray());
+		final Link l =  linkSource.createPageRenderLink("admin/board", true, ctx.toArray());
+		return l;
 	}
 	
 	
-	private List<String> getSearchContext() {
+	private List<String> getSearchContext() throws UnsupportedEncodingException {
 		
 		List<String> ctx = new ArrayList<String>();
 		
 		ctx.add(AdminCommand.MODELS.name().toLowerCase());
 		if(this.searchCategory != null){
 			ctx.add(SearchCommand.CATEGORY.name().toLowerCase());
-			ctx.add(this.searchCategory);
+			ctx.add(URLEncoder.encode(this.searchCategory,"UTF-8"));
 		}
 		
 		if(this.searchName != null){

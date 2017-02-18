@@ -6,15 +6,22 @@ import java.util.Locale;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
+import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Contribute;
 import org.apache.tapestry5.ioc.annotations.Decorate;
 import org.apache.tapestry5.ioc.annotations.ImportModule;
+import org.apache.tapestry5.ioc.annotations.InjectService;
 import org.apache.tapestry5.ioc.annotations.Startup;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
 import org.apache.tapestry5.ioc.services.ServiceOverride;
 import org.apache.tapestry5.ioc.services.ThreadLocale;
 import org.apache.tapestry5.services.PersistentLocale;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.RequestFilter;
+import org.apache.tapestry5.services.RequestGlobals;
+import org.apache.tapestry5.services.RequestHandler;
+import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.services.URLEncoder;
 import org.apache.tapestry5.services.assets.AssetRequestHandler;
 import org.apache.tapestry5.upload.modules.UploadModule;
@@ -108,4 +115,22 @@ public class WebsiteModule {
       public static void setupOverrides(MappedConfiguration<Class,Object> configuration){
         configuration.add(URLEncoder.class, new UrlEncoderUtf8());
       }
+      
+      public void contributeRequestHandler(
+    	OrderedConfiguration<RequestFilter> configuration, 
+    	final RequestGlobals requestGlobals){
+          configuration.add("Utf8Filter",   new RequestFilter()
+	        {
+	            public boolean service(Request request, Response response, RequestHandler handler)
+	                throws IOException
+	            {
+	                requestGlobals.getHTTPServletRequest().setCharacterEncoding("UTF-8");
+	                requestGlobals.getHTTPServletResponse().setCharacterEncoding("UTF-8");
+	                return handler.service(request, response);
+	            }
+	        }); 
+      }
+      
+      
+      
 }
