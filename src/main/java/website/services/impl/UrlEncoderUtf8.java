@@ -34,6 +34,8 @@ public class UrlEncoderUtf8 implements URLEncoder
         markSafe("abcdefghijklmnopqrstuvwxyzõüäö");
         markSafe("ABCDEFGHIJKLMNOPQRSTUVWXYZÜÕÄÖ");
         markSafe("01234567890-_.: ");
+        markSafe("абвгдежзийклмнопрстуфхцчшщъыьэюя");
+        markSafe("АБВГДЕЁЖЗИЙКЛМОНПСТУФХЦЧШЩЪЫЬЭЮЯ");
     }
 
     private void markSafe(String s)

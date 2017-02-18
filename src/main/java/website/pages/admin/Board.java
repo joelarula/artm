@@ -196,17 +196,18 @@ public class Board {
 
 	public String[] onPassivate() { 
 		
-		if(this.command.equals(AdminCommand.MODELS)){
+		if(this.command != null && this.command.equals(AdminCommand.MODELS)){
 			List<String> list = this.getSearchContext();
 			return list.toArray(new String[list.size()]);
-		}else if(this.command.equals(AdminCommand.MODEL) ){
+		}else if(this.command != null && this.command.equals(AdminCommand.MODEL) ){
 			if(this.model.getKey() != null){
 				return new String[]{this.command.name(),model.getKey()};
 			}
 			return new String[]{this.command.name().toLowerCase()};
-		}else{
+		}else if(this.command != null){
 			return new String[]{this.command.name().toLowerCase()};
 		}
+		return new String[]{};
 	}
 	
 

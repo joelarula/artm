@@ -3,11 +3,13 @@ package website.model.database;
 import java.util.Date;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import website.model.admin.Language;
 import website.model.admin.Size;
 
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Model {
 	
 

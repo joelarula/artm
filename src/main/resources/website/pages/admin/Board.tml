@@ -43,7 +43,12 @@
 						</div>
 					</div>
 					</t:form>
-					<t:Grid t:row="model" t:source="models" t:model="gridModel" t:volatile="literal:true">
+					<t:Grid t:row="model" 
+						t:source="models" 
+						t:rowsPerPage="literal:50"
+						t:model="gridModel" 
+						t:pagerPosition="literal:BOTTOM"
+						t:volatile="literal:true">
 						<p:nameCell>
 							<t:pagelink t:page="admin/board" t:context="modelContext" >${model.name}</t:pagelink>			
 						</p:nameCell>
@@ -89,13 +94,6 @@
 										<t:textfield class="form-control" t:id="category"
 											t:values="categories" t:label="categoryLabel" t:value="model.category.name"
 											placeholder="${message:categoryHint}" />
-									</div>
-									<div class="form-group">
-										<label for="position">${message:position}</label>
-										<t:select class="form-control" t:id="position"
-											t:model="positions" t:label="positionLabel" 
-											t:value="model.position"
-											placeholder="${message:positionHint}" />
 									</div>
 									<div class="form-group">
 										<div class="checkbox">

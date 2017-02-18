@@ -15,19 +15,19 @@ public enum ClientCommand {
 		Arrays.asList(
 			new Route(Language.ET.getLocale(),"kodu"),
 			new Route(Language.EN.getLocale(),"home"),
-			new Route(Language.RU.getLocale(),"home")),
+			new Route(Language.RU.getLocale(),"\u0441\u0442\u0430\u0440\u0442\u043E\u0432\u0430\u044F")),
 		"home"),
 	MODELS("index",
 		Arrays.asList(
 			new Route(Language.ET.getLocale(),"sepised"),
 			new Route(Language.EN.getLocale(),"forgings"),
-			new Route(Language.RU.getLocale(),"forgings")),
+			new Route(Language.RU.getLocale(),"поковки")),
 		"sepised"),
 	MODEL("index",
 		Arrays.asList(
 			new Route(Language.ET.getLocale(),"sepis"),
 			new Route(Language.EN.getLocale(),"forging"),
-			new Route(Language.RU.getLocale(),"forging")),
+			new Route(Language.RU.getLocale(),"поковка")),
 		"sepis");
 
 	private static final Logger logger = LoggerFactory.getLogger(ClientCommand.class);

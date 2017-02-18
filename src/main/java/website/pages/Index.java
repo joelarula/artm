@@ -58,7 +58,11 @@ public class Index {
 	private LinkSource linkSource;
 	
 	
-	void onActivate(EventContext context){
+	Object onActivate(EventContext context){
+		
+		if(context.getCount() == 1 && context.get(String.class, 0).equals("admin")){
+			return this.linkSource.createPageRenderLink("admin/board", false, new Object[]{});
+		}
 		
 		Locale locale = this.persistentLocale.get() != null ? this.persistentLocale.get() : Language.ET.getLocale();
 		
@@ -76,6 +80,8 @@ public class Index {
 
 		
 		persistentLocale.set(locale);
+		
+		return null;
 	}
 	 
 	public String[] onPassivate() { 
@@ -259,4 +265,7 @@ public class Index {
 		return this.filemanager.getPath(detail.substring(0, detail.length()-4), ModelPhotoSize.ICON);
 	}
 	
+	public String getLocale(){
+		return this.persistentLocale.get().getLanguage();
+	}
 }

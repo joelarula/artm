@@ -3,18 +3,21 @@
 	font-family: goudy ;  
 	src: url(goudy.eot);  
 }  
-	 
-/* FFx3.5/Safari/Op10 - Next */  
+
 @font-face {  
 	font-family: goudy ;  
 	src: url(goudy.ttf ) format("truetype");  
 }  
 
-/* FFx3.5/Safari/Op10 - Next */  
 @font-face {  
 	font-family: goldenswing ;  
 	src: url(GoldenSwing.ttf) format("truetype");  
-}  
+} 
+
+@font-face {  
+	font-family: arkhip ;  
+	src: url(Arkhip_font.ttf) format("truetype");  
+} 
 
 
 Metamorphous-Regular.ttf
@@ -113,6 +116,11 @@ body{
     color: #FDC17C;
 }
 
+.categoryLabel.ru{
+	font-size: 16px;
+	font-family: arkhip , georgia, verdana, helvetica, sans-serif;
+}
+
 .categoryMenuLabel{
 	text-decoration:none;  
 	font-family: goldenswing , georgia, verdana, helvetica, sans-serif;
@@ -127,6 +135,15 @@ body{
 
 .categoryMenuLabel.active{
 	 font-size: 24px;
+}
+
+.categoryMenuLabel.ru{
+	font-size: 14px;
+	font-family: arkhip , georgia, verdana, helvetica, sans-serif;
+}
+
+.categoryMenuLabel.ru.active{
+	font-size: 16px;
 }
 
 .imageLink{
@@ -169,6 +186,11 @@ body{
     color: #FDDE7C;
     display:inline-block;
  }
+ 
+ .modelLabel.ru{
+ 	font-size: 16px;
+	font-family: arkhip , georgia, verdana, helvetica, sans-serif;
+}
 
  .details{
  	margin-top: 30px;
