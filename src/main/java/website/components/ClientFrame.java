@@ -46,6 +46,14 @@ public class ClientFrame {
 		return this.messages.get(this.persistentLocale.get().getLanguage());
 	}
 	
+	public String getCurrentLocale(){
+		return this.locale.getLanguage();
+	}
+	
+	public String getSetLocale(){
+		return this.persistentLocale.get().getLanguage();
+	}
+	
 	public String getLocaleLabel(){
 		return messages.get(this.locale.getLanguage());
 	}

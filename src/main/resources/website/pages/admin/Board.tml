@@ -79,7 +79,6 @@
 										<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
 									</t:eventLink>
 								</t:if>
-								${model.position}
 							</t:if>
 						</p:positionCell>
 					</t:Grid>

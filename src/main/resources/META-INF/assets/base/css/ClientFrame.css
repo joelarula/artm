@@ -175,6 +175,40 @@ body{
 	text-align: center;
 }
 
+
+.toggleLang, .toggleLang:hover{
+	font-family:  georgia, verdana, helvetica, sans-serif;
+    text-decoration:none;  
+    font-size: 14px;
+    color: #FDDE7C;
+	
+}
+
+.localeIcon{
+	background-size:contain;
+	display: inline-block;
+	width:24px;
+	height: 20px;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+.localeIcon.et{
+	background-image: url("ee.png");
+}
+
+.localeIcon.en{
+	background-image: url("en.png");
+}
+
+.localeIcon.ru{
+	background-image: url("ru.png");
+}
+
+.nav > li > a.toggleLang {
+	padding: 5px 5px;
+}
+
  .modelthumb{
  	min-height: 250px;
  }

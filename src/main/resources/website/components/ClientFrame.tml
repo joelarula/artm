@@ -8,16 +8,19 @@
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
              <ul class="nav navbar-nav navbar-right">
-                	 <li role="presentation" class="togglelang dropdown">
-    					<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-     					${currentLocaleLabel} <span class="caret"></span>
+                	 <li role="presentation">
+    					<a href="#" role="button" class="toggleLang">
+     						<span class="localeIcon ${setLocale}" aria-hidden="true"></span>
     					</a>
-    					<ul class="dropdown-menu">
-    						<t:loop t:source="locales" t:value="locale">
-     							 <li><t:eventlink t:event="literal:toggleLanguage" t:context="locale.language">${localeLabel}</t:eventlink></li>
-     						 </t:loop>
-   						 </ul>
-  					</li>
+    				</li>
+    				<t:loop t:source="locales" t:value="locale">
+     					<li>
+     						<t:eventlink class="toggleLang" t:event="literal:toggleLanguage" t:context="locale.language">
+     							<span class="localeIcon ${currentLocale}" aria-hidden="true"></span>
+     						</t:eventlink>
+     					</li>
+     				</t:loop>
+  					
               </ul>
             <h1 class="navbar-header">
                 <t:pagelink  class="page-title" t:page="prop:homeCommand.page" t:context="homeCommandContext" >${message:title}</t:pagelink>
