@@ -16,6 +16,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.internal.services.LinkSource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PersistentLocale;
+import org.apache.tapestry5.services.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +48,8 @@ public class Index {
 	@Inject
 	private PersistentLocale persistentLocale;
 	
+	@Inject
+	private Request request;
 	
 	@Inject
 	private ModelDao modelSource;
@@ -217,6 +220,9 @@ public class Index {
 			ClientCommand.MODEL.getContext(this.persistentLocale.get()).getRoute(),	
 			name	
 		});
+		
+		l.addParameterValue("i", this.index);	
+		l.addParameter("c", this.category);
 		return l.toURI();
 	}
 	
@@ -267,5 +273,68 @@ public class Index {
 	
 	public String getLocale(){
 		return this.persistentLocale.get().getLanguage();
+	}
+	
+	
+	public String getPreviousModelKey() {
+		Model m = null;
+		this.category = request.getParameter("c");
+		Integer ix = Integer.valueOf(request.getParameter("i"));
+		if(ix != null  && ix-1 >=0){
+			m = (Model) this.getCategoryModels().get(ix-1);
+		}	
+		return m != null ? m.getKey() : null;
+	}
+
+	public String getNextModelKey() {
+		Model m = null;
+		this.category = request.getParameter("c");
+		Integer ix = Integer.valueOf(request.getParameter("i"));
+		if(ix != null  && ix+1 < this.getCategoryModels().size() && ix+1 >= 0){
+			m = (Model) this.getCategoryModels().get(ix+1);
+		}
+		
+		return m != null ? m.getKey() : null;
+	}
+	
+	public String getPrevCmd(){
+		
+		Model m = null;
+		this.category = request.getParameter("c");
+		Integer ix = Integer.valueOf(request.getParameter("i"));
+		if(ix != null  && ix-1 >= 0){
+			m = (Model) this.getCategoryModels().get(ix-1);
+			Link l =  linkSource.createPageRenderLink(ClientCommand.MODEL.getPage(),true, new Object[]{
+				ClientCommand.MODEL.getContext(this.persistentLocale.get()).getRoute(),	
+				m.getKey()	
+			});
+				
+			l.addParameterValue("i", ix-1);	
+			l.addParameter("c", this.category);
+			return l.toURI();
+			
+		}
+		
+		return "#";
+	}
+	
+	public String getNextCmd(){
+		
+		Model m = null;
+		this.category = request.getParameter("c");
+		Integer ix = Integer.valueOf(request.getParameter("i"));
+		if(ix != null  && ix+1 < this.getCategoryModels().size()){
+			m = (Model) this.getCategoryModels().get(ix+1);
+			Link l =  linkSource.createPageRenderLink(ClientCommand.MODEL.getPage(),true, new Object[]{
+				ClientCommand.MODEL.getContext(this.persistentLocale.get()).getRoute(),	
+				m.getKey()	
+			});
+				
+			l.addParameterValue("i", ix+1);	
+			l.addParameter("c", this.category);
+			return l.toURI();
+		}
+				
+		return "#";
 	}
 }

@@ -54,10 +54,22 @@
 						t:pagerPosition="literal:BOTTOM"
 						t:volatile="literal:true">
 						<p:nameCell>
-							<t:pagelink t:page="admin/board" t:context="modelContext" >${model.name}</t:pagelink>			
+							<t:pagelink t:page="admin/board" t:context="modelContext" >${model.name}</t:pagelink>	
+							<t:if t:test="model.translation_en">
+								<br/>${model.translation_en}
+							</t:if>		
+							<t:if t:test="model.translation_ru">
+								<br/>${model.translation_ru}
+							</t:if>		
 						</p:nameCell>
 						<p:categoryCell>
 							${model.category?.name}		
+							<t:if t:test="model?.category.name_en">
+								<br/>${model?.category.name_en}
+							</t:if>	
+							<t:if t:test="model?.category.name_ru">
+								<br/>${model?.category.name_ru}
+							</t:if>		
 						</p:categoryCell>
 						<p:publishedCell>
 							<t:if t:test="model.published">

@@ -43,7 +43,22 @@
 	<t:block t:id="modelBlock">
   		<div class="col-md-12 model">
   			<h3 class="modelLabel ${locale}">${modelName}</h3><br/>
+
   			<t:image t:path="modelPreviewPath" class="catalog-icon preview"/>
+
+  			
+  			<div class="modelmenu">
+  			  	<t:if t:test="previousModelKey">
+  					<a class="modelNavPrev ${locale} pull-left" href="${prevCmd}">
+  						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+  					</a>
+  				</t:if>
+  				<t:if t:test="nextModelKey">
+  					<a class="modelNavNext ${locale} pull-right" href="${nextCmd}">
+  						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+  					</a>
+  				</t:if>
+  			</div>
   			<div class="details text-center">
   			<t:loop t:source="details" t:value="detail">
   				<t:image t:path="detailPreviewPath" class="detailPreview"/>

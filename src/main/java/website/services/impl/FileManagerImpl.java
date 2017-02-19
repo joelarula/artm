@@ -100,7 +100,7 @@ public class FileManagerImpl implements FileManager{
 		if(fileSize.equals(ModelPhotoSize.ORIGINAL)){
 			return new File(prepareCatalogPath(name,fileSize));
 		}else{
-			logger.info("scaling {} to  {}",name,fileSize);
+			logger.debug("scaling {} to  {}",name,fileSize);
 			final File file = new File(prepareCatalogPath(name,fileSize));
 			if(!file.exists()){		
 				if(!file.getParentFile().exists()){
@@ -112,7 +112,7 @@ public class FileManagerImpl implements FileManager{
 				
 				final Graphics2D g = source.createGraphics();
 				final Rectangle r = g.getDeviceConfiguration().getBounds();
-				logger.info("original {} {} ",r.width, r.height);
+				logger.debug("original {} {} ",r.width, r.height);
 				Double scaleFactor = null;
 				Scalr.Mode mode= null;
 				Double width = fileSize.getMaxWidthPx();
@@ -142,7 +142,7 @@ public class FileManagerImpl implements FileManager{
 				tg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				Rectangle tr = tg.getDeviceConfiguration().getBounds();
 				
-				logger.info("scaling "+name+"to "+fileSize.name()+" {}  {} ",tr.width,tr.height);
+				logger.debug("scaling "+name+"to "+fileSize.name()+" {}  {} ",tr.width,tr.height);
 
 				ImageIO.write(target, "png", file);
 				
