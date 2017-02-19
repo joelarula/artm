@@ -2,7 +2,6 @@ package website.pages;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -12,11 +11,15 @@ import java.util.stream.Collectors;
 import org.apache.tapestry5.Block;
 import org.apache.tapestry5.EventContext;
 import org.apache.tapestry5.Link;
+import org.apache.tapestry5.annotations.AfterRender;
+import org.apache.tapestry5.annotations.Environmental;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.internal.services.LinkSource;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.PersistentLocale;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +29,11 @@ import website.model.admin.ModelPhotoSize;
 import website.model.database.Model;
 import website.services.FileManager;
 import website.services.ModelDao;
-import website.services.WebsiteModule;
 
+@Import(
+	library={"lightbox-master/dist/ekko-lightbox.js"},
+	stylesheet={"lightbox-master/dist/ekko-lightbox.css"},
+	module={"index"})
 public class Index {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Index.class);
@@ -59,6 +65,9 @@ public class Index {
 	
 	@Inject 
 	private LinkSource linkSource;
+	
+	@Environmental
+	private JavaScriptSupport jsSupport;
 	
 	
 	Object onActivate(EventContext context){
@@ -120,6 +129,8 @@ public class Index {
 	public ClientCommand getCommand() {
 		return this.command;
 	}
+	
+
 
 	@Property
 	private String category;
@@ -227,12 +238,15 @@ public class Index {
 	}
 	
 	public String getModelName(){
-		switch(Language.get(this.persistentLocale.get())){
+		if(this.model != null){
+			switch(Language.get(this.persistentLocale.get())){
 			case ET: return this.model.getName();
 			case EN: return this.model.getTranslation_en();
 			case RU: return this.model.getTranslation_ru();
 		}
-		return null;
+		}
+
+		return "";
 	}
 	
 	private Model getCurrentCategory() {
@@ -336,5 +350,13 @@ public class Index {
 		}
 				
 		return "#";
+	}
+	
+	public String getModelOriginalCmd(){
+		return "/assets/"+this.filemanager.getPath(this.model.getKey(), ModelPhotoSize.ORIGINAL);
+	}
+	
+	public String getDetailOriginalCmd(){
+		return "/assets/"+this.filemanager.getPath(detail.substring(0, detail.length()-4), ModelPhotoSize.ORIGINAL);
 	}
 }

@@ -43,9 +43,9 @@
 	<t:block t:id="modelBlock">
   		<div class="col-md-12 model">
   			<h3 class="modelLabel ${locale}">${modelName}</h3><br/>
-
-  			<t:image t:path="modelPreviewPath" class="catalog-icon preview"/>
-
+			<a href="${modelOriginalCmd}" data-toggle="lightbox">
+  				<t:image t:path="modelPreviewPath" class="catalog-icon preview"/>
+			</a>
   			
   			<div class="modelmenu">
   			  	<t:if t:test="previousModelKey">
@@ -61,7 +61,9 @@
   			</div>
   			<div class="details text-center">
   			<t:loop t:source="details" t:value="detail">
-  				<t:image t:path="detailPreviewPath" class="detailPreview"/>
+  				<a href="${detailOriginalCmd}" data-toggle="lightbox">
+  					<t:image t:path="detailPreviewPath" class="detailPreview"/>
+  				</a>
      		</t:loop>
      		<div id="catalog_menu" class="row text-center">
 				<t:loop t:source="categoriesValues" t:value="menuCategory" t:index="index">
