@@ -43,10 +43,14 @@
 						</div>
 					</div>
 					</t:form>
-					<t:Grid t:row="model" 
+					<t:zone t:id="gridZone">
+					<t:Grid 
+					    t:id="searchGrid" 
+					    t:row="model" 
 						t:source="models" 
 						t:rowsPerPage="literal:50"
 						t:model="gridModel" 
+						t:rowIndex="index"
 						t:pagerPosition="literal:BOTTOM"
 						t:volatile="literal:true">
 						<p:nameCell>
@@ -63,7 +67,23 @@
 						<p:photoCell>
 							<t:image t:path="iconPath" class="preview-icon"/><br/>
 						</p:photoCell>
+						<p:positionCell>
+							<t:if t:test="searchCategory">
+								<t:if t:test="previousModelKey">
+									<t:eventLink t:id="up" t:event="switch" t:async="true" t:context="switchUpCtx">
+										<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+									</t:eventLink>
+								</t:if>
+								<t:if t:test="nextModelKey">
+									<t:eventLink t:id="down" t:event="switch" t:async="true" t:context="switchDownCtx">
+										<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+									</t:eventLink>
+								</t:if>
+								${model.position}
+							</t:if>
+						</p:positionCell>
 					</t:Grid>
+					</t:zone>
 					</div>
 				
 			</div>

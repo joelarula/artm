@@ -28,7 +28,11 @@ import org.apache.tapestry5.annotations.OnEvent;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.corelib.components.Grid;
+import org.apache.tapestry5.corelib.components.Zone;
+import org.apache.tapestry5.grid.ColumnSort;
 import org.apache.tapestry5.grid.GridDataSource;
+import org.apache.tapestry5.grid.GridSortModel;
 import org.apache.tapestry5.internal.grid.CollectionGridDataSource;
 import org.apache.tapestry5.internal.services.LinkSource;
 import org.apache.tapestry5.ioc.Messages;
@@ -88,6 +92,15 @@ public class Board {
 	private  Model model;
 	
 	@Property
+	private  Model previousModel;
+
+	@Property
+	private  Model nextModel;
+
+	@Component
+	private Grid searchGrid;
+	
+	@Property
 	private UploadedFile original;
 	
 	@Property
@@ -125,6 +138,9 @@ public class Board {
 	
 	@Property
 	private Details editDetail;
+	
+	@Property
+	private int index;
 	
 	@Inject
 	private AjaxResponseRenderer ajax;
@@ -171,7 +187,7 @@ public class Board {
 					this.searchCategory = URLDecoder.decode(e.getValue(),"UTF-8");
 					break;				
 				case NAME : 
-					this.searchName = e.getValue();
+					this.searchName =  URLDecoder.decode(e.getValue(),"UTF-8");
 					break;	
 				case UNPUBLISHED : 
 					this.searchUnPublished = true;
@@ -261,7 +277,7 @@ public class Board {
 		
 		if(this.searchName != null){
 			ctx.add(SearchCommand.NAME.name().toLowerCase());
-			ctx.add(this.searchName);
+			ctx.add(URLEncoder.encode(this.searchName,"UTF-8"));
 		}
 		if(this.searchUnPublished != null && this.searchUnPublished){
 			ctx.add(SearchCommand.UNPUBLISHED.name().toLowerCase());
@@ -374,6 +390,12 @@ public class Board {
 		if(this.modelSource == null){
 			this.modelSource = new CollectionGridDataSource(this.getSearchCriterion());
 		}
+		this.searchGrid.getSortModel().updateSort("position");
+		ColumnSort m = this.searchGrid.getSortModel().getColumnSort("position");
+		if(m.DESCENDING.equals(m)){
+			this.searchGrid.getSortModel().updateSort("position");
+		}
+		
 		return this.modelSource;
 	}
 	
@@ -382,6 +404,59 @@ public class Board {
 
 	}
 
+	public String[] getSwitchUpCtx(){
+		return new String[]{this.model.getKey(),this.getPreviousModelKey()};
+	}
+	
+	public String getPreviousModelKey() {
+		Model m = null;
+		if(index-1 >=0){
+			m = (Model) this.modelSource.getRowValue(index-1);
+		}	
+		return m != null ? m.getKey() : null;
+	}
+
+	public String[] getSwitchDownCtx(){
+		return new String[]{this.getNextModelKey(),this.model.getKey()};
+	}
+	
+	
+	public String getNextModelKey() {
+		Model m = null;
+		
+		if(index+1 < this.getModels().getAvailableRows()){
+			m = (Model) this.modelSource.getRowValue(index+1);	
+		}
+		
+		return m != null ? m.getKey() : null;
+	}
+	
+	@Component
+	private Zone gridZone;
+
+	@OnEvent("switch")
+	public void onSwitch(String lowerKey, String upperKey) throws IOException{
+		Model l = this.dao.get(lowerKey);
+		int lp = l.getPosition();
+		Model u = this.dao.get(upperKey);
+		int up = u.getPosition();
+		if(lp > up){
+			
+			l.setPosition(up);
+			u.setPosition(lp);
+			
+		}
+		if(lp == up){
+			l.setPosition(up);
+			u.setPosition(lp+1);
+		}
+		
+		dao.saveModel(l);
+		dao.saveModel(u);
+		
+		this.ajax.addRender("gridZone", gridZone.getBody());
+	}
+	
 	private BeanModel<Model> gridModel;
 	
 	public BeanModel<Model> getGridModel(){
