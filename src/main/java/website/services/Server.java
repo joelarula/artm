@@ -1,7 +1,10 @@
 package website.services;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.EnumSet;
+import java.util.Properties;
 
 import javax.servlet.DispatcherType;
 
@@ -11,6 +14,7 @@ import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.SecurityHandler;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ErrorHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -27,8 +31,23 @@ public class Server {
 	
 	public static void main(String[] args) throws Exception {
 
+		Properties prop = new Properties();
+		InputStream input = null;
 
-		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(8080);
+		input = new FileInputStream(WebsiteModule.propertiesHomeDir);
+		prop.load(input);
+		
+		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server();
+		
+        // HTTP connector
+        ServerConnector http = new ServerConnector(server);
+        http.setHost(String.valueOf(prop.getProperty("host")));
+        http.setPort(Integer.valueOf(prop.getProperty("port")));
+        http.setIdleTimeout(30000);
+	
+        
+        // Set the connector
+        server.addConnector(http);
 		
 		final ErrorHandler errorHandler = new ErrorHandler();
         errorHandler.setServer(server);

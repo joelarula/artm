@@ -29,6 +29,8 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.googlecode.pngtastic.PngtasticOptimizer;
+
 
 import website.model.admin.ModelPhotoSize;
 import website.model.admin.Size;
@@ -78,6 +80,12 @@ public class FileManagerImpl implements FileManager{
 	
 	}
 
+	private String prepareCatalogFolder(ModelPhotoSize fileSize) {
+		return WebsiteModule.websiteFolder 
+		+ File.separator + FileManager.catalog 
+		+ File.separator + fileSize.name().toLowerCase();
+	}
+	
 	private String prepareCatalogPath(String name, ModelPhotoSize fileSize) {
 		return WebsiteModule.websiteFolder 
 		+ File.separator + FileManager.catalog 
@@ -100,7 +108,7 @@ public class FileManagerImpl implements FileManager{
 		if(fileSize.equals(ModelPhotoSize.ORIGINAL)){
 			return new File(prepareCatalogPath(name,fileSize));
 		}else{
-			logger.debug("scaling {} to  {}",name,fileSize);
+			logger.info("scaling {} to  {}",name,fileSize);
 			final File file = new File(prepareCatalogPath(name,fileSize));
 			if(!file.exists()){		
 				if(!file.getParentFile().exists()){
@@ -145,6 +153,11 @@ public class FileManagerImpl implements FileManager{
 				logger.debug("scaling "+name+"to "+fileSize.name()+" {}  {} ",tr.width,tr.height);
 
 				ImageIO.write(target, "png", file);
+				
+				PngtasticOptimizer opt = new PngtasticOptimizer(
+					"",new String[]{file.getAbsolutePath()}, "",false, 
+					5,null, 15, null
+				);
 				
 			}
 			return file;

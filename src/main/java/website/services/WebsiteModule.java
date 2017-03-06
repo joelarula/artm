@@ -1,8 +1,12 @@
 package website.services;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
+import java.util.Properties;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -43,10 +47,19 @@ public class WebsiteModule {
 	private static final String WEBSITE_HOME = "sepised";
 	public static final  String websiteFolder = System.getProperty("user.home")+File.separator+WEBSITE_HOME;
 	public static final  String dbHomeDir = websiteFolder +File.separator + "db";
+	public static final  String propertiesHomeDir = websiteFolder +File.separator + "website.properties";
 	
 	
-	public static void contributeApplicationDefaults(MappedConfiguration<String,String> configuration){
-		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
+
+	public static void contributeApplicationDefaults(MappedConfiguration<String,String> configuration) throws IOException{
+		
+		Properties prop = new Properties();
+		InputStream input = null;
+
+		input = new FileInputStream(WebsiteModule.propertiesHomeDir);
+		prop.load(input);
+		String mode = String.valueOf(prop.getProperty("production-mode", "false"));
+		configuration.add(SymbolConstants.PRODUCTION_MODE, mode);
 		configuration.add(SymbolConstants.SUPPORTED_LOCALES,"et,en,ru");
 		configuration.add(SymbolConstants.HMAC_PASSPHRASE,"dfsdfadfdsasdvds");
 		
@@ -64,7 +77,9 @@ public class WebsiteModule {
 	  @Startup
 	  public void onStartup(RegistryShutdownHub shutdown,ModelDao dao) throws IOException{
 			
-		  dao.loadDatabase();
+		  logger.info("home : {}", websiteFolder);
+		  
+		 // dao.loadDatabase();
 
 		  shutdown.addRegistryShutdownListener(new Runnable(){
 
@@ -117,10 +132,8 @@ public class WebsiteModule {
       }
       
       public void contributeRequestHandler(
-    	OrderedConfiguration<RequestFilter> configuration, 
-    	final RequestGlobals requestGlobals){
-          configuration.add("Utf8Filter",   new RequestFilter()
-	        {
+    	OrderedConfiguration<RequestFilter> configuration, final RequestGlobals requestGlobals){
+          configuration.add("Utf8Filter",   new RequestFilter(){
 	            public boolean service(Request request, Response response, RequestHandler handler)
 	                throws IOException
 	            {
@@ -129,6 +142,18 @@ public class WebsiteModule {
 	                return handler.service(request, response);
 	            }
 	        }); 
+          
+          configuration.add("timingFilter",   new RequestFilter(){
+	            public boolean service(Request request, Response response, RequestHandler handler)throws IOException
+	            {
+	            	long start = System.currentTimeMillis();
+	            	logger.info("request in {}",request.getPath());
+	                boolean result =  handler.service(request, response);
+	                logger.info("request out {} elapsed {} ms",request.getPath(),System.currentTimeMillis() - start);
+	                return result;
+	            }
+	        },"after:StaticFiles"); 
+          
       }
       
       
