@@ -29,9 +29,9 @@ public class ImageManipulationTest extends TestCase{
 		
 		
 		fm.getPhoto("testThumb", ModelPhotoSize.THUMBNAIL);
-//		fm.getPhoto("testThumb", ModelPhotoSize.THUMBNAIL2);
-//		fm.getPhoto("testThumb", ModelPhotoSize.PREVIEW);
-//		fm.getPhoto("testThumb", ModelPhotoSize.FULL_SCREEN);
+		fm.getPhoto("testThumb", ModelPhotoSize.THUMBNAIL2);
+		fm.getPhoto("testThumb", ModelPhotoSize.PREVIEW);
+		fm.getPhoto("testThumb", ModelPhotoSize.FULL_SCREEN);
 		
 	}
 

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>sepised</groupId>
   <artifactId>website</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.9-SNAPSHOT</version>
   <build>
     <resources>
       <resource>

@@ -1,0 +1,561 @@
+2017-03-14 00:22:12 main INFO  log:192 - Logging initialized @287ms to org.eclipse.jetty.util.log.Slf4jLog
+2017-03-14 00:22:13 main INFO  Server:108 - auth true /home/joel/sepised/login.properties
+2017-03-14 00:22:13 main INFO  Server:372 - jetty-9.4.0.RC3
+2017-03-14 00:22:13 main WARN  Server:375 - THIS IS NOT A STABLE RELEASE! DO NOT USE IN PRODUCTION!
+2017-03-14 00:22:13 main WARN  Server:376 - Download a stable release from http://download.eclipse.org/jetty/
+2017-03-14 00:22:13 main INFO  session:352 - DefaultSessionIdManager workerName=node0
+2017-03-14 00:22:13 main INFO  session:357 - No SessionScavenger set, using defaults
+2017-03-14 00:22:13 main INFO  session:146 - Scavenging every 660000ms
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class org.apache.tapestry5.ioc.modules.TapestryIOCModule
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class org.apache.tapestry5.json.modules.JSONModule
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class org.apache.tapestry5.upload.modules.UploadModule
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class org.apache.tapestry5.modules.TapestryModule
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class org.apache.tapestry5.modules.InternalModule
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class org.apache.tapestry5.modules.AssetsModule
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class org.apache.tapestry5.modules.PageLoadModule
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class org.apache.tapestry5.modules.JavaScriptModule
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class org.apache.tapestry5.modules.CompatibilityModule
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class org.apache.tapestry5.modules.DashboardModule
+2017-03-14 00:22:13 main INFO  RegistryBuilder:121 - Adding module definition for class website.services.WebsiteModule
+2017-03-14 00:22:13 main INFO  ComponentClassResolver:527 - Available pages (11):
+              (blank): website.pages.Index
+   ComponentLibraries: org.apache.tapestry5.corelib.pages.ComponentLibraries
+      ExceptionReport: org.apache.tapestry5.corelib.pages.ExceptionReport
+                Index: website.pages.Index
+          PageCatalog: org.apache.tapestry5.corelib.pages.PageCatalog
+PropertyDisplayBlocks: org.apache.tapestry5.corelib.pages.PropertyDisplayBlocks
+   PropertyEditBlocks: org.apache.tapestry5.corelib.pages.PropertyEditBlocks
+        ServiceStatus: org.apache.tapestry5.corelib.pages.ServiceStatus
+          T5Dashboard: org.apache.tapestry5.corelib.pages.T5Dashboard
+          admin/Board: website.pages.admin.Board
+         admin/Logout: website.pages.admin.Logout
+    admin/getNewModel: website.pages.admin.getNewModel
+
+2017-03-14 00:22:13 main INFO  ComponentClassResolver:527 - Available components (60):
+        ActionLink: org.apache.tapestry5.corelib.components.ActionLink
+        AddRowLink: org.apache.tapestry5.corelib.components.AddRowLink
+        AdminFrame: website.components.AdminFrame
+      AjaxFormLoop: org.apache.tapestry5.corelib.components.AjaxFormLoop
+            Alerts: org.apache.tapestry5.corelib.components.Alerts
+               Any: org.apache.tapestry5.corelib.components.Any
+       BeanDisplay: org.apache.tapestry5.corelib.components.BeanDisplay
+      BeanEditForm: org.apache.tapestry5.corelib.components.BeanEditForm
+        BeanEditor: org.apache.tapestry5.corelib.components.BeanEditor
+          Checkbox: org.apache.tapestry5.corelib.components.Checkbox
+         Checklist: org.apache.tapestry5.corelib.components.Checklist
+       ClientFrame: website.components.ClientFrame
+         DateField: org.apache.tapestry5.corelib.components.DateField
+          Delegate: org.apache.tapestry5.corelib.components.Delegate
+           DevTool: org.apache.tapestry5.corelib.components.DevTool
+           Doctype: org.apache.tapestry5.corelib.components.Doctype
+           Dynamic: org.apache.tapestry5.corelib.components.Dynamic
+             Error: org.apache.tapestry5.corelib.components.Error
+            Errors: org.apache.tapestry5.corelib.components.Errors
+         EventLink: org.apache.tapestry5.corelib.components.EventLink
+  ExceptionDisplay: org.apache.tapestry5.corelib.components.ExceptionDisplay
+              Form: org.apache.tapestry5.corelib.components.Form
+      FormFragment: org.apache.tapestry5.corelib.components.FormFragment
+         Glyphicon: org.apache.tapestry5.corelib.components.Glyphicon
+              Grid: org.apache.tapestry5.corelib.components.Grid
+          GridCell: org.apache.tapestry5.corelib.components.GridCell
+       GridColumns: org.apache.tapestry5.corelib.components.GridColumns
+         GridPager: org.apache.tapestry5.corelib.components.GridPager
+          GridRows: org.apache.tapestry5.corelib.components.GridRows
+            Hidden: org.apache.tapestry5.corelib.components.Hidden
+                If: org.apache.tapestry5.corelib.components.If
+             Image: website.components.Image
+             Label: org.apache.tapestry5.corelib.components.Label
+        LinkSubmit: org.apache.tapestry5.corelib.components.LinkSubmit
+         LocalDate: org.apache.tapestry5.corelib.components.LocalDate
+              Loop: org.apache.tapestry5.corelib.components.Loop
+            Output: org.apache.tapestry5.corelib.components.Output
+         OutputRaw: org.apache.tapestry5.corelib.components.OutputRaw
+          PageLink: org.apache.tapestry5.corelib.components.PageLink
+           Palette: org.apache.tapestry5.corelib.components.Palette
+     PasswordField: org.apache.tapestry5.corelib.components.PasswordField
+ProgressiveDisplay: org.apache.tapestry5.corelib.components.ProgressiveDisplay
+   PropertyDisplay: org.apache.tapestry5.corelib.components.PropertyDisplay
+    PropertyEditor: org.apache.tapestry5.corelib.components.PropertyEditor
+             Radio: org.apache.tapestry5.corelib.components.Radio
+        RadioGroup: org.apache.tapestry5.corelib.components.RadioGroup
+     RemoveRowLink: org.apache.tapestry5.corelib.components.RemoveRowLink
+      RenderObject: org.apache.tapestry5.corelib.components.RenderObject
+            Select: org.apache.tapestry5.corelib.components.Select
+            Submit: org.apache.tapestry5.corelib.components.Submit
+    SubmitNotifier: org.apache.tapestry5.corelib.components.SubmitNotifier
+          TextArea: org.apache.tapestry5.corelib.components.TextArea
+         TextField: org.apache.tapestry5.corelib.components.TextField
+        TextOutput: org.apache.tapestry5.corelib.components.TextOutput
+      TimeInterval: org.apache.tapestry5.corelib.components.TimeInterval
+              Tree: org.apache.tapestry5.corelib.components.Tree
+           Trigger: org.apache.tapestry5.corelib.components.Trigger
+            Unless: org.apache.tapestry5.corelib.components.Unless
+            Upload: org.apache.tapestry5.upload.components.Upload
+              Zone: org.apache.tapestry5.corelib.components.Zone
+
+2017-03-14 00:22:13 main INFO  ComponentClassResolver:527 - Available mixins (13):
+      Autocomplete: org.apache.tapestry5.corelib.mixins.Autocomplete
+           Confirm: org.apache.tapestry5.corelib.mixins.Confirm
+       DiscardBody: org.apache.tapestry5.corelib.mixins.DiscardBody
+    FormFieldFocus: org.apache.tapestry5.corelib.mixins.FormFieldFocus
+         FormGroup: org.apache.tapestry5.corelib.mixins.FormGroup
+          NotEmpty: org.apache.tapestry5.corelib.mixins.NotEmpty
+OverrideFieldFocus: org.apache.tapestry5.corelib.mixins.OverrideFieldFocus
+    RenderClientId: org.apache.tapestry5.corelib.mixins.RenderClientId
+    RenderDisabled: org.apache.tapestry5.corelib.mixins.RenderDisabled
+   RenderInformals: org.apache.tapestry5.corelib.mixins.RenderInformals
+RenderNotification: org.apache.tapestry5.corelib.mixins.RenderNotification
+   TriggerFragment: org.apache.tapestry5.corelib.mixins.TriggerFragment
+       ZoneRefresh: org.apache.tapestry5.corelib.mixins.ZoneRefresh
+
+2017-03-14 00:22:13 main INFO  WebsiteModule:80 - home : /home/joel/sepised
+2017-03-14 00:22:13 main INFO  ModelDao:101 - loading database
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model d62630c2-eb0b-4ce2-98fb-1c76b5b7c9d3  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model b7ea39ab-f315-4244-8b01-dfaa78f958ec  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model e06167c8-e71a-404b-a40a-4b6fd31a5d25  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 72e90c58-f124-4dce-9bad-c9be4a32386a  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model d8207a16-76a8-43de-ac3c-e88dafb71d41  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 6305f847-17c7-4a12-9296-f9ed44c9a260  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 4e0a2077-3960-438b-917f-9dd0b6b5e602  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model ea6b57df-4ac9-4004-8ef4-66210930a05a  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 776642d3-e19e-44d3-aea6-4c6df02fd4aa  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 59e0c59a-5834-42a6-b8b5-d245819e1f1e  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model c42ec1b9-b58c-4389-9cb8-808a268fd73c  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 65fc048f-5c7f-46a5-9140-cd36f9c7124f  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 9d74b646-2408-4dcb-84c6-050fc283c8cc  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 17c5b5c3-1faa-4530-9233-18366512d697  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 8daa74ce-ad6c-4d68-a48e-25fc39c92491  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model e9142f0f-d5e6-42ee-851b-95b8cb32d6cf  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 9fb054a8-86d4-40bf-84bc-92b6c0165794  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model a5061467-77bd-4731-b4a2-5fcbacbdd37f  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 37e4e95e-b030-474c-991c-7689e0a39302  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model b2d63355-b90c-4b46-b718-5978ebe05b39  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model b87ff992-363f-4e06-a51c-8da7c12e93f1  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 2f9f6de8-8725-4142-9f6a-dc7acfb3140c  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 564577b4-32de-437e-8029-e4a04ca05d1d  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 80798e9b-3a46-4a72-b94d-e50c5aaf1a07  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 4fcb3061-0559-46e4-9056-05f99dc57d43  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 152f3936-6485-452c-b381-bcdba3dafb8e  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 183721ae-36c3-4069-b4d0-81d74e811067  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 36ed1fd7-a7eb-42e5-973f-669e2de728e1  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 21fab277-5009-4a07-acb9-e78ea7f58510  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 6c232106-75df-48e8-86d7-35cd2981e41f  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 5a7d39c3-abea-4f91-b57c-6c7995423800  found in disk {}
+2017-03-14 00:22:14 main WARN  FileManagerImpl:240 - model 7709590f-f9a4-438b-ab7e-8afcc0936a8c  found in disk {}
+2017-03-14 00:22:14 main INFO  ModelDao:104 - loading database 32 models elapsed 253
+2017-03-14 00:22:14 main INFO  TapestryFilter:247 - Startup status:
+
+Services:
+
+          AjaxComponentEventRequestHandler: DEFINED
+         AjaxComponentEventResultProcessor: DEFINED
+                  AjaxFormUpdateController: DEFINED
+               AjaxPartialResponseRenderer: DEFINED
+                      AjaxResponseRenderer: DEFINED
+                              AlertManager: VIRTUAL
+                       ApplicationDefaults: REAL
+                        ApplicationGlobals: REAL
+                    ApplicationInitializer: REAL
+                   ApplicationStateManager: DEFINED
+ ApplicationStatePersistenceStrategySource: DEFINED
+                           AspectDecorator: VIRTUAL
+                       AssetBindingFactory: DEFINED
+                    AssetChecksumGenerator: DEFINED
+                           AssetDispatcher: DEFINED
+                       AssetObjectProvider: REAL
+                      AssetPathConstructor: DEFINED
+                        AssetPathConverter: DEFINED
+                               AssetSource: VIRTUAL
+                             BaseURLSource: DEFINED
+                   BeanBlockOverrideSource: DEFINED
+                           BeanBlockSource: DEFINED
+                           BeanModelSource: DEFINED
+                             BindingSource: DEFINED
+                              ChainBuilder: VIRTUAL
+                          ClassNameLocator: REAL
+                ClasspathAssetAliasManager: DEFINED
+                     ClasspathAssetFactory: DEFINED
+                          ClasspathScanner: REAL
+                     ClasspathURLConverter: REAL
+                     ClientBehaviorSupport: DEFINED
+                         ClientDataEncoder: DEFINED
+              ClientPersistentFieldStorage: DEFINED
+             ClientPersistentFieldStrategy: DEFINED
+                           ClientWhitelist: DEFINED
+                             Compatibility: DEFINED
+                       ComponentClassCache: DEFINED
+                    ComponentClassResolver: REAL
+             ComponentClassTransformWorker: DEFINED
+      ComponentClassesInvalidationEventHub: REAL
+                  ComponentDefaultProvider: DEFINED
+                 ComponentEventLinkEncoder: DEFINED
+             ComponentEventLinkTransformer: DEFINED
+              ComponentEventRequestHandler: DEFINED
+             ComponentEventResultProcessor: DEFINED
+          ComponentInstanceResultProcessor: DEFINED
+               ComponentInstantiatorSource: DEFINED
+                ComponentLibraryInfoSource: DEFINED
+     ComponentMessagesInvalidationEventHub: DEFINED
+                   ComponentMessagesSource: DEFINED
+                      ComponentModelSource: DEFINED
+                         ComponentOverride: REAL
+       ComponentPageElementResourcesSource: DEFINED
+                     ComponentProxyFactory: DEFINED
+                   ComponentRequestHandler: DEFINED
+          ComponentRequestSelectorAnalyzer: DEFINED
+                  ComponentResourceLocator: DEFINED
+                           ComponentSource: VIRTUAL
+                  ComponentTemplateLocator: DEFINED
+                   ComponentTemplateSource: DEFINED
+    ComponentTemplatesInvalidationEventHub: DEFINED
+                       CompressionAnalyzer: DEFINED
+                       ContentTypeAnalyzer: DEFINED
+                                   Context: DEFINED
+                       ContextAssetFactory: DEFINED
+                     ContextBindingFactory: DEFINED
+                        ContextPathEncoder: DEFINED
+                       ContextValueEncoder: DEFINED
+                                CookieSink: DEFINED
+                              CookieSource: DEFINED
+                                   Cookies: DEFINED
+                       CoreJavaScriptStack: DEFINED
+                          DashboardManager: DEFINED
+                          DataTypeAnalyzer: DEFINED
+                             DateUtilities: DEFINED
+                   DefaultDataTypeAnalyzer: DEFINED
+                    DefaultFileItemFactory: DEFINED
+              DefaultImplementationBuilder: VIRTUAL
+                         DeferredExecution: DEFINED
+                        DeprecationWarning: DEFINED
+                     DynamicTemplateParser: VIRTUAL
+                      EndOfRequestEventHub: REAL
+                               Environment: DEFINED
+                EnvironmentalShadowBuilder: VIRTUAL
+                         ExceptionAnalyzer: DEFINED
+                     ExceptionReportWriter: DEFINED
+                         ExceptionReporter: DEFINED
+                          ExceptionTracker: DEFINED
+                           FactoryDefaults: REAL
+                     FieldTranslatorSource: DEFINED
+                    FieldValidationSupport: DEFINED
+               FieldValidatorDefaultSource: DEFINED
+                      FieldValidatorSource: DEFINED
+                               FileManager: REAL
+                    FormControlNameManager: DEFINED
+                               FormSupport: DEFINED
+                                 Heartbeat: DEFINED
+                  HiddenFieldLocationRules: DEFINED
+                              Html5Support: DEFINED
+                        HttpServletRequest: DEFINED
+                 HttpServletRequestHandler: VIRTUAL
+                       HttpServletResponse: DEFINED
+                        IgnoredPathsFilter: DEFINED
+                         InjectionProvider: DEFINED
+     InternalComponentInvalidationEventHub: REAL
+                   InternalJavaScriptStack: DEFINED
+                    InternalRequestGlobals: DEFINED
+                  JavaScriptStackAssembler: DEFINED
+            JavaScriptStackPathConstructor: DEFINED
+                     JavaScriptStackSource: DEFINED
+                         JavaScriptSupport: DEFINED
+                               LazyAdvisor: DEFINED
+                           LinkCreationHub: DEFINED
+                                LinkSource: DEFINED
+                           LinkTransformer: DEFINED
+                        LocalizationSetter: VIRTUAL
+                          LocationRenderer: DEFINED
+                              LoggerSource: BUILTIN
+                            LoggingAdvisor: DEFINED
+                          LoggingDecorator: DEFINED
+                            MarkupRenderer: DEFINED
+                       MarkupWriterFactory: DEFINED
+                          MasterDispatcher: DEFINED
+                      MasterObjectProvider: REAL
+           MasterStackTraceElementAnalyzer: DEFINED
+                     MessageBindingFactory: DEFINED
+                           MetaDataLocator: DEFINED
+                                MetaWorker: DEFINED
+                                  ModelDao: REAL
+                             ModuleManager: DEFINED
+                          MultipartDecoder: DEFINED
+           NullFieldStrategyBindingFactory: DEFINED
+                   NullFieldStrategySource: DEFINED
+                  NumericTranslatorSupport: DEFINED
+                            ObjectRenderer: DEFINED
+                          OperationAdvisor: DEFINED
+            PageActivationContextCollector: DEFINED
+                             PageActivator: DEFINED
+                   PageContentTypeAnalyzer: DEFINED
+                     PageDocumentGenerator: DEFINED
+                        PageElementFactory: DEFINED
+                                PageLoader: DEFINED
+                        PageMarkupRenderer: DEFINED
+                             PagePreloader: REAL
+                      PageRenderLinkSource: DEFINED
+                 PageRenderLinkTransformer: DEFINED
+                           PageRenderQueue: DEFINED
+                  PageRenderRequestHandler: DEFINED
+                      PageResponseRenderer: DEFINED
+                                PageSource: DEFINED
+                     PartialMarkupRenderer: DEFINED
+                   PartialTemplateRenderer: DEFINED
+                           PathConstructor: DEFINED
+                          PeriodicExecutor: DEFINED
+                    PersistentFieldManager: DEFINED
+                          PersistentLocale: DEFINED
+                          PerthreadManager: BUILTIN
+                           PipelineBuilder: REAL
+                       PlasticProxyFactory: BUILTIN
+                        PropBindingFactory: DEFINED
+                      PropertiesFileParser: DEFINED
+                            PropertyAccess: VIRTUAL
+                     PropertyConduitSource: DEFINED
+                     PropertyShadowBuilder: VIRTUAL
+                       RegistryShutdownHub: BUILTIN
+                           RegistryStartup: REAL
+                              ReloadHelper: REAL
+                                   Request: VIRTUAL
+                   RequestExceptionHandler: DEFINED
+                            RequestGlobals: DEFINED
+                            RequestHandler: DEFINED
+                          RequestPageCache: DEFINED
+                    RequestSecurityManager: DEFINED
+                     ResourceChangeTracker: DEFINED
+                   ResourceDigestGenerator: DEFINED
+                     ResourceDigestManager: DEFINED
+                         ResourceMinimizer: DEFINED
+                          ResourceStreamer: DEFINED
+                                  Response: VIRTUAL
+               ResponseCompressionAnalyzer: DEFINED
+                          ResponseRenderer: DEFINED
+                        SelectModelFactory: DEFINED
+                 ServiceActivityScoreboard: BUILTIN
+           ServiceConfigurationListenerHub: DEFINED
+                    ServiceLifecycleSource: REAL
+                           ServiceOverride: REAL
+             ServletApplicationInitializer: REAL
+SessionApplicationStatePersistenceStrategy: DEFINED
+            SessionPersistedObjectAnalyzer: DEFINED
+                           StrategyBuilder: VIRTUAL
+                  StreamableResourceSource: DEFINED
+                            StringInterner: DEFINED
+                      SymbolBindingFactory: DEFINED
+                              SymbolSource: REAL
+                    TapestrySessionFactory: DEFINED
+                            TemplateParser: DEFINED
+                              ThreadLocale: DEFINED
+                              ThunkCreator: DEFINED
+                   TranslateBindingFactory: DEFINED
+                TranslatorAlternatesSource: DEFINED
+                          TranslatorSource: DEFINED
+                               TypeCoercer: REAL
+                                URLEncoder: DEFINED
+           UnknownActivationContextHandler: DEFINED
+                         UpdateListenerHub: REAL
+                    ValidateBindingFactory: DEFINED
+             ValidationConstraintGenerator: DEFINED
+                ValidationDecoratorFactory: DEFINED
+                            ValidatorMacro: DEFINED
+                        ValueEncoderSource: DEFINED
+                        ValueLabelProvider: DEFINED
+
+85.31% unrealized services (180/211)
+
+Application 'website' (version 0.0.1) startup time: 162 ms to build IoC Registry, 830 ms overall.
+
+ ______                  __             ____
+/_  __/__ ____  ___ ___ / /_______ __  / __/
+ / / / _ `/ _ \/ -_|_-</ __/ __/ // / /__ \ 
+/_/  \_,_/ .__/\__/___/\__/_/  \_, / /____/
+        /_/                   /___/  5.4.1
+
+
+2017-03-14 00:22:14 main INFO  ContextHandler:791 - Started o.e.j.s.ServletContextHandler@392a04e7{/,null,AVAILABLE}
+2017-03-14 00:22:14 main INFO  AbstractConnector:280 - Started ServerConnector@3cb12e10{HTTP/1.1,[http/1.1]}{localhost:8080}
+2017-03-14 00:22:14 main INFO  Server:444 - Started @1444ms
+2017-03-14 00:22:17 qtp1543237999-26 INFO  WebsiteModule:150 - request in /et/kodu
+2017-03-14 00:22:17 qtp1543237999-26 INFO  PageLoader:213 - Loaded page 'Index' (et) in 371.376 ms
+2017-03-14 00:22:18 qtp1543237999-26 INFO  WebsiteModule:152 - request out /et/kodu elapsed 1188 ms
+2017-03-14 00:22:18 qtp1543237999-23 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/776642d3-e19e-44d3-aea6-4c6df02fd4aa.jpeg
+2017-03-14 00:22:18 qtp1543237999-22 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/21fab277-5009-4a07-acb9-e78ea7f58510.jpeg
+2017-03-14 00:22:18 qtp1543237999-18 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/183721ae-36c3-4069-b4d0-81d74e811067.jpeg
+2017-03-14 00:22:18 qtp1543237999-24 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map
+2017-03-14 00:22:18 qtp1543237999-24 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map elapsed 9 ms
+2017-03-14 00:22:21 qtp1543237999-23 INFO  FileManagerImpl:113 - scaling 776642d3-e19e-44d3-aea6-4c6df02fd4aa to  THUMBNAIL2
+2017-03-14 00:22:22 qtp1543237999-23 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/776642d3-e19e-44d3-aea6-4c6df02fd4aa.jpeg elapsed 4028 ms
+2017-03-14 00:22:22 qtp1543237999-22 INFO  FileManagerImpl:113 - scaling 21fab277-5009-4a07-acb9-e78ea7f58510 to  THUMBNAIL2
+2017-03-14 00:22:23 qtp1543237999-22 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/21fab277-5009-4a07-acb9-e78ea7f58510.jpeg elapsed 4796 ms
+2017-03-14 00:22:24 qtp1543237999-18 INFO  FileManagerImpl:113 - scaling 183721ae-36c3-4069-b4d0-81d74e811067 to  THUMBNAIL2
+2017-03-14 00:22:24 qtp1543237999-18 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/183721ae-36c3-4069-b4d0-81d74e811067.jpeg elapsed 5962 ms
+2017-03-14 00:22:52 qtp1543237999-18 INFO  WebsiteModule:150 - request in /et/kodu
+2017-03-14 00:22:52 qtp1543237999-18 INFO  WebsiteModule:152 - request out /et/kodu elapsed 7 ms
+2017-03-14 00:22:52 qtp1543237999-20 INFO  WebsiteModule:150 - request in /assets/meta/z869ea40b/tapestry5/bootstrap/css/bootstrap.css
+2017-03-14 00:22:52 qtp1543237999-20 INFO  WebsiteModule:152 - request out /assets/meta/z869ea40b/tapestry5/bootstrap/css/bootstrap.css elapsed 1 ms
+2017-03-14 00:22:52 qtp1543237999-22 INFO  WebsiteModule:150 - request in /assets/meta/za5639df9/tapestry5/tapestry.css
+2017-03-14 00:22:52 qtp1543237999-22 INFO  WebsiteModule:152 - request out /assets/meta/za5639df9/tapestry5/tapestry.css elapsed 0 ms
+2017-03-14 00:22:52 qtp1543237999-26 INFO  WebsiteModule:150 - request in /assets/meta/zceffa0e4/tapestry5/tapestry-console.css
+2017-03-14 00:22:52 qtp1543237999-26 INFO  WebsiteModule:152 - request out /assets/meta/zceffa0e4/tapestry5/tapestry-console.css elapsed 0 ms
+2017-03-14 00:22:52 qtp1543237999-19 INFO  WebsiteModule:150 - request in /assets/meta/z7cd0b108/tapestry5/tree.css
+2017-03-14 00:22:52 qtp1543237999-26 INFO  WebsiteModule:150 - request in /assets/meta/zc208f95e/lightbox-master/dist/ekko-lightbox.css
+2017-03-14 00:22:52 qtp1543237999-26 INFO  WebsiteModule:152 - request out /assets/meta/zc208f95e/lightbox-master/dist/ekko-lightbox.css elapsed 0 ms
+2017-03-14 00:22:52 qtp1543237999-17 INFO  WebsiteModule:150 - request in /assets/meta/z43fc4995/base/css/ClientFrame.css
+2017-03-14 00:22:52 qtp1543237999-17 INFO  WebsiteModule:152 - request out /assets/meta/z43fc4995/base/css/ClientFrame.css elapsed 0 ms
+2017-03-14 00:22:52 qtp1543237999-19 INFO  WebsiteModule:152 - request out /assets/meta/z7cd0b108/tapestry5/tree.css elapsed 0 ms
+2017-03-14 00:22:52 qtp1543237999-15 INFO  WebsiteModule:150 - request in /assets/meta/ze8a5779c/tapestry5/exception-frame.css
+2017-03-14 00:22:52 qtp1543237999-15 INFO  WebsiteModule:152 - request out /assets/meta/ze8a5779c/tapestry5/exception-frame.css elapsed 1 ms
+2017-03-14 00:22:52 qtp1543237999-22 INFO  WebsiteModule:150 - request in /assets/stack/z80c61436/et/core.js
+2017-03-14 00:22:52 qtp1543237999-17 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/b87ff992-363f-4e06-a51c-8da7c12e93f1.jpeg
+2017-03-14 00:22:52 qtp1543237999-23 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/776642d3-e19e-44d3-aea6-4c6df02fd4aa.jpeg
+2017-03-14 00:22:52 qtp1543237999-24 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/21fab277-5009-4a07-acb9-e78ea7f58510.jpeg
+2017-03-14 00:22:52 qtp1543237999-22 INFO  WebsiteModule:152 - request out /assets/stack/z80c61436/et/core.js elapsed 3 ms
+2017-03-14 00:22:52 qtp1543237999-26 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/183721ae-36c3-4069-b4d0-81d74e811067.jpeg
+2017-03-14 00:22:52 qtp1543237999-15 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/9fb054a8-86d4-40bf-84bc-92b6c0165794.jpeg
+2017-03-14 00:22:52 qtp1543237999-20 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/e06167c8-e71a-404b-a40a-4b6fd31a5d25.jpeg
+2017-03-14 00:22:59 qtp1543237999-23 INFO  FileManagerImpl:113 - scaling 776642d3-e19e-44d3-aea6-4c6df02fd4aa to  THUMBNAIL2
+2017-03-14 00:23:00 qtp1543237999-23 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/776642d3-e19e-44d3-aea6-4c6df02fd4aa.jpeg elapsed 8010 ms
+2017-03-14 00:23:00 qtp1543237999-22 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js
+2017-03-14 00:23:00 qtp1543237999-22 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js elapsed 0 ms
+2017-03-14 00:23:00 qtp1543237999-23 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map
+2017-03-14 00:23:00 qtp1543237999-23 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map elapsed 1 ms
+2017-03-14 00:23:01 qtp1543237999-17 INFO  FileManagerImpl:113 - scaling b87ff992-363f-4e06-a51c-8da7c12e93f1 to  THUMBNAIL2
+2017-03-14 00:23:02 qtp1543237999-17 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/b87ff992-363f-4e06-a51c-8da7c12e93f1.jpeg elapsed 9763 ms
+2017-03-14 00:23:02 qtp1543237999-24 INFO  FileManagerImpl:113 - scaling 21fab277-5009-4a07-acb9-e78ea7f58510 to  THUMBNAIL2
+2017-03-14 00:23:02 qtp1543237999-24 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/21fab277-5009-4a07-acb9-e78ea7f58510.jpeg elapsed 10156 ms
+2017-03-14 00:23:02 qtp1543237999-15 INFO  FileManagerImpl:113 - scaling 9fb054a8-86d4-40bf-84bc-92b6c0165794 to  THUMBNAIL2
+2017-03-14 00:23:02 qtp1543237999-15 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/9fb054a8-86d4-40bf-84bc-92b6c0165794.jpeg elapsed 10574 ms
+2017-03-14 00:23:03 qtp1543237999-26 INFO  FileManagerImpl:113 - scaling 183721ae-36c3-4069-b4d0-81d74e811067 to  THUMBNAIL2
+2017-03-14 00:23:03 qtp1543237999-26 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/183721ae-36c3-4069-b4d0-81d74e811067.jpeg elapsed 11056 ms
+2017-03-14 00:23:03 qtp1543237999-20 INFO  FileManagerImpl:113 - scaling e06167c8-e71a-404b-a40a-4b6fd31a5d25 to  THUMBNAIL2
+2017-03-14 00:23:03 qtp1543237999-20 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/e06167c8-e71a-404b-a40a-4b6fd31a5d25.jpeg elapsed 11656 ms
+2017-03-14 00:23:17 qtp1543237999-19 INFO  WebsiteModule:150 - request in /et/kodu
+2017-03-14 00:23:17 qtp1543237999-19 INFO  WebsiteModule:152 - request out /et/kodu elapsed 6 ms
+2017-03-14 00:23:17 qtp1543237999-22 INFO  WebsiteModule:150 - request in /assets/meta/za5639df9/tapestry5/tapestry.css
+2017-03-14 00:23:17 qtp1543237999-26 INFO  WebsiteModule:150 - request in /assets/meta/z7cd0b108/tapestry5/tree.css
+2017-03-14 00:23:17 qtp1543237999-26 INFO  WebsiteModule:152 - request out /assets/meta/z7cd0b108/tapestry5/tree.css elapsed 0 ms
+2017-03-14 00:23:17 qtp1543237999-24 INFO  WebsiteModule:150 - request in /assets/meta/ze8a5779c/tapestry5/exception-frame.css
+2017-03-14 00:23:17 qtp1543237999-24 INFO  WebsiteModule:152 - request out /assets/meta/ze8a5779c/tapestry5/exception-frame.css elapsed 1 ms
+2017-03-14 00:23:17 qtp1543237999-15 INFO  WebsiteModule:150 - request in /assets/meta/zceffa0e4/tapestry5/tapestry-console.css
+2017-03-14 00:23:17 qtp1543237999-20 INFO  WebsiteModule:150 - request in /assets/meta/zc208f95e/lightbox-master/dist/ekko-lightbox.css
+2017-03-14 00:23:17 qtp1543237999-20 INFO  WebsiteModule:152 - request out /assets/meta/zc208f95e/lightbox-master/dist/ekko-lightbox.css elapsed 2 ms
+2017-03-14 00:23:17 qtp1543237999-20 INFO  WebsiteModule:150 - request in /assets/meta/z43fc4995/base/css/ClientFrame.css
+2017-03-14 00:23:17 qtp1543237999-20 INFO  WebsiteModule:152 - request out /assets/meta/z43fc4995/base/css/ClientFrame.css elapsed 0 ms
+2017-03-14 00:23:17 qtp1543237999-18 INFO  WebsiteModule:150 - request in /assets/meta/z869ea40b/tapestry5/bootstrap/css/bootstrap.css
+2017-03-14 00:23:17 qtp1543237999-18 INFO  WebsiteModule:152 - request out /assets/meta/z869ea40b/tapestry5/bootstrap/css/bootstrap.css elapsed 0 ms
+2017-03-14 00:23:17 qtp1543237999-15 INFO  WebsiteModule:152 - request out /assets/meta/zceffa0e4/tapestry5/tapestry-console.css elapsed 6 ms
+2017-03-14 00:23:17 qtp1543237999-22 INFO  WebsiteModule:152 - request out /assets/meta/za5639df9/tapestry5/tapestry.css elapsed 0 ms
+2017-03-14 00:23:17 qtp1543237999-17 INFO  WebsiteModule:150 - request in /assets/stack/z80c61436/et/core.js
+2017-03-14 00:23:17 qtp1543237999-30 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/183721ae-36c3-4069-b4d0-81d74e811067.jpeg
+2017-03-14 00:23:17 qtp1543237999-17 INFO  WebsiteModule:152 - request out /assets/stack/z80c61436/et/core.js elapsed 0 ms
+2017-03-14 00:23:17 qtp1543237999-24 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/9fb054a8-86d4-40bf-84bc-92b6c0165794.jpeg
+2017-03-14 00:23:17 qtp1543237999-24 INFO  FileManagerImpl:113 - scaling 9fb054a8-86d4-40bf-84bc-92b6c0165794 to  THUMBNAIL2
+2017-03-14 00:23:17 qtp1543237999-24 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/9fb054a8-86d4-40bf-84bc-92b6c0165794.jpeg elapsed 2 ms
+2017-03-14 00:23:17 qtp1543237999-24 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/21fab277-5009-4a07-acb9-e78ea7f58510.jpeg
+2017-03-14 00:23:17 qtp1543237999-24 INFO  FileManagerImpl:113 - scaling 21fab277-5009-4a07-acb9-e78ea7f58510 to  THUMBNAIL2
+2017-03-14 00:23:17 qtp1543237999-24 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/21fab277-5009-4a07-acb9-e78ea7f58510.jpeg elapsed 1 ms
+2017-03-14 00:23:17 qtp1543237999-26 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/b87ff992-363f-4e06-a51c-8da7c12e93f1.jpeg
+2017-03-14 00:23:17 qtp1543237999-26 INFO  FileManagerImpl:113 - scaling b87ff992-363f-4e06-a51c-8da7c12e93f1 to  THUMBNAIL2
+2017-03-14 00:23:17 qtp1543237999-17 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/e06167c8-e71a-404b-a40a-4b6fd31a5d25.jpeg
+2017-03-14 00:23:17 qtp1543237999-20 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/776642d3-e19e-44d3-aea6-4c6df02fd4aa.jpeg
+2017-03-14 00:23:17 qtp1543237999-20 INFO  FileManagerImpl:113 - scaling 776642d3-e19e-44d3-aea6-4c6df02fd4aa to  THUMBNAIL2
+2017-03-14 00:23:17 qtp1543237999-20 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/776642d3-e19e-44d3-aea6-4c6df02fd4aa.jpeg elapsed 6 ms
+2017-03-14 00:23:17 qtp1543237999-30 INFO  FileManagerImpl:113 - scaling 183721ae-36c3-4069-b4d0-81d74e811067 to  THUMBNAIL2
+2017-03-14 00:23:17 qtp1543237999-30 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/183721ae-36c3-4069-b4d0-81d74e811067.jpeg elapsed 10 ms
+2017-03-14 00:23:17 qtp1543237999-17 INFO  FileManagerImpl:113 - scaling e06167c8-e71a-404b-a40a-4b6fd31a5d25 to  THUMBNAIL2
+2017-03-14 00:23:17 qtp1543237999-26 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/b87ff992-363f-4e06-a51c-8da7c12e93f1.jpeg elapsed 8 ms
+2017-03-14 00:23:17 qtp1543237999-17 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/e06167c8-e71a-404b-a40a-4b6fd31a5d25.jpeg elapsed 9 ms
+2017-03-14 00:23:17 qtp1543237999-18 INFO  WebsiteModule:150 - request in /modules.gz/index.js
+2017-03-14 00:23:17 qtp1543237999-23 INFO  WebsiteModule:150 - request in /modules.gz/screen.js
+2017-03-14 00:23:17 qtp1543237999-23 INFO  WebsiteModule:152 - request out /modules.gz/screen.js elapsed 3 ms
+2017-03-14 00:23:17 qtp1543237999-22 INFO  WebsiteModule:150 - request in /modules.gz/bootstrap/dropdown.js
+2017-03-14 00:23:17 qtp1543237999-18 INFO  WebsiteModule:152 - request out /modules.gz/index.js elapsed 10 ms
+2017-03-14 00:23:17 qtp1543237999-15 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map
+2017-03-14 00:23:17 qtp1543237999-15 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map elapsed 1 ms
+2017-03-14 00:23:18 qtp1543237999-22 INFO  WebsiteModule:152 - request out /modules.gz/bootstrap/dropdown.js elapsed 5 ms
+2017-03-14 00:23:18 qtp1543237999-24 INFO  WebsiteModule:150 - request in /modules.gz/bootstrap/modal.js
+2017-03-14 00:23:18 qtp1543237999-24 INFO  WebsiteModule:152 - request out /modules.gz/bootstrap/modal.js elapsed 2 ms
+2017-03-14 00:23:18 qtp1543237999-26 INFO  WebsiteModule:150 - request in /modules.gz/bootstrap/transition.js
+2017-03-14 00:23:18 qtp1543237999-26 INFO  WebsiteModule:152 - request out /modules.gz/bootstrap/transition.js elapsed 1 ms
+2017-03-14 00:23:19 qtp1543237999-17 INFO  WebsiteModule:150 - request in /et/sepised/Väike sepis
+2017-03-14 00:23:19 qtp1543237999-17 INFO  WebsiteModule:152 - request out /et/sepised/Väike sepis elapsed 13 ms
+2017-03-14 00:23:19 qtp1543237999-26 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/564577b4-32de-437e-8029-e4a04ca05d1d.jpeg
+2017-03-14 00:23:19 qtp1543237999-26 INFO  FileManagerImpl:113 - scaling 564577b4-32de-437e-8029-e4a04ca05d1d to  THUMBNAIL2
+2017-03-14 00:23:19 qtp1543237999-30 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/a5061467-77bd-4731-b4a2-5fcbacbdd37f.jpeg
+2017-03-14 00:23:19 qtp1543237999-30 INFO  FileManagerImpl:113 - scaling a5061467-77bd-4731-b4a2-5fcbacbdd37f to  THUMBNAIL2
+2017-03-14 00:23:19 qtp1543237999-18 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/6305f847-17c7-4a12-9296-f9ed44c9a260.jpeg
+2017-03-14 00:23:19 qtp1543237999-18 INFO  FileManagerImpl:113 - scaling 6305f847-17c7-4a12-9296-f9ed44c9a260 to  THUMBNAIL2
+2017-03-14 00:23:19 qtp1543237999-22 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/d62630c2-eb0b-4ce2-98fb-1c76b5b7c9d3.jpeg
+2017-03-14 00:23:19 qtp1543237999-22 INFO  FileManagerImpl:113 - scaling d62630c2-eb0b-4ce2-98fb-1c76b5b7c9d3 to  THUMBNAIL2
+2017-03-14 00:23:20 qtp1543237999-15 INFO  WebsiteModule:150 - request in /assets/meta/1ef85af7/base/css/GoldenSwing.ttf
+2017-03-14 00:23:20 qtp1543237999-15 INFO  WebsiteModule:152 - request out /assets/meta/1ef85af7/base/css/GoldenSwing.ttf elapsed 1 ms
+2017-03-14 00:23:20 qtp1543237999-26 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/564577b4-32de-437e-8029-e4a04ca05d1d.jpeg elapsed 112 ms
+2017-03-14 00:23:20 qtp1543237999-30 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/a5061467-77bd-4731-b4a2-5fcbacbdd37f.jpeg elapsed 129 ms
+2017-03-14 00:23:20 qtp1543237999-22 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/d62630c2-eb0b-4ce2-98fb-1c76b5b7c9d3.jpeg elapsed 190 ms
+2017-03-14 00:23:20 qtp1543237999-18 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/6305f847-17c7-4a12-9296-f9ed44c9a260.jpeg elapsed 191 ms
+2017-03-14 00:23:20 qtp1543237999-20 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map
+2017-03-14 00:23:20 qtp1543237999-20 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map elapsed 1 ms
+2017-03-14 00:23:24 qtp1543237999-24 INFO  WebsiteModule:150 - request in /et/kodu
+2017-03-14 00:23:24 qtp1543237999-24 INFO  WebsiteModule:152 - request out /et/kodu elapsed 11 ms
+2017-03-14 00:23:25 qtp1543237999-15 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map
+2017-03-14 00:23:25 qtp1543237999-15 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map elapsed 1 ms
+2017-03-14 00:23:25 qtp1543237999-17 INFO  WebsiteModule:150 - request in /et/sepised/Lühtrid küünlajalad
+2017-03-14 00:23:25 qtp1543237999-17 INFO  WebsiteModule:152 - request out /et/sepised/Lühtrid küünlajalad elapsed 15 ms
+2017-03-14 00:23:25 qtp1543237999-30 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/8daa74ce-ad6c-4d68-a48e-25fc39c92491.jpeg
+2017-03-14 00:23:25 qtp1543237999-30 INFO  FileManagerImpl:113 - scaling 8daa74ce-ad6c-4d68-a48e-25fc39c92491 to  THUMBNAIL2
+2017-03-14 00:23:25 qtp1543237999-26 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/17c5b5c3-1faa-4530-9233-18366512d697.jpeg
+2017-03-14 00:23:25 qtp1543237999-26 INFO  FileManagerImpl:113 - scaling 17c5b5c3-1faa-4530-9233-18366512d697 to  THUMBNAIL2
+2017-03-14 00:23:25 qtp1543237999-24 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/6c232106-75df-48e8-86d7-35cd2981e41f.jpeg
+2017-03-14 00:23:25 qtp1543237999-24 INFO  FileManagerImpl:113 - scaling 6c232106-75df-48e8-86d7-35cd2981e41f to  THUMBNAIL2
+2017-03-14 00:23:25 qtp1543237999-22 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/b2d63355-b90c-4b46-b718-5978ebe05b39.jpeg
+2017-03-14 00:23:25 qtp1543237999-22 INFO  FileManagerImpl:113 - scaling b2d63355-b90c-4b46-b718-5978ebe05b39 to  THUMBNAIL2
+2017-03-14 00:23:25 qtp1543237999-23 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/9d74b646-2408-4dcb-84c6-050fc283c8cc.jpeg
+2017-03-14 00:23:25 qtp1543237999-20 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/e9142f0f-d5e6-42ee-851b-95b8cb32d6cf.jpeg
+2017-03-14 00:23:25 qtp1543237999-20 INFO  FileManagerImpl:113 - scaling e9142f0f-d5e6-42ee-851b-95b8cb32d6cf to  THUMBNAIL2
+2017-03-14 00:23:25 qtp1543237999-23 INFO  FileManagerImpl:113 - scaling 9d74b646-2408-4dcb-84c6-050fc283c8cc to  THUMBNAIL2
+2017-03-14 00:23:26 qtp1543237999-26 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/17c5b5c3-1faa-4530-9233-18366512d697.jpeg elapsed 155 ms
+2017-03-14 00:23:26 qtp1543237999-26 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/80798e9b-3a46-4a72-b94d-e50c5aaf1a07.jpeg
+2017-03-14 00:23:26 qtp1543237999-26 INFO  FileManagerImpl:113 - scaling 80798e9b-3a46-4a72-b94d-e50c5aaf1a07 to  THUMBNAIL2
+2017-03-14 00:23:26 qtp1543237999-20 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/e9142f0f-d5e6-42ee-851b-95b8cb32d6cf.jpeg elapsed 172 ms
+2017-03-14 00:23:26 qtp1543237999-23 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/9d74b646-2408-4dcb-84c6-050fc283c8cc.jpeg elapsed 181 ms
+2017-03-14 00:23:26 qtp1543237999-18 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/36ed1fd7-a7eb-42e5-973f-669e2de728e1.jpeg
+2017-03-14 00:23:26 qtp1543237999-18 INFO  FileManagerImpl:113 - scaling 36ed1fd7-a7eb-42e5-973f-669e2de728e1 to  THUMBNAIL2
+2017-03-14 00:23:26 qtp1543237999-20 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/37e4e95e-b030-474c-991c-7689e0a39302.jpeg
+2017-03-14 00:23:26 qtp1543237999-20 INFO  FileManagerImpl:113 - scaling 37e4e95e-b030-474c-991c-7689e0a39302 to  THUMBNAIL2
+2017-03-14 00:23:26 qtp1543237999-24 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/6c232106-75df-48e8-86d7-35cd2981e41f.jpeg elapsed 299 ms
+2017-03-14 00:23:26 qtp1543237999-15 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/4e0a2077-3960-438b-917f-9dd0b6b5e602.jpeg
+2017-03-14 00:23:26 qtp1543237999-15 INFO  FileManagerImpl:113 - scaling 4e0a2077-3960-438b-917f-9dd0b6b5e602 to  THUMBNAIL2
+2017-03-14 00:23:26 qtp1543237999-22 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/b2d63355-b90c-4b46-b718-5978ebe05b39.jpeg elapsed 412 ms
+2017-03-14 00:23:26 qtp1543237999-22 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map
+2017-03-14 00:23:26 qtp1543237999-22 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map elapsed 12 ms
+2017-03-14 00:23:26 qtp1543237999-22 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/ea6b57df-4ac9-4004-8ef4-66210930a05a.jpeg
+2017-03-14 00:23:26 qtp1543237999-22 INFO  FileManagerImpl:113 - scaling ea6b57df-4ac9-4004-8ef4-66210930a05a to  THUMBNAIL2
+2017-03-14 00:23:26 qtp1543237999-26 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/80798e9b-3a46-4a72-b94d-e50c5aaf1a07.jpeg elapsed 289 ms
+2017-03-14 00:23:26 qtp1543237999-23 INFO  WebsiteModule:150 - request in /assets/catalog/thumbnail2/72e90c58-f124-4dce-9bad-c9be4a32386a.jpeg
+2017-03-14 00:23:26 qtp1543237999-23 INFO  FileManagerImpl:113 - scaling 72e90c58-f124-4dce-9bad-c9be4a32386a to  THUMBNAIL2
+2017-03-14 00:23:26 qtp1543237999-20 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/37e4e95e-b030-474c-991c-7689e0a39302.jpeg elapsed 304 ms
+2017-03-14 00:23:26 qtp1543237999-15 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/4e0a2077-3960-438b-917f-9dd0b6b5e602.jpeg elapsed 213 ms
+2017-03-14 00:23:26 qtp1543237999-23 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/72e90c58-f124-4dce-9bad-c9be4a32386a.jpeg elapsed 89 ms
+2017-03-14 00:23:26 qtp1543237999-22 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/ea6b57df-4ac9-4004-8ef4-66210930a05a.jpeg elapsed 139 ms
+2017-03-14 00:23:26 qtp1543237999-30 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/8daa74ce-ad6c-4d68-a48e-25fc39c92491.jpeg elapsed 977 ms
+2017-03-14 00:23:26 qtp1543237999-18 INFO  WebsiteModule:152 - request out /assets/catalog/thumbnail2/36ed1fd7-a7eb-42e5-973f-669e2de728e1.jpeg elapsed 832 ms
+2017-03-14 00:23:29 qtp1543237999-17 INFO  WebsiteModule:150 - request in /et/sepis/Küünlajalg seinale
+2017-03-14 00:23:29 qtp1543237999-17 INFO  WebsiteModule:152 - request out /et/sepis/Küünlajalg seinale elapsed 13 ms
+2017-03-14 00:23:29 qtp1543237999-26 INFO  WebsiteModule:150 - request in /assets/catalog/preview/b2d63355-b90c-4b46-b718-5978ebe05b39.jpeg
+2017-03-14 00:23:29 qtp1543237999-26 INFO  FileManagerImpl:113 - scaling b2d63355-b90c-4b46-b718-5978ebe05b39 to  PREVIEW
+2017-03-14 00:23:29 qtp1543237999-20 INFO  WebsiteModule:150 - request in /assets/catalog/icon/b2d63355-b90c-4b46-b718-5978ebe05b39:DETAIL0.jpeg
+2017-03-14 00:23:29 qtp1543237999-20 INFO  FileManagerImpl:113 - scaling b2d63355-b90c-4b46-b718-5978ebe05b39:DETAIL0 to  ICON
+2017-03-14 00:23:29 qtp1543237999-20 INFO  WebsiteModule:152 - request out /assets/catalog/icon/b2d63355-b90c-4b46-b718-5978ebe05b39:DETAIL0.jpeg elapsed 112 ms
+2017-03-14 00:23:29 qtp1543237999-24 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map
+2017-03-14 00:23:29 qtp1543237999-24 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map elapsed 1 ms
+2017-03-14 00:23:29 qtp1543237999-26 INFO  WebsiteModule:152 - request out /assets/catalog/preview/b2d63355-b90c-4b46-b718-5978ebe05b39.jpeg elapsed 203 ms
+2017-03-14 00:23:33 qtp1543237999-23 INFO  WebsiteModule:150 - request in /assets/catalog/original/b2d63355-b90c-4b46-b718-5978ebe05b39:DETAIL0.png
+2017-03-14 00:23:33 qtp1543237999-23 INFO  WebsiteModule:152 - request out /assets/catalog/original/b2d63355-b90c-4b46-b718-5978ebe05b39:DETAIL0.png elapsed 28 ms
+2017-03-14 00:23:37 qtp1543237999-31 INFO  WebsiteModule:150 - request in /et/kodu
+2017-03-14 00:23:37 qtp1543237999-31 INFO  WebsiteModule:152 - request out /et/kodu elapsed 15 ms
+2017-03-14 00:23:37 qtp1543237999-30 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map
+2017-03-14 00:23:37 qtp1543237999-30 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map elapsed 1 ms
+2017-03-14 00:23:38 qtp1543237999-22 INFO  WebsiteModule:150 - request in /et/sepised/Lühtrid küünlajalad
+2017-03-14 00:23:38 qtp1543237999-22 INFO  WebsiteModule:152 - request out /et/sepised/Lühtrid küünlajalad elapsed 7 ms
+2017-03-14 00:23:38 qtp1543237999-17 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map
+2017-03-14 00:23:38 qtp1543237999-17 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map elapsed 1 ms
+2017-03-14 00:23:40 qtp1543237999-18 INFO  WebsiteModule:150 - request in /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map
+2017-03-14 00:23:40 qtp1543237999-18 INFO  WebsiteModule:152 - request out /assets/meta/z40610473/lightbox-master/dist/ekko-lightbox.js.map elapsed 1 ms

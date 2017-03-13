@@ -49,7 +49,8 @@ public class FileManagerImpl implements FileManager{
 	@Override
 	public boolean supportsPhotoExtension(String name) {
 		if(name.toLowerCase().endsWith(SupportedImageExtensions.PNG.name().toLowerCase())
-		|| name.toLowerCase().endsWith(SupportedImageExtensions.JPG.name().toLowerCase())){
+		|| name.toLowerCase().endsWith(SupportedImageExtensions.JPG.name().toLowerCase())
+		|| name.toLowerCase().endsWith(SupportedImageExtensions.JPEG.name().toLowerCase())){
 			logger.info("supported {}",name);
 			return true;
 		}
@@ -76,7 +77,7 @@ public class FileManagerImpl implements FileManager{
 			target.createNewFile();
 		}	
 		logger.info("saving file into {}",path);
-		ImageIO.write(source, "png", target);	
+		ImageIO.write(source, fileSize.name().toLowerCase(), target);	
 	
 	}
 
@@ -90,7 +91,8 @@ public class FileManagerImpl implements FileManager{
 		return WebsiteModule.websiteFolder 
 		+ File.separator + FileManager.catalog 
 		+ File.separator + fileSize.name().toLowerCase()
-		+ File.separator + name+".png";
+		+ File.separator + name + "." + fileSize.format.name().toLowerCase();
+		
 	}
 
 	@Override
@@ -123,16 +125,16 @@ public class FileManagerImpl implements FileManager{
 				logger.debug("original {} {} ",r.width, r.height);
 				Double scaleFactor = null;
 				Scalr.Mode mode= null;
-				Double width = fileSize.getMaxWidthPx();
-				Double height = fileSize.getMaxHeightPx();
+				Double width = fileSize.maxWidthPx;
+				Double height = fileSize.maxHeightPx;
 				if(r.width >= r.height ){
 					mode  = Scalr.Mode.FIT_TO_WIDTH;
-					scaleFactor = new Double(fileSize.getMaxWidthPx() / r.width * fileSize.getMaxWidthPx());
-					height  = new Double(fileSize.getMaxWidthPx() / r.width * r.height );
+					scaleFactor = new Double(fileSize.maxWidthPx / r.width * fileSize.maxWidthPx);
+					height  = new Double(fileSize.maxWidthPx / r.width * r.height );
 				}else{
 					mode  = Scalr.Mode.FIT_TO_HEIGHT;
-					scaleFactor = new Double(fileSize.getMaxHeightPx() / r.height * fileSize.getMaxHeightPx());
-					width  = new Double(fileSize.getMaxHeightPx() / r.height * r.width );
+					scaleFactor = new Double(fileSize.maxHeightPx / r.height * fileSize.maxHeightPx);
+					width  = new Double(fileSize.maxHeightPx / r.height * r.width );
 				}
 								
 				BufferedImage  target = Scalr.resize(
@@ -152,12 +154,12 @@ public class FileManagerImpl implements FileManager{
 				
 				logger.debug("scaling "+name+"to "+fileSize.name()+" {}  {} ",tr.width,tr.height);
 
-				ImageIO.write(target, "png", file);
+				ImageIO.write(target, fileSize.format.name(), file);
 				
-				PngtasticOptimizer opt = new PngtasticOptimizer(
-					"",new String[]{file.getAbsolutePath()}, "",false, 
-					5,null, 15, null
-				);
+//				PngtasticOptimizer opt = new PngtasticOptimizer(
+//					"",new String[]{file.getAbsolutePath()}, "",false, 
+//					5,null, 15, null
+//				);
 				
 			}
 			return file;
@@ -169,7 +171,7 @@ public class FileManagerImpl implements FileManager{
 	public String getPath(String key, ModelPhotoSize fileSize) {
 		return  FileManager.catalog 
 				+ "/" + fileSize.name().toLowerCase()
-				+ "/" + key+".png";
+				+ "/" + key+"."+fileSize.format.name().toLowerCase();
 	}
 
 	@Override
@@ -180,7 +182,7 @@ public class FileManagerImpl implements FileManager{
 		
 			try{
 				ModelPhotoSize size = ModelPhotoSize.valueOf(tokens[0].toUpperCase());
-				File file = this.getPhoto(tokens[1].substring(0,tokens[1].length()-4), size);
+				File file = this.getPhoto(tokens[1].substring(0,tokens[1].length()-size.format.name().length()-1), size);
 				logger.debug("returning  {}",file.getAbsolutePath());
 				return  file;
 			}catch(Exception ex){

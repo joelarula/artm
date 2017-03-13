@@ -79,7 +79,7 @@ public class WebsiteModule {
 			
 		  logger.info("home : {}", websiteFolder);
 		  
-		 // dao.loadDatabase();
+		  dao.loadDatabase();
 
 		  shutdown.addRegistryShutdownListener(new Runnable(){
 

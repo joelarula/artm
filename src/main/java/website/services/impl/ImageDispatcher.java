@@ -70,7 +70,8 @@ public class ImageDispatcher implements AssetRequestHandler{
 	private void streamFile(File file,Request request, Response response) throws IOException {
 		byte[] buffer = new byte[1024 * 8];
 		FileInputStream input = new FileInputStream(file);
-		OutputStream output = response.getOutputStream("image/png");
+		int i = file.getPath().length();
+		OutputStream output = response.getOutputStream("image/"+file.getPath().substring(i-3,i));
 		long count = 0;
 	    int n = 0;
 	    while (EOF != (n = input.read(buffer))) {
