@@ -9,6 +9,9 @@ import org.apache.tapestry5.modules.TapestryModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import website.model.admin.Size;
+import website.model.database.Model;
+import website.services.FileManager;
 import website.services.ModelDao;
 import website.services.WebsiteModule;
 import junit.framework.TestCase;
@@ -26,7 +29,22 @@ public class LoadDatabase extends TestCase{
 		registry.performRegistryStartup();
 		
 		ModelDao dao = registry.getService(ModelDao.class);
+		FileManager fm = registry.getService(FileManager.class);
 		dao.loadDatabase();
+		logger.info("calculating");
+		for(Model m : dao.getAllModels()){
+			
+			Size size = fm.getGraphics(m.getKey());
+			Integer h = size.getHeight();
+			Integer w = size.getWidth();
+			Double proportion = h.doubleValue() / w.doubleValue();
+			logger.info("{} {} "+"w="+w+" h="+h,m.getName(),proportion);
+			m.setSize(size);
+			//fm.saveModel(m);
+			
+			
+		}
+		
 	}
 
 }

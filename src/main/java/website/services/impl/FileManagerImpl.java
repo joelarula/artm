@@ -1,22 +1,25 @@
 package website.services.impl;
 
+
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.tapestry5.upload.services.UploadedFile;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +29,13 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.googlecode.pngtastic.PngtasticOptimizer;
+
 
 import website.model.admin.ModelPhotoSize;
+import website.model.admin.Size;
 import website.model.admin.SupportedImageExtensions;
 import website.model.database.Model;
-import website.pages.admin.Board;
 import website.services.FileManager;
 import website.services.WebsiteModule;
 
@@ -44,7 +49,8 @@ public class FileManagerImpl implements FileManager{
 	@Override
 	public boolean supportsPhotoExtension(String name) {
 		if(name.toLowerCase().endsWith(SupportedImageExtensions.PNG.name().toLowerCase())
-		|| name.toLowerCase().endsWith(SupportedImageExtensions.JPG.name().toLowerCase())){
+		|| name.toLowerCase().endsWith(SupportedImageExtensions.JPG.name().toLowerCase())
+		|| name.toLowerCase().endsWith(SupportedImageExtensions.JPEG.name().toLowerCase())){
 			logger.info("supported {}",name);
 			return true;
 		}
@@ -71,17 +77,34 @@ public class FileManagerImpl implements FileManager{
 			target.createNewFile();
 		}	
 		logger.info("saving file into {}",path);
-		ImageIO.write(source, "png", target);	
+		ImageIO.write(source, fileSize.name().toLowerCase(), target);	
 	
 	}
 
+	private String prepareCatalogFolder(ModelPhotoSize fileSize) {
+		return WebsiteModule.websiteFolder 
+		+ File.separator + FileManager.catalog 
+		+ File.separator + fileSize.name().toLowerCase();
+	}
+	
 	private String prepareCatalogPath(String name, ModelPhotoSize fileSize) {
 		return WebsiteModule.websiteFolder 
 		+ File.separator + FileManager.catalog 
 		+ File.separator + fileSize.name().toLowerCase()
-		+ File.separator + name+".png";
+		+ File.separator + name + "." + fileSize.format.name().toLowerCase();
+		
 	}
 
+	@Override
+	public Size getGraphics(String name) throws FileNotFoundException, IOException {
+		final File f = new File(prepareCatalogPath(name,ModelPhotoSize.ORIGINAL));
+		if(f.exists()){		
+			return this.getImageDimension(f);
+		}
+		return null;
+	
+	}
+	
 	@Override
 	public File getPhoto(String name, ModelPhotoSize fileSize) throws IOException {
 		if(fileSize.equals(ModelPhotoSize.ORIGINAL)){
@@ -99,19 +122,19 @@ public class FileManagerImpl implements FileManager{
 				
 				final Graphics2D g = source.createGraphics();
 				final Rectangle r = g.getDeviceConfiguration().getBounds();
-				logger.info("original {} {} ",r.width, r.height);
+				logger.debug("original {} {} ",r.width, r.height);
 				Double scaleFactor = null;
 				Scalr.Mode mode= null;
-				Double width = fileSize.getMaxWidthPx();
-				Double height = fileSize.getMaxHeightPx();
+				Double width = fileSize.maxWidthPx;
+				Double height = fileSize.maxHeightPx;
 				if(r.width >= r.height ){
 					mode  = Scalr.Mode.FIT_TO_WIDTH;
-					scaleFactor = new Double(fileSize.getMaxWidthPx() / r.width * fileSize.getMaxWidthPx());
-					height  = new Double(fileSize.getMaxWidthPx() / r.width * r.height );
+					scaleFactor = new Double(fileSize.maxWidthPx / r.width * fileSize.maxWidthPx);
+					height  = new Double(fileSize.maxWidthPx / r.width * r.height );
 				}else{
 					mode  = Scalr.Mode.FIT_TO_HEIGHT;
-					scaleFactor = new Double(fileSize.getMaxHeightPx() / r.height * fileSize.getMaxHeightPx());
-					width  = new Double(fileSize.getMaxHeightPx() / r.height * r.width );
+					scaleFactor = new Double(fileSize.maxHeightPx / r.height * fileSize.maxHeightPx);
+					width  = new Double(fileSize.maxHeightPx / r.height * r.width );
 				}
 								
 				BufferedImage  target = Scalr.resize(
@@ -129,9 +152,14 @@ public class FileManagerImpl implements FileManager{
 				tg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				Rectangle tr = tg.getDeviceConfiguration().getBounds();
 				
-				logger.info("scaling "+name+"to "+fileSize.name()+" {}  {} ",tr.width,tr.height);
+				logger.debug("scaling "+name+"to "+fileSize.name()+" {}  {} ",tr.width,tr.height);
 
-				ImageIO.write(target, "png", file);
+				ImageIO.write(target, fileSize.format.name(), file);
+				
+//				PngtasticOptimizer opt = new PngtasticOptimizer(
+//					"",new String[]{file.getAbsolutePath()}, "",false, 
+//					5,null, 15, null
+//				);
 				
 			}
 			return file;
@@ -143,7 +171,7 @@ public class FileManagerImpl implements FileManager{
 	public String getPath(String key, ModelPhotoSize fileSize) {
 		return  FileManager.catalog 
 				+ "/" + fileSize.name().toLowerCase()
-				+ "/" + key+".png";
+				+ "/" + key+"."+fileSize.format.name().toLowerCase();
 	}
 
 	@Override
@@ -154,8 +182,8 @@ public class FileManagerImpl implements FileManager{
 		
 			try{
 				ModelPhotoSize size = ModelPhotoSize.valueOf(tokens[0].toUpperCase());
-				File file = this.getPhoto(tokens[1].substring(0,tokens[1].length()-4), size);
-				logger.info("returning  {}",file.getAbsolutePath());
+				File file = this.getPhoto(tokens[1].substring(0,tokens[1].length()-size.format.name().length()-1), size);
+				logger.debug("returning  {}",file.getAbsolutePath());
 				return  file;
 			}catch(Exception ex){
 				logger.error(ex.toString());
@@ -233,6 +261,37 @@ public class FileManagerImpl implements FileManager{
 		return models;
 	}
 
+
+
+	/**
+	 * Gets image dimensions for given file 
+	 * @param imgFile image file
+	 * @return dimensions of image
+	 * @throws IOException if the file is not a known image
+	 */
+	public static Size getImageDimension(File imgFile) throws IOException {
+	  int pos = imgFile.getName().lastIndexOf(".");
+	  if (pos == -1)
+	    throw new IOException("No extension for file: " + imgFile.getAbsolutePath());
+	  String suffix = imgFile.getName().substring(pos + 1);
+	  Iterator<ImageReader> iter = ImageIO.getImageReadersBySuffix(suffix);
+	  while(iter.hasNext()) {
+	    ImageReader reader = iter.next();
+	    try {
+	      ImageInputStream stream = new FileImageInputStream(imgFile);
+	      reader.setInput(stream);
+	      int width = reader.getWidth(reader.getMinIndex());
+	      int height = reader.getHeight(reader.getMinIndex());
+	      return new Size(width, height);
+	    } catch (IOException e) {
+	      logger.warn("Error reading: " + imgFile.getAbsolutePath(), e);
+	    } finally {
+	      reader.dispose();
+	    }
+	  }
+
+	  throw new IOException("Not a known image file: " + imgFile.getAbsolutePath());
+	}
 
 
 

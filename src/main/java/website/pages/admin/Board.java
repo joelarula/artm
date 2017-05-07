@@ -35,6 +35,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 import org.apache.tapestry5.services.BeanModelSource;
 import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.ajax.AjaxResponseRenderer;
 import org.apache.tapestry5.upload.services.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +76,8 @@ public class Board {
 	@Component
 	private Form modelForm;
 	
-	@Component
+
+	@Component(parameters = {"enctype='application/x-www-form-urlencoded; charset=UTF-8'", "accept-charset='utf-8'"})
 	private Form modelsForm;
 	
 	
@@ -123,6 +125,12 @@ public class Board {
 	
 	@Inject
 	private ModelDao dao;
+	
+	@Property
+	private int index;
+	
+	@Inject
+	private AjaxResponseRenderer ajax;
 	
 	public Object onActivate(EventContext context) throws JsonParseException, JsonMappingException, IOException{
 		this.command = AdminCommand.MODELS;
@@ -369,7 +377,58 @@ public class Board {
 		return dao.search(this.searchName,this.searchCategory,this.searchStock, this.searchUnPublished,this.author);
 
 	}
+	
+	public String[] getSwitchUpCtx(){
+		return new String[]{this.model.getKey(),this.getPreviousModelKey()};
+	}
+	
+	public String getPreviousModelKey() {
+		Model m = null;
+		if(index-1 >=0){
+			m = (Model) this.modelSource.getRowValue(index-1);
+		}	
+		return m != null ? m.getKey() : null;
+	}
 
+	public String[] getSwitchDownCtx(){
+		return new String[]{this.getNextModelKey(),this.model.getKey()};
+	}
+	public String getNextModelKey() {
+		Model m = null;
+		
+		if(index+1 < this.getModels().getAvailableRows()){
+			m = (Model) this.modelSource.getRowValue(index+1);	
+		}
+		
+		return m != null ? m.getKey() : null;
+	}
+
+	@Component
+	private Zone gridZone;
+	
+	@OnEvent("switch")
+	public void onSwitch(String lowerKey, String upperKey) throws IOException{
+		Model l = this.dao.get(lowerKey);
+		int lp = l.getPosition();
+		Model u = this.dao.get(upperKey);
+		int up = u.getPosition();
+		if(lp > up){
+			
+			l.setPosition(up);
+			u.setPosition(lp);
+			
+		}
+		if(lp == up){
+			l.setPosition(up);
+			u.setPosition(lp+1);
+		}
+		
+		dao.saveModel(l);
+		dao.saveModel(u);
+		
+		this.ajax.addRender("gridZone", gridZone.getBody());
+	}
+	
 	private BeanModel<Model> gridModel;
 	
 	public BeanModel<Model> getGridModel(){

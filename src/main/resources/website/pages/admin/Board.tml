@@ -48,14 +48,35 @@
 						</div>
 					</div>
 					</t:form>
-					<t:Grid t:row="model" t:source="models" t:model="gridModel" t:volatile="literal:true">
+					<t:zone t:id="gridZone">
+					<t:Grid 
+						t:row="model" 
+						t:source="models"
+						t:rowIndex="index"
+					 	t:model="gridModel" 
+					 	t:volatile="literal:true">
 						<p:nameCell>
 							<t:pagelink t:page="admin/board" t:context="modelContext" >${model.name}</t:pagelink>			
 						</p:nameCell>
 						<p:photoCell>
 							<t:image t:path="iconPath" class="preview-icon"/><br/>
 						</p:photoCell>
+						<p:positionCell>
+							<t:if t:test="searchCategory">
+								<t:if t:test="previousModelKey">
+									<t:eventLink t:id="up" t:event="switch" t:async="true" t:context="switchUpCtx">
+										<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+									</t:eventLink>
+								</t:if>
+								<t:if t:test="nextModelKey">
+									<t:eventLink t:id="down" t:event="switch" t:async="true" t:context="switchDownCtx">
+										<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+									</t:eventLink>
+								</t:if>
+							</t:if>
+						</p:positionCell>
 					</t:Grid>
+					</t:zone>
 					</div>
 				
 			</div>
@@ -65,7 +86,7 @@
 	<t:block t:id="modelBlock">
 		<t:form t:id="modelForm">
 		    <t:hidden t:value="model.key"/>
-			<t:alerts />
+			<t:alerts t:showDismissAll="literal:false"/>
 			<t:errors />
 			<div class="row-fluid">
 				<div class="col-md-5">
@@ -142,20 +163,6 @@
 								
 						</div>
 					</div>
-<!-- 					<t:if t:test="model.photo">
-					<div class="panel panel-default">
-						<div class="panel-heading">${message:preview}</div>
-						<div class="panel-body  text-center">
-							preview					
-						</div>
-					</div>
-					<div class="panel panel-default">
-						<div class="panel-heading">${message:thumbnail}</div>
-						<div class="panel-body  text-center">
-							preview					
-						</div>
-					</div>
-					</t:if> -->
 					
 				</div>
 				<div class="col-md-12 text-left">

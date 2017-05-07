@@ -3,6 +3,7 @@ package website.model.admin;
 public enum SupportedImageExtensions {
 	
 	JPG,
-	PNG;
+	PNG,
+	JPEG;
 	
 }

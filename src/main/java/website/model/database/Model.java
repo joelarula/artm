@@ -3,6 +3,8 @@ package website.model.database;
 import java.util.Date;
 import org.apache.tapestry5.ioc.services.PropertyAccess;
 
+import website.model.admin.Size;
+
 
 
 public class Model {
@@ -27,6 +29,10 @@ public class Model {
 	private Author author;
 	
 	private String translation_en;
+	
+	private Size size;
+	
+	private Integer position = 5;
 	
 
 	public String getTranslation_en() {
@@ -135,6 +141,22 @@ public class Model {
 	public void setTranslation(String language, String translation, PropertyAccess ac) {
 		ac.set(this, "translation_"+language, translation);
 	}
+	
+	public Integer getPosition() {
+		return position;
+	}
 
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	public Size getSize() {
+		return size;
+	}
+
+	public void setSize(Size size) {
+		this.size = size;
+	}
+	
 	
 }

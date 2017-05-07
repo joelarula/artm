@@ -1,13 +1,12 @@
 package website.services;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.Locale;
+import java.util.Properties;
 
 import org.apache.tapestry5.SymbolConstants;
 import org.apache.tapestry5.ioc.Configuration;
@@ -15,10 +14,20 @@ import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ScopeConstants;
 import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.Decorate;
 import org.apache.tapestry5.ioc.annotations.ImportModule;
 import org.apache.tapestry5.ioc.annotations.Startup;
 import org.apache.tapestry5.ioc.annotations.SubModule;
 import org.apache.tapestry5.ioc.services.RegistryShutdownHub;
+import org.apache.tapestry5.ioc.services.ServiceOverride;
+import org.apache.tapestry5.ioc.services.ThreadLocale;
+import org.apache.tapestry5.services.PersistentLocale;
+import org.apache.tapestry5.services.Request;
+import org.apache.tapestry5.services.RequestFilter;
+import org.apache.tapestry5.services.RequestGlobals;
+import org.apache.tapestry5.services.RequestHandler;
+import org.apache.tapestry5.services.Response;
 import org.apache.tapestry5.services.assets.AssetRequestHandler;
 import org.apache.tapestry5.upload.modules.UploadModule;
 import org.slf4j.Logger;
@@ -33,6 +42,7 @@ import website.model.database.Model;
 import website.services.impl.FileManagerImpl;
 import website.services.impl.ImageDispatcher;
 import website.services.impl.ModelDaoImpl;
+import website.services.impl.UrlEncoderUtf8;
 
 @ImportModule(UploadModule.class)
 public class WebsiteModule {
@@ -42,12 +52,21 @@ public class WebsiteModule {
 	private static final String WEBSITE_HOME = "website";
 	public static final  String websiteFolder = System.getProperty("user.home")+File.separator+WEBSITE_HOME;
 	public static final  String dbHomeDir = websiteFolder +File.separator + "db";
+	public static final  String propertiesHomeDir = websiteFolder +File.separator + "website.properties";
 	
 	
-	public static void contributeApplicationDefaults(MappedConfiguration<String,String> configuration){
-		configuration.add(SymbolConstants.PRODUCTION_MODE, "false");
-		configuration.add(SymbolConstants.SUPPORTED_LOCALES,"et,en");
-		configuration.add(SymbolConstants.HMAC_PASSPHRASE,"f4jf4jf34fjx435f");
+
+	public static void contributeApplicationDefaults(MappedConfiguration<String,String> configuration) throws IOException{
+		
+		Properties prop = new Properties();
+		InputStream input = null;
+
+		input = new FileInputStream(WebsiteModule.propertiesHomeDir);
+		prop.load(input);
+		String mode = String.valueOf(prop.getProperty("production-mode", "false"));
+		configuration.add(SymbolConstants.PRODUCTION_MODE, mode);
+		configuration.add(SymbolConstants.SUPPORTED_LOCALES,"et,en,ru");
+		configuration.add(SymbolConstants.HMAC_PASSPHRASE,"dfsdfadfdsasdvds");
 		
 	}
 	
@@ -81,4 +100,63 @@ public class WebsiteModule {
 		  conf.addInstance(FileManager.catalog, ImageDispatcher.class);
 	  }
 
+
+      @Decorate(serviceInterface = ThreadLocale.class)     
+      public ThreadLocale decorateThreadLocale(final ThreadLocale threadLocale,  final PersistentLocale persistentLocale) 
+      { 
+          return new ThreadLocale() 
+          { 
+              @Override 
+              public void setLocale(Locale locale) 
+              { 
+                  threadLocale.setLocale(locale); 
+              } 
+
+              @Override 
+              public Locale getLocale() 
+              { 
+                  if (!persistentLocale.isSet()) 
+                  { 
+                      setLocale(Locale.forLanguageTag("et")); 
+                  } 
+                  return threadLocale.getLocale(); 
+              } 
+
+          }; 
+      } 
+      
+      
+      
+      @Contribute(ServiceOverride.class)
+      public static void setupOverrides(MappedConfiguration<Class,Object> configuration){
+        configuration.add(URLEncoder.class, new UrlEncoderUtf8());
+      }
+      
+      public void contributeRequestHandler(
+    	OrderedConfiguration<RequestFilter> configuration, final RequestGlobals requestGlobals){
+          configuration.add("Utf8Filter",   new RequestFilter(){
+	            public boolean service(Request request, Response response, RequestHandler handler)
+	                throws IOException
+	            {
+	                requestGlobals.getHTTPServletRequest().setCharacterEncoding("UTF-8");
+	                requestGlobals.getHTTPServletResponse().setCharacterEncoding("UTF-8");
+	                return handler.service(request, response);
+	            }
+	        }); 
+          
+          configuration.add("timingFilter",   new RequestFilter(){
+	            public boolean service(Request request, Response response, RequestHandler handler)throws IOException
+	            {
+	            	long start = System.currentTimeMillis();
+	            	logger.info("request in {}",request.getPath());
+	                boolean result =  handler.service(request, response);
+	                logger.info("request out {} elapsed {} ms",request.getPath(),System.currentTimeMillis() - start);
+	                return result;
+	            }
+	        },"after:StaticFiles"); 
+          
+      }
+      
+      
+      
 }

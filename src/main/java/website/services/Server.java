@@ -1,7 +1,10 @@
 package website.services;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.EnumSet;
+import java.util.Properties;
 
 import javax.servlet.DispatcherType;
 
@@ -11,12 +14,16 @@ import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.SecurityHandler;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ErrorHandler;
+import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.security.Constraint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import website.services.impl.Utf8Filter;
 
 public class Server {
 	
@@ -24,13 +31,29 @@ public class Server {
 	
 	public static void main(String[] args) throws Exception {
 
+		Properties prop = new Properties();
+		InputStream input = null;
 
-		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server(8080);
+		input = new FileInputStream(WebsiteModule.propertiesHomeDir);
+		prop.load(input);
+		
+		org.eclipse.jetty.server.Server server = new org.eclipse.jetty.server.Server();
+		
+        // HTTP connector
+        ServerConnector http = new ServerConnector(server);
+        http.setHost(String.valueOf(prop.getProperty("host")));
+        http.setPort(Integer.valueOf(prop.getProperty("port")));
+        http.setIdleTimeout(30000);
+	
+        
+        // Set the connector
+        server.addConnector(http);
 		
 		final ErrorHandler errorHandler = new ErrorHandler();
         errorHandler.setServer(server);
         errorHandler.setShowStacks(false);
         server.addBean(errorHandler);
+ 
                
         server.setStopAtShutdown(true);
         server.setStopTimeout(30*1000l);
@@ -40,15 +63,19 @@ public class Server {
         handler.setClassLoader(Thread.currentThread().getContextClassLoader());
         handler.setContextPath("/");
         handler.setInitParameter("tapestry.app-package", "website");
-        
+      
+        HandlerCollection collection = new HandlerCollection();
+        collection.addHandler(handler);
+
+             
         FilterHolder filterHolder = new FilterHolder();
         filterHolder.setHeldClass(TapestryFilter.class);
         filterHolder.setName("website");
-        
+       
         handler.addFilter(filterHolder, "/*", EnumSet.of(DispatcherType.REQUEST));
         								
-		server.setHandler(handler);
-						 
+		server.setHandler(handler);	
+		 
         server.start();        
         server.join();
 	}
