@@ -293,20 +293,28 @@ public class Index {
 	public String getPreviousModelKey() {
 		Model m = null;
 		this.category = request.getParameter("c");
-		Integer ix = Integer.valueOf(request.getParameter("i"));
-		if(ix != null  && ix-1 >=0){
-			m = (Model) this.getCategoryModels().get(ix-1);
-		}	
+		String i = request.getParameter("i");
+		if(i != null) {
+			Integer ix = Integer.valueOf(request.getParameter("i"));
+			if(ix != null  && ix-1 >=0){
+				m = (Model) this.getCategoryModels().get(ix-1);
+			}	
+		}
+
 		return m != null ? m.getKey() : null;
 	}
 
 	public String getNextModelKey() {
 		Model m = null;
 		this.category = request.getParameter("c");
-		Integer ix = Integer.valueOf(request.getParameter("i"));
-		if(ix != null  && ix+1 < this.getCategoryModels().size() && ix+1 >= 0){
-			m = (Model) this.getCategoryModels().get(ix+1);
+		String i = request.getParameter("i");
+		if(i != null) {
+			Integer ix = Integer.valueOf(request.getParameter("i"));
+			if(ix != null  && ix+1 < this.getCategoryModels().size() && ix+1 >= 0){
+				m = (Model) this.getCategoryModels().get(ix+1);
+			}
 		}
+
 		
 		return m != null ? m.getKey() : null;
 	}

@@ -156,6 +156,7 @@ public class ModelDaoImpl implements ModelDao{
 	@Override
 	public List<Model> getAllForCategory(String category, Language l) {
 		return this.models.values().stream()
+		.filter(m -> m.isPublished())
 		.filter(m -> m.getCategoryTranslation(l) != null)
 		.filter(m -> m.getCategoryTranslation(l).equals(category))
 		.sorted((m1,m2)-> (m1.getPosition().compareTo(m2.getPosition())))

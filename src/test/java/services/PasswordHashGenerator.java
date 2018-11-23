@@ -11,7 +11,7 @@ public class PasswordHashGenerator extends TestCase{
 	private static final Logger logger = LoggerFactory.getLogger(PasswordHashGenerator.class);
 	
 	public void testGenerate(){
-		Password.main(new String[]{"test","xxx"});		
+		Password.main(new String[]{"jaan","xxx"});		
 	}
 
 }
