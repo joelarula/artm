@@ -77,7 +77,7 @@ public class FileManagerImpl implements FileManager{
 			target.createNewFile();
 		}	
 		logger.info("saving file into {}",path);
-		ImageIO.write(source, fileSize.name().toLowerCase(), target);	
+		ImageIO.write(source, fileSize.format.name(), target);	
 	
 	}
 
@@ -112,11 +112,13 @@ public class FileManagerImpl implements FileManager{
 		}else{
 			logger.info("scaling {} to  {}",name,fileSize);
 			final File file = new File(prepareCatalogPath(name,fileSize));
-			if(!file.exists()){		
+			if(!file.exists() || file.length() == 0){		
 				if(!file.getParentFile().exists()){
 					file.getParentFile().mkdirs();
 				}
-				file.createNewFile();
+				if(!file.exists()){
+					file.createNewFile();
+				}
 				final File original = this.getPhoto(name, ModelPhotoSize.ORIGINAL);
 				final BufferedImage source = ImageIO.read(new FileInputStream(original));
 				
@@ -162,6 +164,7 @@ public class FileManagerImpl implements FileManager{
 //				);
 				
 			}
+			
 			return file;
 		}
 		
@@ -291,6 +294,16 @@ public class FileManagerImpl implements FileManager{
 	  }
 
 	  throw new IOException("Not a known image file: " + imgFile.getAbsolutePath());
+	}
+
+	@Override
+	public void removeModel(String modelKey) {
+		final File file = new File(prepareModelPath(modelKey));
+		if(file.exists()){		
+			file.delete();
+		}
+
+		
 	}
 
 

@@ -38,4 +38,6 @@ public interface FileManager {
 
 	Map<String, Model> loadModels();
 
+	void removeModel(String modelKey);
+
 }

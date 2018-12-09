@@ -93,6 +93,17 @@
 								</t:if>
 							</t:if>
 						</p:positionCell>
+						<p:actionsCell>
+							<t:eventLink 
+								t:id="remove" 
+								t:event="remove" 
+								t:async="true" 
+								t:context="model.key">
+								<span class="glyphicon glyphicon-chevron-delete" aria-hidden="true">
+									Eemalda
+								</span>
+							</t:eventLink>
+						</p:actionsCell>
 					</t:Grid>
 					</t:zone>
 					</div>

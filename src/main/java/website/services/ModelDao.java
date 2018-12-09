@@ -28,5 +28,7 @@ public interface ModelDao {
 	public List<Model> getAllForCategory(String category, Language language);
 
 	public Model getById(String string, Language language);
+
+	public void remove(String modelKey);
 	
 }

@@ -9,7 +9,7 @@ import website.model.admin.Language;
 import website.model.admin.Size;
 
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true,value= {"actions"})
 public class Model {
 	
 
@@ -36,6 +36,8 @@ public class Model {
 	private Integer position = 5;
 	
 	private Size size;
+	
+	private Boolean actions;
 	
 	public String getTranslation_en() {
 		return translation_en;
@@ -179,6 +181,14 @@ public class Model {
 
 	public void setSize(Size size) {
 		this.size = size;
+	}
+
+	public Boolean getActions() {
+		return actions;
+	}
+
+	public void setActions(Boolean actions) {
+		this.actions = actions;
 	}
 
 

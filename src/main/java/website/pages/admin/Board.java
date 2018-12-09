@@ -434,6 +434,12 @@ public class Board {
 	@Component
 	private Zone gridZone;
 
+	@OnEvent("remove")
+	public void onRemove(String key) throws IOException{
+		this.dao.remove(key);
+		this.ajax.addRender("gridZone", gridZone.getBody());
+	}
+	
 	@OnEvent("switch")
 	public void onSwitch(String lowerKey, String upperKey) throws IOException{
 		Model l = this.dao.get(lowerKey);
@@ -467,7 +473,7 @@ public class Board {
 			this.gridModel.getById("published").label(messages.get("published"));
 			this.gridModel.getById("photo").label(messages.get("photo"));
 			this.gridModel.exclude("key","created","modified","description","translation_en","translation_ru","detail_0","detail_1","detail_2");
-			this.gridModel.reorder("name","category","published","photo");
+			this.gridModel.reorder("name","category","published","photo","position","actions");
 		}
 		return gridModel;
 	}

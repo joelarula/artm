@@ -180,4 +180,11 @@ public class ModelDaoImpl implements ModelDao{
 		.findFirst().get();	
 	}
 
+	@Override
+	public void remove(String modelKey) {
+		this.fileManager.removeModel(modelKey);
+		logger.info("model {} removed",modelKey);
+		this.models.remove(modelKey);
+	}
+
 }
